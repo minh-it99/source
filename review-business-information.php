@@ -10,7 +10,7 @@
 <body>
     <nav class="meta-nav">
         <div class="nav-content">
-            <img src="/images/logo.png" alt="Logo" class="logo">
+            <img style="height:30px" src="/images/logo.png" alt="Logo" class="logo">
         </div>
     </nav>
 
