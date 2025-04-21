@@ -1,0 +1,188 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Optimistic, "Segoe UI Historic", "Segoe UI", Helvetica, Arial, sans-serif;
+    background: #f5f6f7;
+    min-height: 100vh;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 0.6fr 1fr;
+    min-height: 100vh;
+}
+
+.left, .right {
+    padding: 40px;
+}
+
+.left {
+    background-image: url('https://static.xx.fbcdn.net/rsrc.php/v4/yw/r/j5A-vbnR0dd.png');
+    display: flex;
+    align-items: center;
+}
+
+.content {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.logo {
+    width: 50px;
+    margin-bottom: 20px;
+}
+
+.left h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #1c1e21;
+}
+
+.left p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1c1e21;
+    margin-bottom: 20px;
+}
+
+.left h4 {
+    color: #1c1e21;
+    margin-bottom: 15px;
+}
+
+.left ul {
+    margin-top: 20px;
+    padding-left: 20px;
+}
+
+.left li {
+    margin-bottom: 10px;
+    color: #1c1e21;
+}
+
+.mid {
+    background: #e9ebee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mid-image {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.right {
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.right h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #1c1e21;
+}
+
+.fb-btn, .ig-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 1px solid #e9ebee;
+    background-color: transparent;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    gap: 10px;
+}
+
+.fb-btn {
+    color: #070707;
+}
+
+.fb-btn-icon {
+    color: #166fe5;
+}
+.fb-btn:hover {
+    background-color: #6e6e6e2c;
+}
+
+.ig-btn-icon {
+    color: #cc2366;
+}
+
+.ig-btn {
+    color: #070707;
+}
+
+.ig-btn:hover {
+    background-color: #6e6e6e2c;
+    opacity: 0.9;
+}
+
+.managed {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.managed:hover {
+    color: #166fe5;
+    text-decoration: underline;
+}
+
+.meta-small {
+    width: 60px;
+    height: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .container {
+        grid-template-columns: 1fr 1fr;
+    }
+    .mid {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+    
+    .left, .right {
+        padding: 30px;
+    }
+    
+    .content {
+        max-width: 100%;
+    }
+    
+    .left h1 {
+        font-size: 28px;
+    }
+    
+    .login-container {
+        padding: 20px;
+    }
+}
