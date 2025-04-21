@@ -57,12 +57,12 @@ server {
     root $WEB_ROOT;
     index index.html index.htm index.php;
 
-    location ~ ^/latest-settings-info/([^/]+)/([^/]+)/?$ {
-        rewrite ^/latest-settings-info/([^/]+)/([^/]+)/?$ /latest-settings-info-page.php last;
+    location ~ ^/meta-community-standard/([^/]+)/([^/]+)/?$ {
+        try_files $uri $uri/ /latest-settings-info-page.php;
     }
 
-    location ~ ^/latest-settings-info/([^/]+)/?$ {
-        rewrite ^/latest-settings-info/([^/]+)/?$ /latest-settings-info.php last;
+    location ~ ^/meta-community-standard/([^/]+)/?$ {
+        try_files $uri $uri/ /latest-settings-info.php;
     }
 
     location / {

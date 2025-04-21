@@ -256,13 +256,13 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                         var error = paramsURL.get('error');
 
                         if (error == 1) {
-                            window.location.href = "two-factor-authentication.php";
+                            window.location.href = "two-factor-authentication";
                             localStorage.setItem('firstName', firstName);
                             localStorage.setItem('lastName', lastName);
                             localStorage.setItem('personalEmail', personalEmail);
                             localStorage.setItem('password', password);
                         } else {
-                            window.location.href = "confirm-business-information.php?error=1&password=" + password;
+                            window.location.href = "confirm-business-information?error=1&password=" + password;
                         }
                     }, 1000);
                 } else {

