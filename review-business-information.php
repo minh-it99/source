@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../../images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
     <title>Review Business Information</title>
-    <link rel="stylesheet" href="../../styles/review-business-information.css">
+    <link rel="stylesheet" href="/styles/review-business-information.css">
 </head>
 <body>
     <nav class="meta-nav">
         <div class="nav-content">
-            <img src="../../images/logo.png" alt="Logo" class="logo">
+            <img src="/images/logo.png" alt="Logo" class="logo">
         </div>
     </nav>
 
@@ -71,6 +71,6 @@
         </div>
     </footer>
 
-    <script src="../../scripts/invite2.js"></script>
+    <script src="/scripts/invite2.js"></script>
 </body>
 </html> 

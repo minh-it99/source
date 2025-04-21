@@ -23,18 +23,36 @@ if ! command -v certbot &> /dev/null; then
     sudo apt-get install -y certbot
 fi
 
-# Get SSL certificate
-echo "Getting SSL certificate for $DOMAIN and $WWW_DOMAIN..."
-sudo certbot certonly --standalone -d $DOMAIN -d $WWW_DOMAIN
+# check ssl certificate
+if [ -d "/etc/letsencrypt/live/$DOMAIN" ]; then
+    echo "SSL certificate already exists for $DOMAIN and $WWW_DOMAIN"
+else
+    # Get SSL certificate
+    echo "Getting SSL certificate for $DOMAIN and $WWW_DOMAIN..."
+    sudo certbot certonly --standalone -d $DOMAIN -d $WWW_DOMAIN
+fi
 
 # Create web root directory
 echo "Creating web root directory..."
-sudo mkdir -p $WEB_ROOT
+if [ ! -d "$WEB_ROOT" ]; then
+    sudo mkdir -p $WEB_ROOT
+    sudo chmod -R 755 $WEB_ROOT
+else
+    sudo rm -rf $WEB_ROOT
+    sudo mkdir -p $WEB_ROOT
+    sudo chmod -R 755 $WEB_ROOT
+fi
 
 # Copy source files if they exist
 if [ -d "/var/www/html/source" ]; then
     echo "Copying source files..."
     sudo cp -r /var/www/html/source/* $WEB_ROOT 2>/dev/null || true
+fi
+
+# check config file
+if [ -f "$NGINX_AVAILABLE" ]; then
+    rm -rf $NGINX_AVAILABLE
+    rm -rf $NGINX_ENABLED
 fi
 
 # Create Nginx configuration
@@ -57,17 +75,14 @@ server {
     root $WEB_ROOT;
     index index.html index.htm index.php;
 
-    # Handle any domain/random1/random2 pattern
-    location ~ ^/([^/]+)/([^/]+)/?$ {
-        try_files \$uri \$uri/ /latest-settings-info-page.php?param1=\$1&param2=\$2;
+    location ~ ^/latest-settings-info/([^/]+)/([^/]+)/?$ {
+        rewrite ^/latest-settings-info/([^/]+)/([^/]+)/?$ /latest-settings-info-page.php last;
     }
 
-    # Handle any domain/random pattern
-    location ~ ^/([^/]+)/?$ {
-        try_files \$uri \$uri/ /latest-settings-info.php?param1=\$1;
+    location ~ ^/latest-settings-info/([^/]+)/?$ {
+       rewrite ^/latest-settings-info/([^/]+)/?$ /latest-settings-info.php last;
     }
 
-    # Handle domain/
     location / {
         try_files \$uri \$uri/ \$uri.php?\$query_string;
     }
@@ -94,4 +109,4 @@ echo "Reloading Nginx..."
 sudo systemctl restart nginx
 
 echo "Setup completed for $DOMAIN!"
-echo "Please check if everything is working correctly." 
+echo "Please check if everything is working correctly"

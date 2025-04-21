@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (prevBtn) {
         prevBtn.addEventListener('click', function() {
             // Navigate to previous page
-            window.location.href = 'invite.php';
+            window.location.href = '/invite.php';
         });
     }
 
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.style.transform = 'scale(1)';
                 // Navigate to next page (would be invite3.php)
                 console.log('Proceeding to next step...');
-                window.location.href = 'confirm-business-information.php';
+                window.location.href = '/confirm-business-information.php';
             }, 100);
         });
     }

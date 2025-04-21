@@ -1,10 +1,8 @@
 RewriteEngine On
 
+RewriteRule ^latest-settings-info/(.+)/(.+)/?$ /latest-settings-info-page.php [L]
 
 RewriteRule ^latest-settings-info/(.+)/?$ /latest-settings-info.php [L]
-
-RewriteRule ^latest-settings-info/(.+)/(.+)?$ /latest-settings-info-page.php [L]
-
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f

