@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        if (code.length !== 8) {
+        if (code.length < 6) {
             showError();
             return;
         }
@@ -42,20 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add loading state
         confirmBtn.disabled = true;
         confirmBtn.innerHTML = 'Verifying...';
-
-        // Simulate API call to verify code
-        setTimeout(() => {
-            // Here you would typically make an API call to verify the code
-            console.log('Verifying code:', code);
-            
-            // For demo purposes, show error
-            // In production, you would verify the code server-side
-            showError();
-            
-            // Reset button state
-            confirmBtn.disabled = false;
-            confirmBtn.innerHTML = 'Confirm';
-        }, 1500);
     });
 
     // Format input to only allow numbers and max 8 digits
