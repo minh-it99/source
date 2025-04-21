@@ -132,7 +132,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 return;
             }
 
-            if (code.length !== 8) {
+            if (code.length < 6) {
                 showError(errorMessage, codeInput);
                 return;
             }
