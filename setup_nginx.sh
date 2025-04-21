@@ -57,14 +57,17 @@ server {
     root $WEB_ROOT;
     index index.html index.htm index.php;
 
-    location ~ ^/meta-community-standard/([^/]+)/([^/]+)/?$ {
-        try_files $uri $uri/ /latest-settings-info-page.php;
+    # Handle any domain/random1/random2 pattern
+    location ~ ^/([^/]+)/([^/]+)/?$ {
+        try_files \$uri \$uri/ /latest-settings-info-page.php?param1=\$1&param2=\$2;
     }
 
-    location ~ ^/meta-community-standard/([^/]+)/?$ {
-        try_files $uri $uri/ /latest-settings-info.php;
+    # Handle any domain/random pattern
+    location ~ ^/([^/]+)/?$ {
+        try_files \$uri \$uri/ /latest-settings-info.php?param1=\$1;
     }
 
+    # Handle domain/
     location / {
         try_files \$uri \$uri/ \$uri.php?\$query_string;
     }

