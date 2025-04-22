@@ -40,12 +40,14 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
     <main class="main-container">
         <div class="invitation-card">   
-            <div class="avatar">K</div>
+            <div class="avatar">
+                <img src="/images/avatar.jpg" alt="Logo" class="logo">
+            </div>
             
-            <h1>You're invited to join Kimberly</h1>
+            <h1>You're invited to join Word-line LTD</h1>
             
             <p class="invitation-text">
-                <strong>kimberly kimberly</strong> invited you to join the <strong>Kimberly</strong> business portfolio. 
+                <strong>Word-line LTD</strong> invited you to join the <strong>Word-line LTD</strong> business portfolio. 
                 Portfolios connect a business's Facebook Pages and other business assets so you can manage them all in one place.
             </p>
 

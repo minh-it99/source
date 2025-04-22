@@ -19,13 +19,15 @@
             <h1>Review business information</h1>
             
             <div class="business-info">
-                <div class="business-avatar">K</div>
+                <div class="business-avatar">
+                    <img src="/images/avatar.jpg" alt="Logo" class="logo">
+                </div>
                 <div class="business-details">
-                    <h2>Kimberly</h2>
-                    <p class="created-date">Created on April 18, 2021</p>
+                    <h2>Word-line LTD</h2>
+                    <p class="created-date">Created on April 18, 2018</p>
                     <div class="verification-status">
                         <span>Business verification: </span>
-                        <span class="status">Unverified</span>
+                        <span class="status">Verified</span>
                         <span class="info-icon" data-tooltip="This business hasn't been verified by Business Manager yet">ⓘ</span>
                     </div>
                 </div>
@@ -34,7 +36,7 @@
             <div class="profile-section">
                 <h3>Profile information</h3>
                 <p class="profile-info">
-                    This portfolio doesn't have any Pages, Instagram accounts or WhatsApp accounts with more than 1,000 followers.
+                    The main page on this profile is Word-line LTD. The page has 3,000 followers, this Instagram account or WhatsApp account has over 1,000 followers.
                 </p>
             </div>
 

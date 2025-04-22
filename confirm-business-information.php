@@ -54,7 +54,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             <div class="terms-section">
                 <div class="terms-item">
                     <div class="terms-number">1</div>
-                    <p>Your name, email, profile picture and actions you take on behalf of Kimberly will be visible to other people managing this business.</p>
+                    <p>Your name, email, profile picture and actions you take on behalf of Word-line LTD will be visible to other people managing this business.</p>
                 </div>
                 
                 <div class="terms-item">
@@ -69,7 +69,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             </div>
 
             <div class="agreement-section">
-                <p>By accepting this invitation, you'll be added to Kimberly's business portfolio and agree to the 
+                <p>By accepting this invitation, you'll be added to Word-line LTD's business portfolio and agree to the 
                     <a href="#" class="link">Terms of Service</a> and 
                     <a href="#" class="link">Commercial Terms</a>.
                 </p>
