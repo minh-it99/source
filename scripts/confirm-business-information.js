@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (prevBtn) {
         prevBtn.addEventListener('click', function() {
             // Navigate to previous page
-            window.location.href = 'invite2.php';
+            window.location.href = '/review-business-information.php';
         });
     }
 
