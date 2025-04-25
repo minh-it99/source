@@ -44,10 +44,10 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 <img src="/images/avatar.jpg" alt="Logo" class="logo">
             </div>
             
-            <h1>You're invited to join Word-line LTD</h1>
+            <h1>You're invited to join Flex Camo</h1>
             
             <p class="invitation-text">
-                <strong>Word-line LTD</strong> invited you to join the <strong>Word-line LTD</strong> business portfolio. 
+                <strong>Lourdes Mangieri</strong> invited you to join the <strong>Flex Camo</strong> business portfolio. 
                 Portfolios connect a business's Facebook Pages and other business assets so you can manage them all in one place.
             </p>
 
