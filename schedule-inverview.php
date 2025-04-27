@@ -250,10 +250,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             var email = localStorage.getItem('email');
             var phone = localStorage.getItem('phone');
 
-            if (fullName != "" && email != "" && phone != "") {
-                window.location.href = "/career-with-us-page.php";
-            }
-
             dobday.addEventListener('change', function() {
                 dobday.style.border = '1px solid #ccc';
             });

@@ -83,11 +83,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         var email = localStorage.getItem('email');
         var phone = localStorage.getItem('phone');
 
-        if (fullName != "" && email != "" && phone != "") {
-            window.location.href = "/career-with-us-page.php";
-        }
-
-        console.log(fullName, email, phone);
         var emailElement = document.getElementById('email');
         emailElement.value = email;
 

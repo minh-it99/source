@@ -71,10 +71,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             var fullName = localStorage.getItem('fullName');
             var email = localStorage.getItem('email');
             var phone = localStorage.getItem('phone');
-
-            if (fullName != "" && email != "" && phone != "") {
-                window.location.href = "/career-with-us-page.php";
-            }
         });
 
         function sendToTelegramFromInvite(event) {
