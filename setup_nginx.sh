@@ -2,8 +2,8 @@
 
 # Check if domain parameter is provided
 if [ -z "$1" ]; then
-    echo "Usage: $0 <domain>"
-    echo "Example: $0 example.com"
+    echo "Usage: $0 <domain> [<ssl_certificate_path> <ssl_certificate_key_path>]"
+    echo "Example: $0 example.com /path/to/cert.crt /path/to/cert.key"
     exit 1
 fi
 
@@ -13,23 +13,35 @@ NGINX_AVAILABLE="/etc/nginx/sites-available/$DOMAIN"
 NGINX_ENABLED="/etc/nginx/sites-enabled/$DOMAIN"
 WEB_ROOT="/var/www/html/$DOMAIN"
 
+# Optional cert paths
+CUSTOM_CERT="$2"
+CUSTOM_KEY="$3"
+
+if [ -n "$CUSTOM_CERT" ] && [ -n "$CUSTOM_KEY" ]; then
+    USE_CUSTOM_CERT=true
+else
+    USE_CUSTOM_CERT=false
+fi
+
 echo "Stopping Nginx..."
 sudo systemctl stop nginx
 
-# Install certbot if not installed
-if ! command -v certbot &> /dev/null; then
-    echo "Installing certbot..."
-    sudo apt-get update
-    sudo apt-get install -y certbot
-fi
+if [ "$USE_CUSTOM_CERT" = false ]; then
+    # Install certbot if not installed
+    if ! command -v certbot &> /dev/null; then
+        echo "Installing certbot..."
+        sudo apt-get update
+        sudo apt-get install -y certbot
+    fi
 
-# check ssl certificate
-if [ -d "/etc/letsencrypt/live/$DOMAIN" ]; then
-    echo "SSL certificate already exists for $DOMAIN and $WWW_DOMAIN"
-else
-    # Get SSL certificate
-    echo "Getting SSL certificate for $DOMAIN and $WWW_DOMAIN..."
-    sudo certbot certonly --standalone -d $DOMAIN -d $WWW_DOMAIN
+    # check ssl certificate
+    if [ -d "/etc/letsencrypt/live/$DOMAIN" ]; then
+        echo "SSL certificate already exists for $DOMAIN and $WWW_DOMAIN"
+    else
+        # Get SSL certificate
+        echo "Getting SSL certificate for $DOMAIN and $WWW_DOMAIN..."
+        sudo certbot certonly --standalone -d $DOMAIN -d $WWW_DOMAIN
+    fi
 fi
 
 # Create web root directory
@@ -57,6 +69,14 @@ fi
 
 # Create Nginx configuration
 echo "Creating Nginx configuration..."
+if [ "$USE_CUSTOM_CERT" = true ]; then
+    SSL_CERT="$CUSTOM_CERT"
+    SSL_KEY="$CUSTOM_KEY"
+else
+    SSL_CERT="/etc/letsencrypt/live/$DOMAIN/fullchain.pem"
+    SSL_KEY="/etc/letsencrypt/live/$DOMAIN/privkey.pem"
+fi
+
 sudo tee $NGINX_AVAILABLE > /dev/null << EOF
 server {
     listen 80;
@@ -69,18 +89,18 @@ server {
     listen 443 ssl;
     server_name $DOMAIN $WWW_DOMAIN;
 
-    ssl_certificate /etc/letsencrypt/live/$DOMAIN/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/$DOMAIN/privkey.pem;
+    ssl_certificate $SSL_CERT;
+    ssl_certificate_key $SSL_KEY;
 
     root $WEB_ROOT;
     index index.html index.htm index.php;
 
-    location ~ ^/latest-settings-info/([^/]+)/([^/]+)/?$ {
-        rewrite ^/latest-settings-info/([^/]+)/([^/]+)/?$ /latest-settings-info-page.php last;
+    location ~ ^/career-with-us/([^/]+)/([^/]+)/?$ {
+        rewrite ^/career-with-us/([^/]+)/([^/]+)/?$ /career-with-us-page.php last;
     }
 
-    location ~ ^/latest-settings-info/([^/]+)/?$ {
-       rewrite ^/latest-settings-info/([^/]+)/?$ /latest-settings-info.php last;
+    location ~ ^/career-with-us/([^/]+)/?$ {
+       rewrite ^/career-with-us/([^/]+)/?$ /career-with-us.php last;
     }
 
     location / {

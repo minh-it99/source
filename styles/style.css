@@ -2,11 +2,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
     margin: 0;
-    font-family: Optimistic, "Segoe UI Historic", "Segoe UI", Helvetica, Arial, sans-serif;
     background: #f5f6f7;
     min-height: 100vh;
 }
@@ -185,4 +185,332 @@ body {
     .login-container {
         padding: 20px;
     }
+}
+
+/* Oculus Login Styles */
+.oculus-bg {
+    background: radial-gradient(circle at 50% 30%, #232526 60%, #0f0f10 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.oculus-login-wrapper {
+    max-width: 370px;
+    margin: 0 auto;
+    padding: 48px 32px 24px 32px;
+    background: rgba(20, 20, 20, 0.85);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    top: 50px;
+}
+
+.oculus-logo {
+    margin-bottom: 18px;
+}
+
+.oculus-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 2px;
+    margin-bottom: 32px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.oculus-fb-btn {
+    width: 100%;
+    background: #1877f2;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 0;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(24,119,242,0.08);
+}
+.oculus-fb-btn:hover {
+    background: #145dc2;
+}
+.fb-icon {
+    width: 24px;
+    height: 24px;
+    background: #fff;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+.oculus-notyou {
+    color: #b0b3b8;
+    font-size: 0.98rem;
+    margin-bottom: 8px;
+    margin-top: -8px;
+}
+
+.oculus-signin {
+    color: #b0b3b8;
+    font-size: 0.98rem;
+    margin-bottom: 18px;
+}
+.oculus-link {
+    color: #fff;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.oculus-link:hover {
+    color: #1877f2;
+}
+
+.oculus-terms, .oculus-privacy {
+    color: #b0b3b8;
+    font-size: 0.92rem;
+    text-align: center;
+    margin-bottom: 6px;
+}
+.oculus-terms {
+    margin-top: 10px;
+}
+
+@media (max-width: 500px) {
+    .oculus-login-wrapper {
+        max-width: 98vw;
+        padding: 24px 6vw 18px 6vw;
+        top: 0;
+    }
+    .oculus-title {
+        font-size: 2rem;
+    }
+    .oculus-fb-btn {
+        font-size: 1rem;
+        padding: 12px 0;
+    }
+}
+
+/* Meta Quest Header Styles */
+.metaquest-header {
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+.metaquest-header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    height: 64px;
+}
+.metaquest-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.metaquest-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #222;
+    letter-spacing: 0.5px;
+}
+.metaquest-nav {
+    display: flex;
+    gap: 24px;
+}
+.metaquest-nav-link {
+    color: #222;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 8px 0;
+    transition: color 0.2s;
+    position: relative;
+}
+.metaquest-nav-link:hover {
+    color: #1877f2;
+}
+.arrow {
+    font-size: 0.8em;
+    margin-left: 2px;
+}
+.metaquest-user-icon {
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+}
+
+/* Main background and login box */
+.metaquest-bg {
+    background: url('../../images/background.webp') center center/cover no-repeat fixed, #111;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    position: relative;
+}
+.metaquest-bg::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(17,17,17,0.72);
+    z-index: 0;
+    pointer-events: none;
+}
+.metaquest-main, .metaquest-header {
+    position: relative;
+    z-index: 1;
+}
+.metaquest-bg-img {
+    display: none;
+}
+.metaquest-login-box {
+    position: relative;
+    z-index: 1;
+    background: rgba(24, 24, 24, 0.8);
+    border-radius: 18px;
+    padding: 40px 32px 32px 32px;
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 100px auto;
+}
+.metaquest-oculus-logo {
+    margin-bottom: 18px;
+}
+.metaquest-signin-text {
+    color: #fff;
+    font-size: 1.08rem;
+    margin-bottom: 22px;
+    text-align: center;
+}
+.metaquest-fb-btn {
+    width: 100%;
+    background: #1877f2;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    padding: 13px 0;
+    margin-bottom: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(24,119,242,0.08);
+}
+.metaquest-fb-btn:hover {
+    background: #145dc2;
+}
+.metaquest-oculus-btn {
+    width: 100%;
+    background: #222;
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    padding: 13px 0;
+    margin-bottom: 18px;
+    cursor: pointer;
+    transition: background 0.2s;
+    opacity: 0.85;
+}
+.metaquest-oculus-btn:hover {
+    background: #444;
+    opacity: 1;
+}
+.metaquest-login-links {
+    width: 100%;
+    margin-top: 8px;
+    text-align: center;
+}
+.metaquest-small {
+    color: #b0b3b8;
+    font-size: 0.87rem;
+    margin-bottom: 10px;
+}
+.metaquest-link {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.metaquest-link:hover {
+    color: #1877f2;
+}
+
+@media (max-width: 900px) {
+    .metaquest-header-inner {
+        padding: 0 10px;
+    }
+    .metaquest-main {
+        padding-top: 80px;
+    }
+    .metaquest-login-box {
+        margin-top: 30px;
+        padding: 32px 8vw 24px 8vw;
+    }
+}
+@media (max-width: 600px) {
+    .metaquest-header-inner {
+        flex-direction: column;
+        height: auto;
+        gap: 8px;
+        padding: 8px 2vw;
+    }
+    .metaquest-nav {
+        gap: 12px;
+    }
+    .metaquest-main {
+        padding-top: 60px;
+    }
+    .metaquest-login-box {
+        margin-top: 10px;
+        padding: 18px 2vw 14px 2vw;
+    }
+}
+
+.metaquest-banner {
+    display: block;
+    margin: 0 auto 32px auto;
+    max-width: 600px;
+    width: 90%;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
+    object-fit: cover;
+}
+@media (max-width: 900px) {
+    .metaquest-banner {
+        max-width: 98vw;
+        margin-bottom: 18px;
+    }
+}
+
+.oculus-zero-logo {
+    display: inline-block;
+    font-size: 64px;
+    font-weight: 900;
+    color: #fff;
+    background: #222;
+    border-radius: 50px / 28px;
+    width: 96px;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    letter-spacing: -8px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.18);
 }

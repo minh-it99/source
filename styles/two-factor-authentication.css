@@ -2,49 +2,132 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f0f2f5;
+    background: url('../images/background.webp') center center/cover no-repeat fixed, #18191a;
     min-height: 100vh;
+    color: #fff;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(24,25,26,0.82);
+    z-index: 0;
+    pointer-events: none;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: url('https://www.transparenttextures.com/patterns/noise.png');
+    opacity: 0.18;
+    mix-blend-mode: screen;
+    animation: noiseMove 1.5s steps(2) infinite;
+}
+
+@keyframes noiseMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 100px 100px; }
+}
+
+
+/* Meta Quest Header Styles */
+.metaquest-header {
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+.metaquest-header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    height: 64px;
+}
+.metaquest-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.metaquest-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #222;
+    letter-spacing: 0.5px;
+}
+.metaquest-nav {
+    display: flex;
+    gap: 24px;
+}
+.metaquest-nav-link {
+    color: #222;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 8px 0;
+    transition: color 0.2s;
+    position: relative;
+}
+.metaquest-nav-link:hover {
+    color: #1877f2;
+}
+.arrow {
+    font-size: 0.8em;
+    margin-left: 2px;
+}
+.metaquest-user-icon {
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.oculus-invite-logo {
+    margin-bottom: 32px;
+    margin-top: 82px;
+    text-align: center;
 }
 
 .auth-container {
     width: 100%;
-    max-width: 600px;
+    max-width: 420px;
     padding: 20px;
+    position: relative;
+    z-index: 3;
+    margin: 0 auto;
 }
 
 .auth-card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 32px;
+    background: rgba(255,255,255,0.10);
+    border-radius: 18px;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
+    padding: 32px 24px 24px 24px;
+    color: #fff;
 }
 
 h1 {
     font-size: 24px;
     font-weight: 600;
-    color: #1c1e21;
+    color: #fff;
     margin-bottom: 16px;
 }
 
 .instruction {
-    color: #1c1e21;
+    color: #b0b3b8;
     font-size: 15px;
     margin-bottom: 16px;
-}
-
-.learn-more {
-    color: #1877f2;
-    text-decoration: none;
-    font-size: 15px;
-    display: inline-block;
-    margin-bottom: 24px;
 }
 
 .learn-more:hover {
@@ -57,46 +140,45 @@ h1 {
 
 .input-group {
     margin-bottom: 24px;
-    width: 300px;
+    width: 100%;
     max-width: 100%;
-}
-
-@media screen and (max-width: 640px) {
-    .input-group {
-        width: 100%;
-    }
 }
 
 input[type="text"] {
     width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #dddfe2;
-    border-radius: 6px;
-    font-size: 15px;
-    color: #1c1e21;
+    padding: 12px 0 8px 10px;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid #444;
+    border-radius: 0;
+    font-size: 1.08rem;
+    color: #fff;
     transition: border-color 0.2s;
+    outline: none;
+    box-shadow: none;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-weight: 400;
 }
 
 input[type="text"]:focus {
-    outline: none;
-    border-color: #1877f2;
-    box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+    border-bottom: 1.5px solid #fff;
 }
 
 input[type="text"]::placeholder {
-    color: #65676b;
+    color: #b0b3b8;
 }
 
 /* Error Message Styles */
 .error-message {
-    background-color: #ebdf83;
-    border: 1px solid #ece5b1;
+    background-color: #2d2d2d;
+    border: 1px solid #ebdf83;
     border-radius: 4px;
     padding: 8px 12px;
     margin-top: 0.2px;
     display: flex;
     align-items: flex-start;
     gap: 8px;
+    color: #fff;
 }
 
 .error-icon {
@@ -105,7 +187,7 @@ input[type="text"]::placeholder {
 }
 
 .error-text {
-    color: #1c1e21;
+    color: #fff;
     font-size: 13px;
     line-height: 1.4;
 }
@@ -123,6 +205,7 @@ input[type="text"].error:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 18px;
 }
 
 .alternative-auth {
@@ -136,39 +219,45 @@ input[type="text"].error:focus {
 }
 
 .confirm-btn {
-    background: #1877f2;
-    color: white;
+    background: #fff;
+    color: #18191a;
     border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 15px;
+    padding: 12px 32px;
+    border-radius: 32px;
+    font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background 0.2s;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
+    letter-spacing: 1px;
 }
 
 .confirm-btn:hover {
-    background: #166fe5;
+    background: #42454b;
+    color: #fff;
 }
 
 .confirm-btn:disabled {
     background: #e4e6eb;
+    color: #b0b3b8;
     cursor: not-allowed;
 }
 
 /* Responsive Design */
-@media (max-width: 640px) {
+@media (max-width: 600px) {
     .auth-container {
-        padding: 16px;
+        padding: 8px 0 0 0;
+        max-width: 98vw;
     }
     
     .auth-card {
-        padding: 24px 16px;
+        padding: 16px 4vw 12px 4vw;
     }
     
     .form-footer {
         flex-direction: column;
         gap: 16px;
+        align-items: stretch;
     }
     
     .confirm-btn {
