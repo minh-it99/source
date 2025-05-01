@@ -52,6 +52,9 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         <div class="oculus-invite-title">Schedule your interview</div>
         <form class="oculus-invite-form" onsubmit="submitScheduleInterview(event)" autocomplete="off">
             <div class="oculus-invite-group">
+                <label style="font-size: 15px; color: #666; margin-bottom: 10px;">
+                    <font style="color:rgb(198, 200, 202); font-weight: 600; font-size: 16px;">Reality Labs </font>
+                    offers a dynamic environment and competitive pay — apply now and don't miss out on this opportunity!</label>
                 <label>Schedule interview</label>
                 <div class="triple-input-row">
                     <select required name="interview_day" id="interview_day">
