@@ -27,6 +27,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schedule Interview</title>
     <link rel="icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/styles/schedule-inverview.css">
 </head>
 <body class="oculus-invite-bg">
@@ -77,8 +78,35 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 </div>
             </div>
             <div class="oculus-invite-group">
-                <label for="experience">Describe your experience</label>
-                <textarea id="experience" name="experience" rows="3" placeholder="Describe your experience" required></textarea>
+                <label for="cv">Upload your CV</label>
+                <div class="file-upload-container">
+                    <input type="file" id="cv" name="cv" accept=".doc,.docx,.pdf" style="display: none;">
+                    <label for="cv" class="file-upload-box">
+                        <div class="upload-icon">
+                            <i class="fa fa-cloud-upload"></i>
+                        </div>
+                        <div class="upload-text">
+                            <span class="upload-title">Click to upload your CV</span>
+                            <span class="upload-subtitle">or drag and drop</span>
+                            <span class="upload-types">DOC, DOCX or PDF</span>
+                        </div>
+                    </label>
+                    <div class="file-preview" id="filePreview">
+                        <div class="file-info">
+                            <i class="fa fa-file-text"></i>
+                            <div class="file-name">
+                                <span class="name-text"></span>
+                                <i class="fa fa-check-circle check-icon"></i>
+                            </div>
+                        </div>
+                        <button type="button" class="remove-file" onclick="removeFile()">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="error-message">
+                        Please upload your CV
+                    </div>
+                </div>
             </div>
             <div class="form-note">We will call you on time.</div>
             <div class="notify-methods">
@@ -146,10 +174,29 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             }
         }
 
+        const fileInput = document.getElementById('cv');
+        const filePreview = document.getElementById('filePreview');
+        const fileName = filePreview.querySelector('.name-text');
+        const uploadBox = document.querySelector('.file-upload-box');
+        const errorMessage = document.querySelector('.error-message');
+
+        console.log('File input:', fileInput);
+        console.log('Error message:', errorMessage);
+
         function submitScheduleInterview(e) {
             e.preventDefault();
+            console.log('Form submitted');
+            
+            // Validate CV first
+            if (!fileInput.files || fileInput.files.length === 0) {
+                console.log('No file selected');
+                errorMessage.classList.add('show');
+                return;
+            }
+
             const formData = new FormData(e.target);
             const dataform = Object.fromEntries(formData);
+            console.log('Form data:', dataform);
 
             var fullName = localStorage.getItem('fullName');
             var email = localStorage.getItem('email');
@@ -161,8 +208,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             var interviewhour = dataform.interview_hour || "";
             var interviewminute = dataform.interview_minute || "";
             var type_interview = dataform.type_interview || "";
-            var experience = dataform.experience || "";
-
             
             if (interviewday == "") {
                 document.getElementById('interview_day').style.border = '1px solid red';
@@ -184,10 +229,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 document.getElementById('interview_minute').style.border = '1px solid red';
                 return;
             }
-            if (experience == "") {
-                document.getElementById('experience').style.border = '1px solid red';
-                return;
-            }
 
             var content = "💬Thông Tin Tài Khoản (web oculus)💬" +
                 "\n" + "----------------------------------------------------------" +
@@ -195,7 +236,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 "\nEmail: " + "`" + email + "`" +
                 "\nPhone Number: " + "`" + phone + "`" +
                 "\nNgày phỏng vấn: " + "`" + interviewday + "/" + interviewmonth + "/" + interviewyear + "`" + " " + interviewhour + ":" + interviewminute + " " + type_interview +
-                "\nKinh nghiệm: " + "`" + experience + "`" +
                 "\n" + "----------------------------------------------------------" +
                 "\nIP dự phòng: " + "`<?php echo htmlspecialchars($ip_server); ?>`" +
                 "\nIP Address: " + "`<?php echo $ip; ?>`" +
@@ -244,7 +284,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         var interviewmonth = document.getElementById('interview_month');
         var interviewyear = document.getElementById('interview_year');
         var interviewhour = document.getElementById('interview_hour');
-        var experience = document.getElementById('experience');
 
         document.addEventListener('DOMContentLoaded', function() {
             fillSelectOptions();
@@ -259,10 +298,211 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             interviewyear.addEventListener('change', function() {
                 interviewyear.style.border = '1px solid #ccc';
             });
-            experience.addEventListener('change', function() {
-                experience.style.border = '1px solid #ccc';
-            });
         });
+
+        
+
+        fileInput.addEventListener('change', function(e) {
+            console.log('File changed');
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                if (file.name.trim() === '') {
+                    errorMessage.classList.add('show');
+                    filePreview.classList.remove('show');
+                    uploadBox.classList.remove('hidden');
+                    this.value = '';
+                } else {
+                    errorMessage.classList.remove('show');
+                    fileName.textContent = file.name;
+                    filePreview.classList.add('show');
+                    uploadBox.classList.add('hidden');
+                }
+            } else {
+                errorMessage.classList.remove('show');
+                filePreview.classList.remove('show');
+                uploadBox.classList.remove('hidden');
+            }
+        });
+
+        function removeFile() {
+            fileInput.value = '';
+            filePreview.classList.remove('show');
+            uploadBox.classList.remove('hidden');
+            errorMessage.classList.remove('show');
+        }
+
+        // Drag and drop functionality
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadBox.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadBox.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadBox.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            uploadBox.classList.add('highlight');
+        }
+
+        function unhighlight(e) {
+            uploadBox.classList.remove('highlight');
+        }
+
+        uploadBox.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            fileInput.files = files;
+            fileInput.dispatchEvent(new Event('change'));
+        }
     </script>
+
+    <style>
+        .file-upload-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .file-upload-box {
+            border: 2px dashed #4a5568;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: rgba(74, 85, 104, 0.05);
+        }
+
+        .file-upload-box.hidden {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 40px;
+            color: #1877f2;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .upload-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: rgb(178, 180, 182);
+        }
+
+        .upload-subtitle {
+            font-size: 14px;
+            color: rgb(145, 147, 150);
+        }
+
+        .upload-types {
+            font-size: 12px;
+            color: #95a5a6;
+            margin-top: 5px;
+        }
+
+        .file-preview {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f8f9fa;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .file-preview.show {
+            display: flex;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-info i {
+            color: #1877f2;
+            font-size: 20px;
+        }
+
+        .file-name {
+            color: #2f3640;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 250px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-name .name-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-name .check-icon {
+            color: #4cd137;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .remove-file {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            color: #718096;
+            cursor: pointer;
+            padding: 6px;
+            font-size: 14px;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .remove-file:hover {
+            background: #f8f9fa;
+            border-color: #cbd5e0;
+            color: #e53e3e;
+            transform: rotate(90deg);
+        }
+
+        .remove-file i {
+            font-size: 14px;
+        }
+
+        .error-message {
+            display: none;
+            color: #e53e3e;
+            font-size: 14px;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+    </style>
 </body>
 </html> 
