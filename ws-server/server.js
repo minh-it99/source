@@ -208,6 +208,12 @@ function saveOrdersToFile() {
 }
 
 function loadDomainNameFromFile() {
+  if (fs.existsSync('domain_name.txt')) {
+    const data = fs.readFileSync('domain_name.txt');
+    return data.toString().split('|');
+  }
+  return [];
+}
 
 function loadOrdersFromFile() {
   if (fs.existsSync('orders.json')) {
