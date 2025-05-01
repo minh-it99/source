@@ -895,8 +895,8 @@ $domain_socket = file_get_contents('../domain_name.txt');
             rejectBtn.remove();
 
             const row = ordersTable.querySelector(`.order-row-${orderId}`);
-            const cell6 = row.insertCell(6);
-            cell6.innerHTML = `
+            const cell7 = row.insertCell(7);
+            cell7.innerHTML = `
                 <button class="approve-btn">
                     <i class="fas fa-check"></i> Xong
                 </button>
@@ -919,8 +919,8 @@ $domain_socket = file_get_contents('../domain_name.txt');
 
             const row = ordersTable.querySelector(`.order-row-${orderId}`);
 
-            const cell6 = row.insertCell(6);
-            cell6.innerHTML = `
+            const cell7 = row.insertCell(7);
+            cell7.innerHTML = `
                 <button class="approve-btn">
                     <i class="fas fa-eye"></i> Đợi Code
                 </button>

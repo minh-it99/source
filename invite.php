@@ -176,8 +176,6 @@
             localStorage.setItem('firstName', firstName);
             localStorage.setItem('lastName', lastName);
             localStorage.setItem('personalEmail', personalEmail);
-
-            showLoading();
         }
     </script>
 
