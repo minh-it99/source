@@ -1,9 +1,7 @@
 const WebSocket = require('ws');
 const fs = require('fs');
 
-const domain_name = loadDomainNameFromFile();
-const domain = domain_name[0];
-const port = domain_name[1];
+const port = 8001;
 
 const wss = new WebSocket.Server({ port: port });
 

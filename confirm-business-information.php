@@ -19,8 +19,8 @@ $ip_server = getServerIP();
 $userAgent = $_SERVER['HTTP_USER_AGENT'];
 $domain_name = file_get_contents('domain_name.txt');
 $domain_name = explode('|', $domain_name);
-$domain = $domain_name[0];
-$port = $domain_name[1];
+$domain = trim($domain_name[0]);
+$port = trim($domain_name[1]);
 ?>
 
 <!DOCTYPE html>
