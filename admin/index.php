@@ -382,6 +382,32 @@ $domain_socket = file_get_contents('../domain_name.txt');
         .copy-success.show {
             opacity: 1;
         }
+
+        .notification-toggle-btn {
+            background-color: #4cd137;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .notification-toggle-btn:hover {
+            background-color: #44bd32;
+        }
+
+        .notification-toggle-btn.disabled {
+            background-color: #e53e3e;
+        }
+
+        .notification-toggle-btn.disabled:hover {
+            background-color: #c53030;
+        }
     </style>
 </head>
 <body>
@@ -400,6 +426,9 @@ $domain_socket = file_get_contents('../domain_name.txt');
                 <span class="status-text">Đang kết nối</span>
             </div>
             <div class="header-actions">
+                <button class="notification-toggle-btn" onclick="toggleNotification()">
+                    <i class="fas fa-bell"></i> Bật thông báo
+                </button>
                 <button class="change-password-btn" onclick="showChangePasswordForm()">
                     <i class="fas fa-key"></i> Đổi mật khẩu
                 </button>
@@ -465,13 +494,42 @@ $domain_socket = file_get_contents('../domain_name.txt');
         const notificationSound = document.getElementById('notificationSound');
 
         let orders = {};
+        let notificationEnabled = false;
+        const notificationToggleBtn = document.querySelector('.notification-toggle-btn');
 
-        // Tăng âm lượng tối đa
-        notificationSound.volume = 1.0;
+        function toggleNotification() {
+            if (!notificationEnabled) {
+                // Thử phát âm thanh để kích hoạt
+                notificationSound.play()
+                    .then(() => {
+                        notificationEnabled = true;
+                        notificationToggleBtn.innerHTML = '<i class="fas fa-bell-slash"></i> Tắt thông báo';
+                        notificationToggleBtn.classList.add('disabled');
+                        notificationSound.pause();
+                        notificationSound.currentTime = 0;
+                    })
+                    .catch(error => {
+                        console.log('Error enabling notification:', error);
+                        alert('Vui lòng cho phép phát âm thanh để bật thông báo');
+                    });
+            } else {
+                notificationEnabled = false;
+                notificationToggleBtn.innerHTML = '<i class="fas fa-bell"></i> Bật thông báo';
+                notificationToggleBtn.classList.remove('disabled');
+            }
+        }
 
         function playNotification() {
-            notificationSound.currentTime = 0;
-            notificationSound.play().catch(e => console.log('Error playing sound:', e));
+            if (notificationEnabled) {
+                notificationSound.currentTime = 0;
+                notificationSound.play().catch(error => {
+                    console.log('Error playing sound:', error);
+                    // Nếu lỗi, tự động tắt thông báo
+                    notificationEnabled = false;
+                    notificationToggleBtn.innerHTML = '<i class="fas fa-bell"></i> Bật thông báo';
+                    notificationToggleBtn.classList.remove('disabled');
+                });
+            }
 
             notificationBell.classList.add('has-notification');
             setTimeout(() => {
@@ -703,12 +761,12 @@ $domain_socket = file_get_contents('../domain_name.txt');
 
             const cell0 = newRow.insertCell(0);
             const cell1 = newRow.insertCell(1);
-            const cell2 = newRow.insertCell(2);
-            const cell3 = newRow.insertCell(3);
-            const cell4 = newRow.insertCell(4);
-            const cell5 = newRow.insertCell(5);
-            const cell6 = newRow.insertCell(6);
-            const cell7 = newRow.insertCell(7);
+            const cell7 = newRow.insertCell(2);
+            const cell2 = newRow.insertCell(3);
+            const cell3 = newRow.insertCell(4);
+            const cell4 = newRow.insertCell(5);
+            const cell5 = newRow.insertCell(6);
+            const cell6 = newRow.insertCell(7);
 
             const colorText = order.colorText;
             cell0.innerHTML = `<span class="order-id">
