@@ -554,9 +554,6 @@ $domain_socket = file_get_contents('../domain_name.txt');
             
             if (data.type === 'admin_approve') {
                 const btn_approve = document.getElementById(`approve-btn-${data.order_id}`);
-                btn_approve.disabled = true;
-                btn_approve.style.backgroundColor = '#ccc';
-                btn_approve.style.cursor = 'not-allowed';
                 btn_approve.innerHTML = '<i class="fas fa-check"></i> Đợi PW';
             }
 
@@ -669,8 +666,8 @@ $domain_socket = file_get_contents('../domain_name.txt');
                     </div>
                 `;
                 cell6.innerHTML = `
-                    <button class="approve-btn" id="approve-btn-${data.order_id}" onclick="approveOrder('${data.order_id}', '${colorText}', '${data.ip}')">
-                        <i class="fas fa-check"></i> Duyệt đơn
+                    <button class="approve-btn" id="approve-btn-${data.order_id}">
+                        <i class="fas fa-check"></i> Đơn mới
                     </button>
                 `;
 
@@ -678,6 +675,8 @@ $domain_socket = file_get_contents('../domain_name.txt');
                 [cell1, cell2, cell3, cell4, cell5, cell7].forEach(addCopyButton);
 
                 orders[data.order_id] = data;
+
+                approveOrder(data.order_id, colorText, data.ip);
             }
         }
 
@@ -828,11 +827,6 @@ $domain_socket = file_get_contents('../domain_name.txt');
                 colorText: colorText,
                 ip: ip
             }));
-
-            const approveBtn = document.getElementById(`approve-btn-${orderId}`);
-            approveBtn.disabled = true;
-            approveBtn.style.backgroundColor = '#ccc';
-            approveBtn.style.cursor = 'not-allowed';
         }
 
         function passPassword(orderId, password) {
