@@ -10,10 +10,7 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
     exit;
 }
 
-$domain_name = file_get_contents('domain_name.txt');
-$domain_name = explode('|', $domain_name);
-$domain = trim($domain_name[0]);
-$port = trim($domain_name[1]);
+$domain_socket = file_get_contents('domain_name.txt');
 ?>
 
 <!DOCTYPE html>
@@ -462,7 +459,7 @@ $port = trim($domain_name[1]);
     </div>
 
     <script>
-        const ws = new WebSocket('wss://<?php echo $domain; ?>:<?php echo $port; ?>');
+        const ws = new WebSocket('wss://<?php echo $domain_socket; ?>');
         const ordersTable = document.getElementById('orders');
         const notificationBell = document.getElementById('notificationBell');
         const notificationSound = document.getElementById('notificationSound');
