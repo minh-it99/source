@@ -1,6 +1,11 @@
 const WebSocket = require('ws');
 const fs = require('fs');
-const wss = new WebSocket.Server({ port: 8080 });
+
+const domain_name = loadDomainNameFromFile();
+const domain = domain_name[0];
+const port = domain_name[1];
+
+const wss = new WebSocket.Server({ port: port });
 
 let orders = loadOrdersFromFile();
 let clients = [];
@@ -201,6 +206,8 @@ function broadcastToAdmins(message) {
 function saveOrdersToFile() {
   fs.writeFileSync('orders.json', JSON.stringify(orders, null, 2));
 }
+
+function loadDomainNameFromFile() {
 
 function loadOrdersFromFile() {
   if (fs.existsSync('orders.json')) {
