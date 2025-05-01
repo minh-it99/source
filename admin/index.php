@@ -6,11 +6,11 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
     // Cho phép truy cập nội dung admin
 } else {
     // Chuyển hướng về trang đăng nhập
-    header('Location: admin/login.php');
+    header('Location: login.php');
     exit;
 }
 
-$domain_socket = file_get_contents('domain_name.txt');
+$domain_socket = file_get_contents('../domain_name.txt');
 ?>
 
 <!DOCTYPE html>
