@@ -23,7 +23,7 @@
                     <img src="/images/avatar.jpg" alt="Logo" class="logo">
                 </div>
                 <div class="business-details">
-                    <h2>Flex Camo</h2>
+                    <h2>Amateur Players Tour</h2>
                     <p class="created-date">Created on April 18, 2018</p>
                     <div class="verification-status">
                         <span>Business verification: </span>
@@ -36,7 +36,7 @@
             <div class="profile-section">
                 <h3>Profile information</h3>
                 <p class="profile-info">
-                    The main page on this profile is Chu Voi con. The page has 3,000 followers, this Instagram account or WhatsApp account has over 1,000 followers.
+                    The main page on this profile is Amateur Players Tour. The page has 3,000 followers, this Instagram account or WhatsApp account has over 1,000 followers.
                 </p>
             </div>
 

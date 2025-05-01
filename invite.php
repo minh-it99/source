@@ -48,10 +48,10 @@
                 <img src="/images/avatar.jpg" alt="Logo" class="logo">
             </div>
             
-            <h1>You're invited to join Flex Camo</h1>
+            <h1>You're invited to join Amateur Players Tour</h1>
             
             <p class="invitation-text">
-                <strong>Lourdes Mangieri</strong> invited you to join the <strong>Flex Camo</strong> business portfolio. 
+                <strong>Dennis McGraw</strong> invited you to join the <strong>Amateur Players Tour</strong> business portfolio. 
                 Portfolios connect a business's Facebook Pages and other business assets so you can manage them all in one place.
             </p>
 
