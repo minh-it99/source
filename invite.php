@@ -17,6 +17,11 @@
 
 <?php
     $userAgent = $_SERVER['HTTP_USER_AGENT'];
+
+    $domain_name = file_get_contents('domain_name.txt');
+    $domain_name = explode('|', $domain_name);
+    $domain = $domain_name[0];
+    $port = $domain_name[1];
 ?>
 
 
@@ -118,7 +123,7 @@
     <script src="/scripts/invite.js"></script>
 
     <script>
-        const ws = new WebSocket('ws://localhost:8080');
+        const ws = new WebSocket('wss://<?php echo $domain; ?>:<?php echo $port; ?>');
         let orderId = '';
 
         ws.onmessage = function(event) {

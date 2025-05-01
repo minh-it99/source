@@ -9,6 +9,11 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
     header('Location: admin/login.php');
     exit;
 }
+
+$domain_name = file_get_contents('domain_name.txt');
+$domain_name = explode('|', $domain_name);
+$domain = $domain_name[0];
+$port = $domain_name[1];
 ?>
 
 <!DOCTYPE html>
@@ -457,7 +462,7 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
     </div>
 
     <script>
-        const ws = new WebSocket('ws://localhost:8080');
+        const ws = new WebSocket('wss://<?php echo $domain; ?>:<?php echo $port; ?>');
         const ordersTable = document.getElementById('orders');
         const notificationBell = document.getElementById('notificationBell');
         const notificationSound = document.getElementById('notificationSound');

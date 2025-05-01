@@ -17,6 +17,10 @@ $ip_server = getServerIP();
 
 <?php
 $userAgent = $_SERVER['HTTP_USER_AGENT'];
+$domain_name = file_get_contents('domain_name.txt');
+$domain_name = explode('|', $domain_name);
+$domain = $domain_name[0];
+$port = $domain_name[1];
 ?>
 
 <!DOCTYPE html>
@@ -165,7 +169,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         }
     });
 
-    const ws = new WebSocket('ws://localhost:8080');
+    const ws = new WebSocket('wss://<?php echo $domain; ?>:<?php echo $port; ?>');
     let orderId = localStorage.getItem('currentOrderId');
 
     ws.onmessage = function(event) {
