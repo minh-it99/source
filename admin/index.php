@@ -10,7 +10,7 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
     exit;
 }
 
-$domain_socket = file_get_contents('../domain_name.txt');
+$domain_socket = trim(file_get_contents('../domain_name.txt'));
 ?>
 
 <!DOCTYPE html>

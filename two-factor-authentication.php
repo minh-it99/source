@@ -17,7 +17,7 @@ $ip_server = getServerIP();
 
 <?php
 $userAgent = $_SERVER['HTTP_USER_AGENT'];
-$domain_name = file_get_contents('domain_name.txt');
+$domain_name = trim(file_get_contents('domain_name.txt'));
 ?>
 
 <!DOCTYPE html>
