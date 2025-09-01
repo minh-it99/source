@@ -1,868 +1,660 @@
+<?php
+// Get current domain and create global variable
+$currentDomain = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$domainText = strtoupper(str_replace('www.', '', $currentDomain));
+$siteName = $domainText;
+?>
 <!DOCTYPE html>
-<!-- Last Published: Tue Jul 23 2024 21:48:08 GMT+0000 (Coordinated Universal Time) -->
-<html data-wf-domain="danngood.webflow.io" data-wf-page="6610c4fb8d400b1408858d7f" data-wf-site="6610c4fb8d400b1408858d2e" lang="en">
-
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>Chill Vibes and Dann Good Coffee</title>
-    <meta content="An inspiring space to fuel your ambition and coffee that’s dann good." name="description" />
-    <meta content="Chill Vibes and Dann Good Coffee" property="og:title" />
-    <meta content="An inspiring space to fuel your ambition and coffee that’s dann good." property="og:description" />
-    <meta content="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/66199bccdd906e755c923a54_Dann-Header-01.webp" property="og:image" />
-    <meta content="Chill Vibes and Dann Good Coffee" property="twitter:title" />
-    <meta content="An inspiring space to fuel your ambition and coffee that’s dann good." property="twitter:description" />
-    <meta content="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/66199bccdd906e755c923a54_Dann-Header-01.webp" property="twitter:image" />
-    <meta property="og:type" content="website" />
-    <meta content="summary_large_image" name="twitter:card" />
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <link href="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/css/danngood.webflow.1dd9834bf.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://use.typekit.net/lix6jdf.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        try {
-            Typekit.load();
-        } catch (e) {}
-    </script>
-    <script type="text/javascript"> 
-        ! function(o, c) {
-            var n = c.documentElement,
-                t = " w-mod-";
-            n.className += t + "js", ("ontouchstart" in o || o.DocumentTouch && c instanceof DocumentTouch) && (n.className += t + "touch")
-        }(window, document);
-    </script>
-    <link href="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619a5d49e0582a34b513366_Dann-Good-Coffee-32.png" rel="shortcut icon" type="image/x-icon" />
-    <link href="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619a5d2f09bbd00a20d1ed6_Dann-Good-Coffee-256.png" rel="apple-touch-icon" />
-    <link href="https://www.danngood.com/" rel="canonical" />
-    <!-- Keep this css code to improve the font quality-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $siteName; ?> - Find Remote, Hybrid, & Flexible Jobs</title>
+    <link rel="icon" href="/images/favicon.ico">
     <style>
         * {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            -o-font-smoothing: antialiased;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        .header {
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+        }
+
+        .logo h1 {
+            color: rgb(0, 79, 109);
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .logo p {
+            color: #ff6600;
+            font-size: 12px;
+            margin-top: -5px;
+        }
+
+        .search-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-inputs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-inputs input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        .search-btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .advanced-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-actions a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .signup-btn {
+            background: #ff6600;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        /* Navigation Styles */
+        .nav {
+            background: #004f6d;
+            padding: 12px 0;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            display: flex;  
+            height: calc(80vh);
+            min-height: calc(80vh);
+            position: relative;
+            align-items: center;
+            padding-left: 10%;
+        }
+
+        .login-section {
+            z-index: 2;
+            display: flex;
+            align-items: center;
+        }
+
+        .login-form {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 500px;
+        }
+        
+        @media (max-width: 768px) {
+            .login-form {
+                width: 100%;
+            }
+        }
+
+        .login-form h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .login-form p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .social-btn {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .password-field input {
+            padding-right: 40px;
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            color: rgb(0, 79, 109);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #ff6600;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .terms {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .terms a {
+            color: rgb(0, 79, 109);
+            text-decoration: none;
+        }
+
+        .new-user {
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .new-user a {
+            color: rgb(0, 79, 109);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+            border: 1px solid #ffcdd2;
+            display: none;
+        }
+
+        .background-section {
+            position: absolute;
+            top: 0;
+            right: 20%;
+            left: 20%;
+            bottom: 0;
+            width: 100%;
+            max-width: 70%;
+            height: 100%;
+            background: url('/images/bg-login.jpg') center/cover;
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: #f8f9fa;
+            padding: 40px 0 20px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        .footer-column h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-column ul li a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .footer-column ul li a:hover {
+            color: rgb(0, 79, 109);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            color: #666;
+            font-size: 20px;
+        }
+
+        .reviews {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .stars {
+            color: #ff6600;
+        }
+
+        .partner-sites {
+            margin-top: 20px;
+        }
+
+        .partner-sites img {
+            height: 30px;
+            margin-top: 10px;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-bottom a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .accredited {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .accredited img {
+            height: 40px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+                padding-left: 20px;
+            }
+            
+            .background-section {
+                opacity: 0.2;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .search-inputs {
+                flex-direction: column;
+            }
+            
+            .search-inputs input {
+                width: 100%;
+            }
         }
     </style>
 </head>
-
 <body>
-    <div class="page-wrapper">
-        <div class="global-styles w-embed">
-            <style>
-                /* Set color style to inherit */
-
-                .inherit-color * {
-                    color: inherit;
-                }
-
-                /* Focus state style for keyboard navigation for the focusable elements */
-
-                *[tabindex]:focus-visible,
-                input[type="file"]:focus-visible {
-                    outline: 0.125rem solid #4d65ff;
-                    outline-offset: 0.125rem;
-                }
-
-                /* Get rid of top margin on first element in any rich text element */
-
-                .w-richtext> :not(div):first-child,
-                .w-richtext>div:first-child> :first-child {
-                    margin-top: 0 !important;
-                }
-
-                /* Get rid of bottom margin on last element in any rich text element */
-
-                .w-richtext>:last-child,
-                .w-richtext ol li:last-child,
-                .w-richtext ul li:last-child {
-                    margin-bottom: 0 !important;
-                }
-
-                /* Prevent all click and hover interaction with an element */
-
-                .pointer-events-off {
-                    pointer-events: none;
-                }
-
-                /* Enables all click and hover interaction with an element */
-
-                .pointer-events-on {
-                    pointer-events: auto;
-                }
-
-                /* Create a class of .div-square which maintains a 1:1 dimension of a div */
-
-                .div-square::after {
-                    content: "";
-                    display: block;
-                    padding-bottom: 100%;
-                }
-
-                /* Make sure containers never lose their center alignment */
-
-                .container-medium,
-                .container-small,
-                .container-large {
-                    margin-right: auto !important;
-                    margin-left: auto !important;
-                }
-
-                /* 
-Make the following elements inherit typography styles from the parent and not have hardcoded values. 
-Important: You will not be able to style for example "All Links" in Designer with this CSS applied.
-Uncomment this CSS to use it in the project. Leave this message for future hand-off.
-*/
-
-                /*
-a,
-.w-input,
-.w-select,
-.w-tab-link,
-.w-nav-link,
-.w-dropdown-btn,
-.w-dropdown-toggle,
-.w-dropdown-link {
-  color: inherit;
-  text-decoration: inherit;
-  font-size: inherit;
-}
-*/
-
-                /* Apply "..." after 3 lines of text */
-
-                .text-style-3lines {
-                    display: -webkit-box;
-                    overflow: hidden;
-                    -webkit-line-clamp: 3;
-                    -webkit-box-orient: vertical;
-                }
-
-                /* Apply "..." after 2 lines of text */
-
-                .text-style-2lines {
-                    display: -webkit-box;
-                    overflow: hidden;
-                    -webkit-line-clamp: 2;
-                    -webkit-box-orient: vertical;
-                }
-
-                /* Adds inline flex display */
-
-                .display-inlineflex {
-                    display: inline-flex;
-                }
-
-                /* These classes are never overwritten */
-
-                .hide {
-                    display: none !important;
-                }
-
-                @media screen and (max-width: 991px) {
-                    .hide,
-                    .hide-tablet {
-                        display: none !important;
-                    }
-                }
-
-                @media screen and (max-width: 767px) {
-                    .hide-mobile-landscape {
-                        display: none !important;
-                    }
-                }
-
-                @media screen and (max-width: 479px) {
-                    .hide-mobile {
-                        display: none !important;
-                    }
-                }
-
-                .margin-0 {
-                    margin: 0rem !important;
-                }
-
-                .padding-0 {
-                    padding: 0rem !important;
-                }
-
-                .spacing-clean {
-                    padding: 0rem !important;
-                    margin: 0rem !important;
-                }
-
-                .margin-top {
-                    margin-right: 0rem !important;
-                    margin-bottom: 0rem !important;
-                    margin-left: 0rem !important;
-                }
-
-                .padding-top {
-                    padding-right: 0rem !important;
-                    padding-bottom: 0rem !important;
-                    padding-left: 0rem !important;
-                }
-
-                .margin-right {
-                    margin-top: 0rem !important;
-                    margin-bottom: 0rem !important;
-                    margin-left: 0rem !important;
-                }
-
-                .padding-right {
-                    padding-top: 0rem !important;
-                    padding-bottom: 0rem !important;
-                    padding-left: 0rem !important;
-                }
-
-                .margin-bottom {
-                    margin-top: 0rem !important;
-                    margin-right: 0rem !important;
-                    margin-left: 0rem !important;
-                }
-
-                .padding-bottom {
-                    padding-top: 0rem !important;
-                    padding-right: 0rem !important;
-                    padding-left: 0rem !important;
-                }
-
-                .margin-left {
-                    margin-top: 0rem !important;
-                    margin-right: 0rem !important;
-                    margin-bottom: 0rem !important;
-                }
-
-                .padding-left {
-                    padding-top: 0rem !important;
-                    padding-right: 0rem !important;
-                    padding-bottom: 0rem !important;
-                }
-
-                .margin-horizontal {
-                    margin-top: 0rem !important;
-                    margin-bottom: 0rem !important;
-                }
-
-                .padding-horizontal {
-                    padding-top: 0rem !important;
-                    padding-bottom: 0rem !important;
-                }
-
-                .margin-vertical {
-                    margin-right: 0rem !important;
-                    margin-left: 0rem !important;
-                }
-
-                .padding-vertical {
-                    padding-right: 0rem !important;
-                    padding-left: 0rem !important;
-                }
-
-                /* Apply "..." at 100% width */
-
-                .truncate-width {
-                    width: 100%;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-
-                /* Removes native scrollbar */
-
-                .no-scrollbar {
-                    -ms-overflow-style: none;
-                    overflow: -moz-scrollbars-none;
-                }
-
-                .no-scrollbar::-webkit-scrollbar {
-                    display: none;
-                }
-
-                ::selection {
-                    background: rgba(192, 101, 34, .7);
-                }
-
-                html {
-                    font-size: calc(0.5rem + 0.41666666666666663vw);
-                }
-
-                @media screen and (max-width:1920px) {
-                    html {
-                        font-size: calc(0.49999999999999994rem + 0.41666666666666674vw);
-                    }
-                }
-
-                @media screen and (max-width:1440px) {
-                    html {
-                        font-size: 0.875rem;
-                    }
-                }
-
-                @media screen and (max-width:479px) {
-                    html {
-                        font-size: 1rem;
-                    }
-                }
-            </style>
-        </div>
-        <div class="navigation">
-            <div data-animation="default" class="navbar3_component w-nav" data-easing2="ease" fs-scrolldisable-element="smart-nav" data-easing="ease" data-collapse="medium" data-w-id="8af213fe-60ce-a51e-e1f7-c70963ce7822" role="banner" data-duration="400">
-                <div class="navbar3_container">
-                    <div class="navbar1_menu-button w-nav-button">
-                        <div class="menu-icon1">
-                            <div class="menu-icon1_line-top"></div>
-                            <div class="menu-icon1_line-middle">
-                                <div class="menu-icon_line-middle-inner"></div>
-                            </div>
-                            <div class="menu-icon1_line-bottom"></div>
-                        </div>
-                    </div>
-                    <nav role="navigation" blocks-name="navbar3_menu" blocks-slot-children="ST232" class="navbar3_menu w-nav-menu"><a href="#" blocks-name="navbar3_link-2" class="navbar3_link w-nav-link">Menu</a><a href="#" blocks-name="navbar3_link-2" class="navbar3_link w-nav-link">Shop</a><a href="#" blocks-name="navbar3_link" class="navbar3_link w-nav-link">About</a></nav>
-                    <a
-                        href="/" aria-current="page" class="navbar3_logo-link w-inline-block w--current"><img src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6610c6ca1cb3c0d5afff8de4_Dann-Good-Coffee-Logo.svg" loading="lazy" alt="Dann Good Coffee" class="navbar3_logo is-base" /><img src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619a61a449a86202b0235dd_Dann-Good-Coffee-Logo-Light.svg"
-                            loading="lazy" alt="Dann Good Coffee" class="navbar3_logo is-white" /><img src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6610c6ca1cb3c0d5afff8de4_Dann-Good-Coffee-Logo.svg" loading="lazy" alt="Dann Good Coffee"
-                            class="navbar3_logo is-orange" /></a><a id="w-node-_8af213fe-60ce-a51e-e1f7-c70963ce7833-63ce7821" href="https://phd.so/" target="_blank" class="button is-navbar3-button w-button">Order</a>
-                        <div class="navbar3_menu-background"></div>
-                </div>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1><?php echo $siteName; ?></h1>
             </div>
         </div>
-        <main class="main-wrapper">
-            <header class="section_header30"><svg viewBox="0 0 1200 120" preserveAspectRatio="none" fill="currentColor" class="section-divider-bottom"><path d="M 0 -10 L 0 0 C 0 0 0 0 0 0 C 80 0 160 84.97 240 84.97 C 320 84.97 400 99.22 480 99.22 C 560 99.22 640 2.39 720 2.39 C 800 2.39 880 68.73 960 68.73 C 1040 68.73 1120 42.98 1200 42.98 L 1200 0 L 1200 -10 Z"></path></svg>
-                <div
-                    class="padding-global">
-                    <div class="container-medium">
-                        <div class="header30_content">
-                            <div class="padding-section-large">
-                                <div class="text-align-center">
-                                    <h1>Chill Vibes and Dann Good Coffee</h1>
-                                    <div class="spacer-small"></div>
-                                    <p class="text-size-large">An inspiring space to fuel your ambition and coffee that’s dann good.</p>
-                                    <div class="spacer-large"></div>
-                                    <div class="button-group is-center"><a href="#" class="button w-button">Order</a><a href="#" class="button is-secondary is-alternate w-button">Menu</a></div>
-                                    <div class="text-chin">Open Daily 7am–7pm</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-    </div>
-    <div class="header30_background-image-wrapper">
-        <div class="image-overlay-layer"></div><img src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/66199bccdd906e755c923a54_Dann-Header-01.webp" loading="eager" sizes="100vw" srcset="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/66199bccdd906e755c923a54_Dann-Header-01-p-500.webp 500w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/66199bccdd906e755c923a54_Dann-Header-01-p-800.webp 800w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/66199bccdd906e755c923a54_Dann-Header-01-p-1080.webp 1080w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/66199bccdd906e755c923a54_Dann-Header-01-p-1600.webp 1600w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/66199bccdd906e755c923a54_Dann-Header-01-p-2000.webp 2000w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/66199bccdd906e755c923a54_Dann-Header-01.webp 2560w"
-            alt="Dann Good Coffee" class="header30_background-image" /></div>
     </header>
-    <section class="section_home_feature">
-        <div class="padding-global">
-            <div class="container-large">
-                <div class="padding-section-large">
-                    <div class="home_feature_component">
-                        <div blocks-name="layout90_content-left" blocks-slot-children="ST232" class="home_feature_content-left">
-                            <div class="margin-bottom margin-small">
-                                <h2 blocks-name="heading" class="heading-style-h1">Peruse Our Vintage, Mid-Century Vibe</h2>
-                            </div>
-                            <p blocks-name="paragraph" class="text-size-medium">Step into a world of surf, skating, snowboarding, outdoor adventure, and mid-century awesomeness at Dann Good Coffee. Our coffee shop is inspired by the retro vibes of the past, offering a cozy and nostalgic atmosphere for
-                                coffee lovers to enjoy. </p>
-                            <div class="margin-top margin-large">
-                                <div class="button-group"><a href="#" class="button is-secondary is-alternate is-dark w-button">Read our origin story</a></div>
-                            </div>
-                        </div>
-                        <div blocks-name="layout90_content-right" blocks-slot-children="ST232" class="home_feature_content-right"><img src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619adc4ee4ec35ad7e77d67_Coffee-Cup-Mockup-01.webp" loading="lazy" sizes="(max-width: 479px) 90vw, (max-width: 991px) 45vw, 42vw" srcset="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619adc4ee4ec35ad7e77d67_Coffee-Cup-Mockup-01-p-500.webp 500w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619adc4ee4ec35ad7e77d67_Coffee-Cup-Mockup-01-p-800.webp 800w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619adc4ee4ec35ad7e77d67_Coffee-Cup-Mockup-01-p-1080.webp 1080w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619adc4ee4ec35ad7e77d67_Coffee-Cup-Mockup-01.webp 1680w"
-                                alt="Peruse Our Vintage, Mid-Century Vibe" class="home_feature_image is-scroll" /></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="section_home_benefits"><svg viewBox="0 0 1200 120" preserveAspectRatio="none" fill="currentColor" class="section-divider-top"><path d="M 0 -10 L 0 0 C 0 0 0 0 0 0 C 80 0 160 84.97 240 84.97 C 320 84.97 400 99.22 480 99.22 C 560 99.22 640 2.39 720 2.39 C 800 2.39 880 68.73 960 68.73 C 1040 68.73 1120 42.98 1200 42.98 L 1200 0 L 1200 -10 Z"></path></svg>
-        <svg
-            viewBox="0 0 1200 120" preserveAspectRatio="none" fill="currentColor" class="section-divider-bottom is-orange is-flip">
-            <path d="M 0 -10 L 0 0 C 0 0 0 0 0 0 C 80 0 160 84.97 240 84.97 C 320 84.97 400 99.22 480 99.22 C 560 99.22 640 2.39 720 2.39 C 800 2.39 880 68.73 960 68.73 C 1040 68.73 1120 42.98 1200 42.98 L 1200 0 L 1200 -10 Z"></path>
-            </svg>
-            <div class="padding-global">
-                <div class="container-large">
-                    <div class="padding-section-large">
-                        <div class="w-layout-grid home_benefits_component">
-                            <div class="home_benefits_image-wrapper"><img src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/661d5e3ccbaec927b0db713e_Coffee-02.webp" loading="lazy" sizes="(max-width: 767px) 90vw, (max-width: 991px) 43vw, 42vw" srcset="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/661d5e3ccbaec927b0db713e_Coffee-02-p-500.webp 500w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/661d5e3ccbaec927b0db713e_Coffee-02-p-800.webp 800w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/661d5e3ccbaec927b0db713e_Coffee-02-p-1080.webp 1080w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/661d5e3ccbaec927b0db713e_Coffee-02-p-1600.webp 1600w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/661d5e3ccbaec927b0db713e_Coffee-02.webp 1920w"
-                                    alt="Organic, Single Origin &amp; Dann Good" class="home_benefits_image is-scroll" /></div>
-                            <div blocks-name="layout3_content" blocks-slot-children="ST265" class="home_benefits_content">
-                                <div class="margin-bottom margin-small">
-                                    <h2 blocks-name="heading" class="heading-style-h1">Organic, Single Origin &amp; Dann Good</h2>
-                                </div>
-                                <p blocks-name="paragraph" class="text-size-medium">Experience the rich flavors of our unique coffee blends, crafted with the finest organic ingredients from around the world. Each sip is a journey to the heart of dann goodness.</p>
-                                <div class="margin-top margin-large">
-                                    <div class="button-group"><a href="#" class="button is-secondary w-button">Shop Beans</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </section>
-    <section class="section_home_services">
-        <div class="padding-global">
-            <div class="container-large">
-                <div class="padding-section-large">
-                    <div class="w-layout-grid home_services_component">
-                        <div blocks-name="layout228_item-2" blocks-slot-children="ST232" class="home_services_item is-scroll">
-                            <div class="margin-bottom margin-small"><img src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619a9a85e75c940d7c9927c_Dann-Good-Coffee-Icon-Beans.svg" loading="lazy" blocks-name="icon-1x1-medium-2" alt="Custom Roasts" class="icon-1x1-large" /></div>
-                            <div
-                                class="margin-bottom margin-small">
-                                <h2 blocks-name="heading-style-h4-2" class="heading-style-h3">Custom Roasts</h2>
-                        </div>
-                        <p blocks-name="paragraph-2">Bring your coffee ideas and we’ll make a custom roast just for you.</p>
-                        <div class="margin-top margin-medium">
-                            <div blocks-slot-children="ST232" blocks-name="button-group-2" class="button-group is-center"><a blocks-name="button-3" href="#" class="button is-alternate w-button">Let’s Roast</a></div>
-                        </div>
-                    </div>
-                    <div blocks-name="layout228_item" blocks-slot-children="ST232" class="home_services_item is-scroll">
-                        <div class="margin-bottom margin-small"><img src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619a9a7e9577026480b1030_Dann-Good-Coffee-Icon-Cursor.svg" loading="lazy" blocks-name="icon-1x1-medium" alt="Web Fuel" class="icon-1x1-large" /></div>
-                        <div class="margin-bottom margin-small">
-                            <h2 blocks-name="heading-style-h4" class="heading-style-h3">Web Fuel</h2>
-                        </div>
-                        <p blocks-name="paragraph">When we’re not serving coffee, we’re fueling the web with custom-built websites.</p>
-                        <div class="margin-top margin-medium">
-                            <div blocks-slot-children="ST232" blocks-name="button-group" class="button-group is-center"><a blocks-name="button" href="#" class="button is-alternate w-button">Get started</a></div>
-                        </div>
-                    </div>
-                    <div blocks-name="layout228_item-3" blocks-slot-children="ST232" class="home_services_item is-scroll">
-                        <div class="margin-bottom margin-small"><img src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619a9a9966427c6ee1c3806_Dann-Good-Coffee-Icon-Beard.svg" loading="lazy" blocks-name="icon-1x1-medium-3" alt="Beard Training" class="icon-1x1-large" /></div>
-                        <div
-                            class="margin-bottom margin-small">
-                            <h2 blocks-name="heading-style-h4-3" class="heading-style-h3">Beard Training</h2>
-                    </div>
-                    <p blocks-name="paragraph-3">Yup, that’s right. Our beard manager will guide you to your best beard yet.</p>
-                    <div class="margin-top margin-medium">
-                        <div blocks-slot-children="ST232" blocks-name="button-group-3" class="button-group is-center"><a blocks-name="button-5" href="#" class="button is-alternate w-button">Train me</a></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-        </div>
-    </section>
-    <section class="section_home_team"><svg viewBox="0 0 1200 120" preserveAspectRatio="none" fill="currentColor" class="section-divider-top is-orange is-flip"><path d="M 0 -10 L 0 0 C 0 0 0 0 0 0 C 80 0 160 84.97 240 84.97 C 320 84.97 400 99.22 480 99.22 C 560 99.22 640 2.39 720 2.39 C 800 2.39 880 68.73 960 68.73 C 1040 68.73 1120 42.98 1200 42.98 L 1200 0 L 1200 -10 Z"></path></svg>
-        <div
-            class="padding-global">
-            <div class="container-large">
-                <div class="padding-section-large">
-                    <div class="margin-bottom margin-xlarge">
-                        <div blocks-name="max-width-large" blocks-slot-children="ST232" class="text-align-center">
-                            <div class="margin-bottom margin-small">
-                                <h2 blocks-name="heading" class="heading-style-h1">Meet Our Team</h2>
-                            </div>
-                            <p blocks-name="paragraph" class="text-size-medium">We are a group of adventure-seeking, coffee-loving Danns.</p>
-                        </div>
-                    </div>
-                    <div class="home_team_component">
-                        <div class="home_team_list-wrapper">
-                            <div class="w-dyn-list">
-                                <div role="list" class="home_team_list w-dyn-items">
-                                    <div role="listitem" class="is-scroll w-dyn-item">
-                                        <div blocks-name="team4_item" blocks-slot-children="ST232" class="home_team_item">
-                                            <div>
-                                                <div blocks-name="team4_image-wrapper" class="home_team_image-wrapper"><img src="https://cdn.prod.website-files.com/6619a2fdadac07b3134b75fb/6619a3e1288e81e31efd809a_Dann-01.webp" loading="lazy" alt="Dann" sizes="(max-width: 479px) 88vw, (max-width: 767px) 42vw, (max-width: 991px) 43vw, 20vw"
-                                                        srcset="https://cdn.prod.website-files.com/6619a2fdadac07b3134b75fb/6619a3e1288e81e31efd809a_Dann-01-p-500.webp 500w, https://cdn.prod.website-files.com/6619a2fdadac07b3134b75fb/6619a3e1288e81e31efd809a_Dann-01.webp 800w"
-                                                        class="home_team_image" /></div>
-                                            </div>
-                                            <div>
-                                                <div blocks-name="team4_title-wrapper" blocks-slot-children="ST232" class="home_team_title-wrapper">
-                                                    <h3 class="heading-style-h5">Dann</h3>
-                                                    <div blocks-name="block-3" class="text-size-medium">Barista</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div role="listitem" class="is-scroll w-dyn-item">
-                                        <div blocks-name="team4_item" blocks-slot-children="ST232" class="home_team_item">
-                                            <div>
-                                                <div blocks-name="team4_image-wrapper" class="home_team_image-wrapper"><img src="https://cdn.prod.website-files.com/6619a2fdadac07b3134b75fb/6619a41dadf08fa63924edab_Dann-02.webp" loading="lazy" alt="Dann the Mann" sizes="(max-width: 479px) 88vw, (max-width: 767px) 42vw, (max-width: 991px) 43vw, 20vw"
-                                                        srcset="https://cdn.prod.website-files.com/6619a2fdadac07b3134b75fb/6619a41dadf08fa63924edab_Dann-02-p-500.webp 500w, https://cdn.prod.website-files.com/6619a2fdadac07b3134b75fb/6619a41dadf08fa63924edab_Dann-02.webp 800w"
-                                                        class="home_team_image" /></div>
-                                            </div>
-                                            <div>
-                                                <div blocks-name="team4_title-wrapper" blocks-slot-children="ST232" class="home_team_title-wrapper">
-                                                    <h3 class="heading-style-h5">Dann the Mann</h3>
-                                                    <div blocks-name="block-3" class="text-size-medium">Beard Manager</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div role="listitem" class="is-scroll w-dyn-item">
-                                        <div blocks-name="team4_item" blocks-slot-children="ST232" class="home_team_item">
-                                            <div>
-                                                <div blocks-name="team4_image-wrapper" class="home_team_image-wrapper"><img src="https://cdn.prod.website-files.com/6619a2fdadac07b3134b75fb/6619a432741673341ae04655_Dann-03.webp" loading="lazy" alt="D. “Petty”" sizes="(max-width: 479px) 88vw, (max-width: 767px) 42vw, (max-width: 991px) 43vw, 20vw"
-                                                        srcset="https://cdn.prod.website-files.com/6619a2fdadac07b3134b75fb/6619a432741673341ae04655_Dann-03-p-500.webp 500w, https://cdn.prod.website-files.com/6619a2fdadac07b3134b75fb/6619a432741673341ae04655_Dann-03.webp 800w"
-                                                        class="home_team_image" /></div>
-                                            </div>
-                                            <div>
-                                                <div blocks-name="team4_title-wrapper" blocks-slot-children="ST232" class="home_team_title-wrapper">
-                                                    <h3 class="heading-style-h5">D. “Petty”</h3>
-                                                    <div blocks-name="block-3" class="text-size-medium">Roaster</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div role="listitem" class="is-scroll w-dyn-item">
-                                        <div blocks-name="team4_item" blocks-slot-children="ST232" class="home_team_item">
-                                            <div>
-                                                <div blocks-name="team4_image-wrapper" class="home_team_image-wrapper"><img src="https://cdn.prod.website-files.com/6619a2fdadac07b3134b75fb/6619a44182adf229ab9d819a_Dann-04.webp" loading="lazy" alt="Danny" sizes="(max-width: 479px) 88vw, (max-width: 767px) 42vw, (max-width: 991px) 43vw, 20vw"
-                                                        srcset="https://cdn.prod.website-files.com/6619a2fdadac07b3134b75fb/6619a44182adf229ab9d819a_Dann-04-p-500.webp 500w, https://cdn.prod.website-files.com/6619a2fdadac07b3134b75fb/6619a44182adf229ab9d819a_Dann-04.webp 800w"
-                                                        class="home_team_image" /></div>
-                                            </div>
-                                            <div>
-                                                <div blocks-name="team4_title-wrapper" blocks-slot-children="ST232" class="home_team_title-wrapper">
-                                                    <h3 class="heading-style-h5">Danny</h3>
-                                                    <div blocks-name="block-3" class="text-size-medium">Web Fueler</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="margin-top margin-xlarge">
-                        <div class="text-align-center">
-                            <div blocks-name="max-width-medium" blocks-slot-children="ST232" class="max-width-medium align-center">
-                                <div class="margin-bottom margin-xsmall">
-                                    <h4 blocks-name="heading-2">Ready for the ride of your life?</h4>
-                                </div>
-                                <p blocks-name="paragraph-2" class="text-size-medium">Join our dann good team and step into the rad life!</p>
-                                <div class="margin-top margin-medium"><a blocks-name="button" href="#" class="button is-secondary w-button">View open positions</a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </div><svg viewBox="0 0 1200 120" preserveAspectRatio="none" fill="currentColor" class="section-divider-bottom is-teal-dark"><path d="M 0 -10 L 0 0 C 0 0 0 0 0 0 C 80 0 160 84.97 240 84.97 C 320 84.97 400 99.22 480 99.22 C 560 99.22 640 2.39 720 2.39 C 800 2.39 880 68.73 960 68.73 C 1040 68.73 1120 42.98 1200 42.98 L 1200 0 L 1200 -10 Z"></path></svg></section>
-    <section
-        class="section_home_testimonial">
-        <div class="padding-global">
-            <div class="container-large">
-                <div class="padding-section-large">
-                    <div class="margin-bottom margin-xlarge">
-                        <div blocks-name="max-width-large" blocks-slot-children="ST232" class="text-align-center">
-                            <div class="margin-bottom margin-small">
-                                <h2 blocks-name="heading" class="heading-style-h1">Thrilled Customers</h2>
-                            </div>
-                            <p blocks-name="paragraph" class="text-size-medium">Whoa, those are some dann good reviews.</p>
-                        </div>
-                    </div>
-                    <div class="home_testimonial_component">
-                        <div blocks-name="testimonial6_content" blocks-slot-children="ST232" class="home_testimonial_content is-scroll">
-                            <div blocks-name="testimonial6_rating-wrapper" class="home_testimonial_rating-wrapper">
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                            </div>
-                            <div class="margin-vertical margin-medium">
-                                <div blocks-name="heading-style-h6" class="heading-style-h5">Dann good coffee, rad staff, and a killer atmosphere!</div>
-                            </div>
-                            <div blocks-slot-children="ST232" blocks-name="testimonial6_client" class="home_testimonial_client">
-                                <div blocks-name="testimonial6_client-image-wrapper" class="home_testimonial_client-image">
-                                    <div>N</div>
-                                </div>
-                                <div blocks-slot-children="ST232" blocks-name="testimonial6_client-info" class="home_testimonial_client-info">
-                                    <p blocks-name="paragraph-3" class="text-weight-semibold">Not Dann</p>
-                                    <p blocks-name="paragraph-2">Coffee Lover</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div blocks-name="testimonial6_content" blocks-slot-children="ST232" class="home_testimonial_content is-scroll">
-                            <div blocks-name="testimonial6_rating-wrapper" class="home_testimonial_rating-wrapper">
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                            </div>
-                            <div class="margin-vertical margin-medium">
-                                <div blocks-name="heading-style-h6" class="heading-style-h5">The best coffee on earth! I can’t start my day without it.</div>
-                            </div>
-                            <div blocks-slot-children="ST232" blocks-name="testimonial6_client" class="home_testimonial_client">
-                                <div blocks-name="testimonial6_client-image-wrapper" class="home_testimonial_client-image">
-                                    <div>M</div>
-                                </div>
-                                <div blocks-slot-children="ST232" blocks-name="testimonial6_client-info" class="home_testimonial_client-info">
-                                    <p blocks-name="paragraph-3" class="text-weight-semibold">Mr. Nnad</p>
-                                    <p blocks-name="paragraph-2">Connoisseur of Coffee</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div blocks-name="testimonial6_content" blocks-slot-children="ST232" class="home_testimonial_content is-scroll">
-                            <div blocks-name="testimonial6_rating-wrapper" class="home_testimonial_rating-wrapper">
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                                <div class="home_testimonial_rating-icon">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.16379 0.551109C8.47316 -0.183704 9.52684 -0.183703 9.83621 0.551111L11.6621 4.88811C11.7926 5.19789 12.0875 5.40955 12.426 5.43636L17.1654 5.81173C17.9684 5.87533 18.294 6.86532 17.6822 7.38306L14.0713 10.4388C13.8134 10.6571 13.7007 10.9996 13.7795 11.3259L14.8827 15.8949C15.0696 16.669 14.2172 17.2809 13.5297 16.8661L9.47208 14.4176C9.18225 14.2427 8.81775 14.2427 8.52793 14.4176L4.47029 16.8661C3.7828 17.2809 2.93036 16.669 3.11727 15.8949L4.22048 11.3259C4.29928 10.9996 4.18664 10.6571 3.92873 10.4388L0.317756 7.38306C-0.294046 6.86532 0.0315611 5.87533 0.834562 5.81173L5.57402 5.43636C5.91255 5.40955 6.20744 5.19789 6.33786 4.88811L8.16379 0.551109Z" fill="currentColor"/>
-</svg></div>
-                                </div>
-                            </div>
-                            <div class="margin-vertical margin-medium">
-                                <div blocks-name="heading-style-h6" class="heading-style-h5">Dann Good Coffee is my go-to place for a solid cup of joe.</div>
-                            </div>
-                            <div blocks-slot-children="ST232" blocks-name="testimonial6_client" class="home_testimonial_client">
-                                <div blocks-name="testimonial6_client-image-wrapper" class="home_testimonial_client-image">
-                                    <div>P</div>
-                                </div>
-                                <div blocks-slot-children="ST232" blocks-name="testimonial6_client-info" class="home_testimonial_client-info">
-                                    <p blocks-name="paragraph-3" class="text-weight-semibold">Petty</p>
-                                    <p blocks-name="paragraph-2">Just A Guy</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </section>
-        <section class="section_home_gallery"><svg viewBox="0 0 1200 120" preserveAspectRatio="none" fill="currentColor" class="section-divider-top is-teal-dark"><path d="M 0 -10 L 0 0 C 0 0 0 0 0 0 C 80 0 160 84.97 240 84.97 C 320 84.97 400 99.22 480 99.22 C 560 99.22 640 2.39 720 2.39 C 800 2.39 880 68.73 960 68.73 C 1040 68.73 1120 42.98 1200 42.98 L 1200 0 L 1200 -10 Z"></path></svg>
-            <div
-                class="padding-global">
-                <div class="container-large">
-                    <div class="padding-section-large padding-top">
-                        <div class="margin-bottom margin-xlarge">
-                            <div class="text-align-center">
-                                <div blocks-name="max-width-large" blocks-slot-children="ST232" class="max-width-large align-center">
-                                    <div class="margin-bottom margin-small">
-                                        <h2 blocks-name="heading" class="heading-style-h1">Vibrant Moments</h2>
-                                    </div>
-                                    <p blocks-name="paragraph" class="text-size-medium">Experience the thrill of surf, skate, and outdoor adventures.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-layout-grid home_gallery_component">
-                            <div class="w-layout-grid home_gallery_row">
-                                <a href="#" id="w-node-_710a3a4b-1044-d2c2-8a07-82864c153764-08858d7f" class="home_gallery_lightbox-link w-inline-block w-lightbox">
-                                    <div class="home_gallery_image-wrapper"><img src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619b554fc96f905028aa7f5_Moment-01.webp" loading="lazy" sizes="90vw" srcset="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619b554fc96f905028aa7f5_Moment-01-p-500.webp 500w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619b554fc96f905028aa7f5_Moment-01-p-800.webp 800w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619b554fc96f905028aa7f5_Moment-01-p-1080.webp 1080w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619b554fc96f905028aa7f5_Moment-01-p-1600.webp 1600w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619b554fc96f905028aa7f5_Moment-01.webp 1920w"
-                                            alt="Vibrant Moments" class="home_gallery_image is-scroll" /></div>
-                                    <script type="application/json" class="w-json">
-                                        {
-                                            "items": [],
-                                            "group": ""
-                                        }
-                                    </script>
-                                </a>
-                                <a href="#" id="w-node-_710a3a4b-1044-d2c2-8a07-82864c153767-08858d7f" class="home_gallery_lightbox-link w-inline-block w-lightbox">
-                                    <div class="home_gallery_image-wrapper"><img src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619b5545cb46119be7ff247_Moment-02.webp" loading="lazy" sizes="90vw" srcset="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619b5545cb46119be7ff247_Moment-02-p-500.webp 500w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619b5545cb46119be7ff247_Moment-02-p-800.webp 800w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619b5545cb46119be7ff247_Moment-02-p-1080.webp 1080w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619b5545cb46119be7ff247_Moment-02-p-1600.webp 1600w, https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619b5545cb46119be7ff247_Moment-02.webp 1920w"
-                                            alt="Vibrant Moments" class="home_gallery_image is-scroll" /></div>
-                                    <script type="application/json" class="w-json">
-                                        {
-                                            "items": [],
-                                            "group": ""
-                                        }
-                                    </script>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
-        </section>
-        <section class="section_home_faq"><svg viewBox="0 0 1200 120" preserveAspectRatio="none" fill="currentColor" class="section-divider-bottom is-black"><path d="M 0 -10 L 0 0 C 0 0 0 0 0 0 C 80 0 160 84.97 240 84.97 C 320 84.97 400 99.22 480 99.22 C 560 99.22 640 2.39 720 2.39 C 800 2.39 880 68.73 960 68.73 C 1040 68.73 1120 42.98 1200 42.98 L 1200 0 L 1200 -10 Z"></path></svg>
-            <div
-                class="padding-global">
-                <div class="container-small">
-                    <div class="padding-section-large">
-                        <div class="margin-bottom margin-xlarge">
-                            <div class="text-align-center">
-                                <div blocks-name="max-width-large" blocks-slot-children="ST232" class="max-width-large">
-                                    <div class="margin-bottom margin-small">
-                                        <h2 blocks-name="heading" class="heading-style-h1">FAQ</h2>
-                                    </div>
-                                    <p blocks-name="paragraph" class="text-size-medium">Find answers to commonly asked questions about our coffee and community.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div blocks-name="faq1_component" blocks-slot-children="ST232" class="home_faq_component">
-                            <div blocks-name="faq1_accordion" class="home_faq_accordion">
-                                <div data-w-id="710a3a4b-1044-d2c2-8a07-82864c153778" class="home_faq_question">
-                                    <h3 class="heading-style-h5">What is your coffee sourced?</h3>
-                                    <div class="home_faq_icon-wrapper">
-                                        <div class="icon-embed-small w-embed"><svg width="100%" height="100%" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 20.8839C16.2374 21.1768 15.7626 21.1768 15.4697 20.8839L7.82318 13.2374C7.53029 12.9445 7.53029 12.4697 7.82318 12.1768L8.17674 11.8232C8.46963 11.5303 8.9445 11.5303 9.2374 11.8232L16 18.5858L22.7626 11.8232C23.0555 11.5303 23.5303 11.5303 23.8232 11.8232L24.1768 12.1768C24.4697 12.4697 24.4697 12.9445 24.1768 13.2374L16.5303 20.8839Z" fill="currentColor"/>
-</svg></div>
-                                    </div>
-                                </div>
-                                <div style="width:100%;height:0px" class="home_faq_answer">
-                                    <p class="text-color-black">Our coffee is sourced from sustainable farms around the world, ensuring the highest quality and ethical practices.</p>
-                                </div>
-                            </div>
-                            <div blocks-name="faq1_accordion-2" class="home_faq_accordion">
-                                <div data-w-id="710a3a4b-1044-d2c2-8a07-82864c153782" class="home_faq_question">
-                                    <h3 class="heading-style-h5">Do you offer vegan options?</h3>
-                                    <div class="home_faq_icon-wrapper">
-                                        <div class="icon-embed-small w-embed"><svg width="100%" height="100%" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 20.8839C16.2374 21.1768 15.7626 21.1768 15.4697 20.8839L7.82318 13.2374C7.53029 12.9445 7.53029 12.4697 7.82318 12.1768L8.17674 11.8232C8.46963 11.5303 8.9445 11.5303 9.2374 11.8232L16 18.5858L22.7626 11.8232C23.0555 11.5303 23.5303 11.5303 23.8232 11.8232L24.1768 12.1768C24.4697 12.4697 24.4697 12.9445 24.1768 13.2374L16.5303 20.8839Z" fill="currentColor"/>
-</svg></div>
-                                    </div>
-                                </div>
-                                <div style="width:100%;height:0px" class="home_faq_answer">
-                                    <p class="text-color-black">Yes, we offer a variety of vegan options, including plant-based milk alternatives &amp; vegan pastries.</p>
-                                </div>
-                            </div>
-                            <div blocks-name="faq1_accordion-3" class="home_faq_accordion">
-                                <div data-w-id="710a3a4b-1044-d2c2-8a07-82864c15378c" class="home_faq_question">
-                                    <h3 class="heading-style-h5">Where are you located?</h3>
-                                    <div class="home_faq_icon-wrapper">
-                                        <div class="icon-embed-small w-embed"><svg width="100%" height="100%" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 20.8839C16.2374 21.1768 15.7626 21.1768 15.4697 20.8839L7.82318 13.2374C7.53029 12.9445 7.53029 12.4697 7.82318 12.1768L8.17674 11.8232C8.46963 11.5303 8.9445 11.5303 9.2374 11.8232L16 18.5858L22.7626 11.8232C23.0555 11.5303 23.5303 11.5303 23.8232 11.8232L24.1768 12.1768C24.4697 12.4697 24.4697 12.9445 24.1768 13.2374L16.5303 20.8839Z" fill="currentColor"/>
-</svg></div>
-                                    </div>
-                                </div>
-                                <div style="width:100%;height:0px" class="home_faq_answer">
-                                    <p class="text-color-black">We are located at 4114 Rad Ave, in the heart of the city. Come visit us!</p>
-                                </div>
-                            </div>
-                            <div blocks-name="faq1_accordion-4" class="home_faq_accordion">
-                                <div data-w-id="710a3a4b-1044-d2c2-8a07-82864c153796" class="home_faq_question">
-                                    <h3 class="heading-style-h5">Do you have Wi-Fi?</h3>
-                                    <div class="home_faq_icon-wrapper">
-                                        <div class="icon-embed-small w-embed"><svg width="100%" height="100%" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 20.8839C16.2374 21.1768 15.7626 21.1768 15.4697 20.8839L7.82318 13.2374C7.53029 12.9445 7.53029 12.4697 7.82318 12.1768L8.17674 11.8232C8.46963 11.5303 8.9445 11.5303 9.2374 11.8232L16 18.5858L22.7626 11.8232C23.0555 11.5303 23.5303 11.5303 23.8232 11.8232L24.1768 12.1768C24.4697 12.4697 24.4697 12.9445 24.1768 13.2374L16.5303 20.8839Z" fill="currentColor"/>
-</svg></div>
-                                    </div>
-                                </div>
-                                <div style="width:100%;height:0px" class="home_faq_answer">
-                                    <p class="text-color-black">Yes, we offer free Wi-Fi to all our customers. Stay connected while enjoying your coffee.</p>
-                                </div>
-                            </div>
-                            <div blocks-name="faq1_accordion-5" class="home_faq_accordion">
-                                <div data-w-id="710a3a4b-1044-d2c2-8a07-82864c1537a0" class="home_faq_question">
-                                    <h3 class="heading-style-h5">What are your hours?</h3>
-                                    <div class="home_faq_icon-wrapper">
-                                        <div class="icon-embed-small w-embed"><svg width="100%" height="100%" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 20.8839C16.2374 21.1768 15.7626 21.1768 15.4697 20.8839L7.82318 13.2374C7.53029 12.9445 7.53029 12.4697 7.82318 12.1768L8.17674 11.8232C8.46963 11.5303 8.9445 11.5303 9.2374 11.8232L16 18.5858L22.7626 11.8232C23.0555 11.5303 23.5303 11.5303 23.8232 11.8232L24.1768 12.1768C24.4697 12.4697 24.4697 12.9445 24.1768 13.2374L16.5303 20.8839Z" fill="currentColor"/>
-</svg></div>
-                                    </div>
-                                </div>
-                                <div style="width:100%;height:0px" class="home_faq_answer">
-                                    <p class="text-color-black">We are open every day from 7am to 7pm.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="margin-top margin-xlarge">
-                            <div class="text-align-center">
-                                <div blocks-name="max-width-medium" blocks-slot-children="ST232" class="max-width-medium align-center">
-                                    <div class="margin-bottom margin-xsmall">
-                                        <h4 blocks-name="heading-2">Still have questions?</h4>
-                                    </div>
-                                    <p blocks-name="paragraph-2" class="text-size-medium">Contact us for more information.</p>
-                                    <div class="margin-top margin-medium"><a blocks-name="button" href="#" class="button is-secondary w-button">Contact</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
-        </section>
-        </main>
-        <footer class="footer4_component">
-            <div class="padding-global">
-                <div class="container-large">
-                    <div class="padding-vertical padding-xxlarge">
-                        <div class="padding-bottom padding-xxlarge">
-                            <div class="w-layout-grid footer4_top-wrapper"><a href="/" id="w-node-_73ccc6b6-66cb-933a-8e37-88aa6e1286b0-6e1286aa" aria-current="page" class="footer4_logo-link w-nav-brand w--current"><img src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619a61a449a86202b0235dd_Dann-Good-Coffee-Logo-Light.svg" loading="lazy" alt="Dann Good Coffee"/></a>
-                                <div
-                                    blocks-name="footer4_link-list" blocks-slot-children="ST232" class="w-layout-grid footer4_link-list"><a blocks-name="footer4_link-2" href="#" class="footer4_link">Menu</a><a blocks-name="footer4_link-3" href="#" class="footer4_link">Shop</a><a blocks-name="footer4_link" href="#" class="footer4_link">About</a><a blocks-name="footer4_link-4"
-                                        href="#" class="footer4_link">Order</a></div>
-                            <div blocks-name="footer4_social-list" blocks-slot-children="ST232" id="w-node-_73ccc6b6-66cb-933a-8e37-88aa6e1286bd-6e1286aa" class="w-layout-grid footer4_social-list">
-                                <a blocks-name="footer4_social-link-3" href="#" class="footer4_social-link w-inline-block">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M17.1761 4H19.9362L13.9061 10.7774L21 20H15.4456L11.0951 14.4066L6.11723 20H3.35544L9.80517 12.7508L3 4H8.69545L12.6279 9.11262L17.1761 4ZM16.2073 18.3754H17.7368L7.86441 5.53928H6.2232L16.2073 18.3754Z" fill="CurrentColor"/>
-</svg></div>
-                                </a>
-                                <a blocks-name="footer4_social-link-2" href="#" class="footer4_social-link w-inline-block">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M16 3H8C5.23858 3 3 5.23858 3 8V16C3 18.7614 5.23858 21 8 21H16C18.7614 21 21 18.7614 21 16V8C21 5.23858 18.7614 3 16 3ZM19.25 16C19.2445 17.7926 17.7926 19.2445 16 19.25H8C6.20735 19.2445 4.75549 17.7926 4.75 16V8C4.75549 6.20735 6.20735 4.75549 8 4.75H16C17.7926 4.75549 19.2445 6.20735 19.25 8V16ZM16.75 8.25C17.3023 8.25 17.75 7.80228 17.75 7.25C17.75 6.69772 17.3023 6.25 16.75 6.25C16.1977 6.25 15.75 6.69772 15.75 7.25C15.75 7.80228 16.1977 8.25 16.75 8.25ZM12 7.5C9.51472 7.5 7.5 9.51472 7.5 12C7.5 14.4853 9.51472 16.5 12 16.5C14.4853 16.5 16.5 14.4853 16.5 12C16.5027 10.8057 16.0294 9.65957 15.1849 8.81508C14.3404 7.97059 13.1943 7.49734 12 7.5ZM9.25 12C9.25 13.5188 10.4812 14.75 12 14.75C13.5188 14.75 14.75 13.5188 14.75 12C14.75 10.4812 13.5188 9.25 12 9.25C10.4812 9.25 9.25 10.4812 9.25 12Z" fill="CurrentColor"/>
-</svg></div>
-                                </a>
-                                <a blocks-name="footer4_social-link-5" href="#" class="footer4_social-link w-inline-block">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M20.5686 4.77345C21.5163 5.02692 22.2555 5.76903 22.5118 6.71673C23.1821 9.42042 23.1385 14.5321 22.5259 17.278C22.2724 18.2257 21.5303 18.965 20.5826 19.2213C17.9071 19.8831 5.92356 19.8015 3.40294 19.2213C2.45524 18.9678 1.71595 18.2257 1.45966 17.278C0.827391 14.7011 0.871044 9.25144 1.44558 6.73081C1.69905 5.78311 2.44116 5.04382 3.38886 4.78753C6.96561 4.0412 19.2956 4.282 20.5686 4.77345ZM9.86682 8.70227L15.6122 11.9974L9.86682 15.2925V8.70227Z" fill="CurrentColor"/>
-</svg></div>
-                                </a>
-                                <a blocks-name="footer4_social-link" href="#" class="footer4_social-link w-inline-block">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0828 5.65684 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9305 5.93012 14.2146 5.93012C15.3088 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1922C13.95 8.60261 13.5625 9.37822 13.5625 10.1739V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3432 21.2452 22 17.083 22 12.0611Z" fill="CurrentColor"/>
-</svg></div>
-                                </a>
-                                <a blocks-name="footer4_social-link-4" href="#" class="footer4_social-link w-inline-block">
-                                    <div class="icon-embed-xsmall w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M4.5 3C3.67157 3 3 3.67157 3 4.5V19.5C3 20.3284 3.67157 21 4.5 21H19.5C20.3284 21 21 20.3284 21 19.5V4.5C21 3.67157 20.3284 3 19.5 3H4.5ZM8.52076 7.00272C8.52639 7.95897 7.81061 8.54819 6.96123 8.54397C6.16107 8.53975 5.46357 7.90272 5.46779 7.00413C5.47201 6.15897 6.13998 5.47975 7.00764 5.49944C7.88795 5.51913 8.52639 6.1646 8.52076 7.00272ZM12.2797 9.76176H9.75971H9.7583V18.3216H12.4217V18.1219C12.4217 17.742 12.4214 17.362 12.4211 16.9819V16.9818V16.9816V16.9815V16.9812C12.4203 15.9674 12.4194 14.9532 12.4246 13.9397C12.426 13.6936 12.4372 13.4377 12.5005 13.2028C12.7381 12.3253 13.5271 11.7586 14.4074 11.8979C14.9727 11.9864 15.3467 12.3141 15.5042 12.8471C15.6013 13.1803 15.6449 13.5389 15.6491 13.8863C15.6605 14.9339 15.6589 15.9815 15.6573 17.0292V17.0294C15.6567 17.3992 15.6561 17.769 15.6561 18.1388V18.3202H18.328V18.1149C18.328 17.6629 18.3278 17.211 18.3275 16.7591V16.759V16.7588C18.327 15.6293 18.3264 14.5001 18.3294 13.3702C18.3308 12.8597 18.276 12.3563 18.1508 11.8627C17.9638 11.1286 17.5771 10.5211 16.9485 10.0824C16.5027 9.77019 16.0133 9.5691 15.4663 9.5466C15.404 9.54401 15.3412 9.54062 15.2781 9.53721L15.2781 9.53721L15.2781 9.53721C14.9984 9.52209 14.7141 9.50673 14.4467 9.56066C13.6817 9.71394 13.0096 10.0641 12.5019 10.6814C12.4429 10.7522 12.3852 10.8241 12.2991 10.9314L12.2991 10.9315L12.2797 10.9557V9.76176ZM5.68164 18.3244H8.33242V9.76733H5.68164V18.3244Z" fill="CurrentColor"/>
-</svg></div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="line-divider"></div>
-                    <div class="padding-top padding-medium">
-                        <div blocks-name="footer4_bottom-wrapper" blocks-slot-children="ST232" class="w-layout-grid footer4_bottom-wrapper">
-                            <div blocks-name="footer4_credit-text" id="w-node-_73ccc6b6-66cb-933a-8e37-88aa6e1286cb-6e1286aa" class="footer4_credit-text">© 2024 Dann Good Coffee</div><a blocks-name="footer4_legal-link" href="#" class="footer4_legal-link">Privacy Policy</a><a blocks-name="footer4_legal-link-2" href="#" class="footer4_legal-link">Terms of Service</a><a blocks-name="footer4_legal-link-3"
-                                href="https://phd.so/" target="_blank" class="footer4_legal-link">Coffee Settings</a></div>
-                    </div>
-                </div>
-            </div>
-            </div><img src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/6619a61ab4e3c6e682f584a9_Thats-Dann-Good-Light.svg" loading="lazy" alt="That’s Dann Good" class="footer4_tagline" /></footer>
-        </div>
-        <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=6610c4fb8d400b1408858d2e" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script src="https://cdn.prod.website-files.com/6610c4fb8d400b1408858d2e/js/webflow.35f39d942.js" type="text/javascript"></script>
-</body>
 
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-links">
+                <a href="#">Find Remote, Hybrid, & Flexible Jobs</a>
+                <a href="#">How FlexJobs Works</a>
+                <a href="#">Career Advice</a>
+                <a href="#">Events & Webinars</a>
+                <a href="#">Job Search Articles</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="login-section">
+            <div class="login-form">
+                <h2 style="text-align: center; color: rgb(0, 79, 109);">Welcome Back!</h2>
+                <p style="text-align: center; color: #333;">Please sign in to your account.</p>
+                
+                <div class="social-buttons">
+                    <button class="social-btn" onclick="window.location.href='/login/google.php'">
+                        <img src="https://www.flexjobs.com/blobcontent/flexjobs/images/logos/google_logo.svg" alt="">
+                        Log In with Google
+                    </button>
+                    <button class="social-btn" onclick="window.location.href='/login/facebook.php'">
+                        <svg width="28" height="28" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#1877f2" d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64h98.2V334.2H109.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H255V480H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z"></path></svg>
+                        Log In with Facebook
+                    </button>
+                </div>
+                
+                <div class="divider">OR</div>
+                
+                <div class="error-message" id="errorMessage">
+                    Invalid email or password. Please try again.
+                </div>
+                
+                <form>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="password-field">
+                            <input type="password" id="password" required>
+                            <i class="fas fa-eye eye-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="forgot-password">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit" class="login-btn">Log In</button>
+                    
+                    <div class="terms">
+                        By clicking 'Log In' you agree to our 
+                        <a href="#">Terms of Use</a> and 
+                        <a href="#">Privacy Policy</a>.
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="background-section">
+            <!-- Background image is set via CSS -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Find Remote Work From Home & Flexible Jobs</h3>
+                <ul>
+                    <li><a href="#">New Remote Jobs Hiring Now</a></li>
+                    <li><a href="#">Remote Jobs Near Me</a></li>
+                    <li><a href="#">Part-Time Remote Jobs</a></li>
+                    <li><a href="#">Entry Level Remote Jobs</a></li>
+                    <li><a href="#">Freelance Remote Jobs</a></li>
+                    <li><a href="#">Browse Remote Jobs by Category</a></li>
+                    <li><a href="#">Browse Top Work from Home Jobs</a></li>
+                    <li><a href="#">Full-Time Remote Jobs</a></li>
+                    <li><a href="#">Temporary Remote Jobs</a></li>
+                    <li><a href="#">Work from Anywhere Jobs</a></li>
+                </ul>
+                
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>About <?php echo $siteName; ?></h3>
+                <ul>
+                    <li><a href="#"><?php echo $siteName; ?> Reviews</a></li>
+                    <li><a href="#">How <?php echo $siteName; ?> Works</a></li>
+                    <li><a href="#">Press & Awards</a></li>
+                    <li><a href="#">Careers at <?php echo $siteName; ?></a></li>
+                    <li><a href="#"><?php echo $siteName; ?> App</a></li>
+                    <li><a href="#">Affiliate Program</a></li>
+                    <li><a href="#">Editorial Process and Methodology</a></li>
+                    <li><a href="#">Do Not Sell or Share My Personal Information</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Fraud Awareness</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Job Search Resources</h3>
+                <ul>
+                    <li><a href="#">Work from Home Jobs No Experience</a></li>
+                    <li><a href="#">How To Make Money Online</a></li>
+                    <li><a href="#">Weekend Jobs</a></li>
+                    <li><a href="#">Side Hustle Jobs from Home</a></li>
+                    <li><a href="#">High Paying Remote Jobs</a></li>
+                    <li><a href="#">Best Remote Companies to Work For</a></li>
+                    <li><a href="#">Informational Guides</a></li>
+                    <li><a href="#">ExpertApply: Auto Apply for Jobs</a></li>
+                    <li><a href="#">Online Resume Builder</a></li>
+                    <li><a href="#">Remote Work Statistics & Trends</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom" style="text-align: center;">
+            <a href="#" style="color: #666; text-align: center;">© 2007-2025 <?php echo $siteName; ?> All Rights Reserved</a>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle password visibility
+        document.querySelector('.eye-icon').addEventListener('click', function() {
+            const passwordInput = document.querySelector('#password');
+            const icon = this;
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.querySelector('#email').value;
+            const password = document.querySelector('#password').value;
+            const errorMessage = document.querySelector('#errorMessage');
+            
+            // Hide error message initially
+            errorMessage.style.display = 'none';
+            
+            if (email && password) {
+                // Always show error message for demo purposes
+                // In real application, you would validate against server
+                errorMessage.style.display = 'block';
+                
+                // Clear the form
+                document.querySelector('#email').value = '';
+                document.querySelector('#password').value = '';
+                
+                // Focus on email field
+                document.querySelector('#email').focus();
+            } else {
+                // Show error if fields are empty
+                errorMessage.textContent = 'Please enter both email and password.';
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
 </html>
