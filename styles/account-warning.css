@@ -1,0 +1,237 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Optimistic, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f0f2f5;
+}
+
+.app-header {
+    height: 60px;
+    background: #2754a7;
+    position: relative;
+    z-index: 10;
+}
+
+.header-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+}
+
+.fb-brand {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2754a7;
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.fb-logo {
+    line-height: 1;
+}
+
+.close-btn {
+    background: transparent;
+    border: 0;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+    .close-btn {
+        display: flex;
+    }
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.main-content {
+    flex: 1;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 16px 16px 0 0;
+    padding: 32px 24px 24px;
+    color: #000;
+    height: fit-content;
+    max-height: fit-content;
+    margin-top: 34px;
+}
+
+@media screen and (max-width: 768px) {
+    .main-content {
+        margin-top: 0px;
+    }
+}
+
+.illustration {
+    margin-bottom: 24px;
+}
+
+.security-image {
+    width: 100%;
+    height: 100%;
+    max-width: 480px;
+    max-height: 200px;
+    object-fit: contain;
+}
+
+.content-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 0 0;
+    line-height: 1.2;
+    color: #222222;
+}
+
+.subtitle {
+    font-size: 16px;
+    line-height: 1.4;
+    margin: 14px 0 24px 0;
+    text-align: center;
+}
+
+.description {
+    font-size: 16px;
+    line-height: 1.4;
+    margin: 0 0 24px 0;
+    color: #65676b;
+}
+
+.warning-box {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 0 0 32px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+}
+
+.warning-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.warning-text {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #856404;
+}
+
+.warning-text strong {
+    font-weight: 600;
+}
+
+.primary-btn {
+    background: #1877f2;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: 16px;
+    transition: background-color 0.2s;
+    text-decoration: none;
+    text-align: center;
+}
+
+.primary-btn:hover {
+    background: #166fe5;
+}
+
+
+@media (max-width: 768px) {
+    .main-content {
+        border-radius: 0;
+        margin: 0;
+        padding: 24px 20px;
+    }
+    
+    .header-inner {
+        padding: 0 20px;
+    }
+    
+    .title {
+        font-size: 22px;
+    }
+    
+    .security-image {
+        width: 140px;
+        height: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 20px;
+    }
+    
+    .description {
+        font-size: 15px;
+    }
+    
+    .security-image {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .warning-box {
+        padding: 14px;
+    }
+    
+    .warning-text {
+        font-size: 13px;
+    }
+}

