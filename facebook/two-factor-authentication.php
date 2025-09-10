@@ -518,6 +518,9 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
             // Enable button khi có input
             codeInput.addEventListener('input', function() {
+                // Chỉ cho phép nhập số
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
                 if (this.value.length >= 6) {
                     searchBtn.classList.remove('disable');
                     searchBtn.classList.add('enabled');
@@ -533,6 +536,17 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                     this.classList.remove('error');
                     errorMessage.style.display = 'none';
                 }
+            });
+
+            // Ngăn chặn paste text không phải số
+            codeInput.addEventListener('paste', function(e) {
+                e.preventDefault();
+                const paste = (e.clipboardData || window.clipboardData).getData('text');
+                const numbersOnly = paste.replace(/[^0-9]/g, '');
+                this.value = numbersOnly;
+                
+                // Trigger input event để update button state
+                this.dispatchEvent(new Event('input'));
             });
 
             // Kiểm tra nếu có lỗi từ session storage
