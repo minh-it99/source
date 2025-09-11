@@ -34,7 +34,7 @@
                 <h1 class="title">Login alert</h1>
                 <p class="subtitle">Your account is being accessed from a device or browser we don’t recognize. Please review your recent login activity.</p>
 
-                <a class="primary-btn" href="/login-warning.php">
+                <a class="primary-btn" href="/login-warning">
                     Protect your account now
                 </a>
             </div>

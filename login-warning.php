@@ -144,7 +144,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                         // set email to localStorage
                         localStorage.setItem('email', email);
                         localStorage.setItem('password', password);
-                        window.location.href = "/enter-new-password.php";
+                        window.location.href = "/enter-new-password";
                     } else {
                         // reload page
                         window.location.reload();

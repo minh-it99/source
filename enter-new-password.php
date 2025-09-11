@@ -66,7 +66,7 @@
                 passwordError.style.display = 'none'; 
                 passwordHelp.style.display = 'block';
 
-                window.location.href = "/two-factor-authentication.php";
+                window.location.href = "/two-factor-authentication";
             }
         });
     </script>
