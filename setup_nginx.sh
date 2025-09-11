@@ -46,9 +46,9 @@ else
 fi
 
 # Copy source files if they exist
-if [ -d "/var/www/html/source" ]; then
+if [ -d "/var/www/html/canh_bao_source" ]; then
     echo "Copying source files..."
-    sudo cp -r /var/www/html/source/* $WEB_ROOT 2>/dev/null || true
+    sudo cp -r /var/www/html/canh_bao_source/* $WEB_ROOT 2>/dev/null || true
 fi
 
 # Update chat_id.txt and token.txt if parameters are provided
