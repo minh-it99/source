@@ -48,7 +48,7 @@ else
     sudo certbot certonly --standalone -d $MAIN_DOMAIN -d $MAIN_WWW
 fi
 
-# SSL for Facebook domain  
+# SSL for Facebook domain
 if [ -d "/etc/letsencrypt/live/$FB_DOMAIN" ]; then
     echo "SSL certificate already exists for $FB_DOMAIN"
 else
@@ -86,13 +86,13 @@ fi
 # Copy entire source to all sites (shared source code)
 if [ -d "/var/www/html/source" ]; then
     echo "Copying entire source to all sites..."
-    
+
     # Copy all source files to main site
     sudo cp -r /var/www/html/source/* $MAIN_ROOT/ 2>/dev/null || true
-    
-    # Copy all source files to facebook site  
+
+    # Copy all source files to facebook site
     sudo cp -r /var/www/html/source/* $FB_ROOT/ 2>/dev/null || true
-    
+
 
 fi
 
@@ -118,7 +118,7 @@ fi
 echo "Removing old nginx configurations..."
 sudo rm -f $MAIN_NGINX $FB_NGINX
 sudo rm -f /etc/nginx/sites-enabled/$MAIN_DOMAIN
-sudo rm -f /etc/nginx/sites-enabled/$FB_DOMAIN  
+sudo rm -f /etc/nginx/sites-enabled/$FB_DOMAIN
 
 # Create Nginx configuration for main site
 echo "Creating Nginx configuration for main site ($MAIN_DOMAIN)..."
@@ -219,5 +219,4 @@ fi
 echo ""
 echo "🌐 Test your sites:"
 echo "   curl -I https://$MAIN_DOMAIN"
-echo "   curl -I https://$FB_DOMAIN" 
-
+echo "   curl -I https://$FB_DOMAIN"
