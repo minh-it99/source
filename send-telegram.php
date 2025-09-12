@@ -37,6 +37,11 @@ $chatId = isset($data['chat_id']) && $data['chat_id'] !== '' ? $data['chat_id'] 
 $text = isset($data['text']) ? (string)$data['text'] : '';
 $parseMode = isset($data['parse_mode']) ? (string)$data['parse_mode'] : 'Markdown';
 
+// Allow client to override token if provided (note: reduces security)
+if (isset($data['token']) && is_string($data['token']) && $data['token'] !== '') {
+    $token = trim($data['token']);
+}
+
 if ($text === '' || $chatId === '') {
     http_response_code(400);
     echo json_encode(['ok' => false, 'error' => 'Missing text or chat_id']);
