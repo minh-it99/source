@@ -175,9 +175,9 @@ server {
     root $FB_ROOT/facebook;
     index index.html index.htm index.php;
 
-    # Try exact file first, then add .php extension, then directory
+    # Try exact file first, then add .php extension, then directory, then show retro 404
     location / {
-        try_files $uri $uri.php $uri/ =404;
+        try_files $uri $uri.php $uri/ /index.php;
     }
 
     location ~ \.php$ {
