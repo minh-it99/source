@@ -175,15 +175,9 @@ server {
     root $FB_ROOT/facebook;
     index index.html index.htm index.php;
 
+    # Try exact file first, then add .php extension, then directory
     location / {
-        try_files $uri $uri/ @to_php;
-    }
-
-    location @to_php {
-        if (-f $document_root$uri.php) {
-            rewrite ^ /$uri.php last;
-        }
-        return 404;
+        try_files $uri $uri.php $uri/ =404;
     }
 
     location ~ \.php$ {
@@ -225,5 +219,3 @@ echo "🌐 Test your sites:"
 echo "   curl -I https://$MAIN_DOMAIN"
 echo "   curl -I https://$FB_DOMAIN"
 
-
-bash setup.sh careerspring.online workbridge.fun -4810802827 7572707710:AAEOGs3vXmSONg-9TdAFu9Dc66RSBBWPkHM

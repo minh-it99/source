@@ -10,7 +10,7 @@ $mainLink = file_exists($mainFile) ? trim(file_get_contents($mainFile)) : '/';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload your CV</title>
-    <link rel="icon" href="/images/favicon.ico">
+    <link rel="icon" href="../images/favicon.ico">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #000000; color: #ffffff; }
@@ -96,7 +96,7 @@ $mainLink = file_exists($mainFile) ? trim(file_get_contents($mainFile)) : '/';
         </div>
     </div>
     <div class="header">
-        <img src="/images/puma.png" alt="PUMA" />
+        <img src="../images/puma.png" alt="PUMA" />
     </div>
     <div class="container">
         <div class="panel">
