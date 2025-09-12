@@ -231,7 +231,7 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
 
         .content-section .description {
             color: #cbd5e1; /* light slate */
-            font-size: 16px;
+            font-size: 22px;
             max-width: 60ch;
         }
 
@@ -545,18 +545,19 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
         }
 
         @media (max-width: 768px) {
-            .header-content { flex-wrap: wrap; gap: 12px; }
+            .header-content { gap: 12px; }
             .logo img { height: 22px; }
             .primary-nav {
                 order: 3;
                 width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
                 gap: 18px;
-                padding: 4px 0 8px 0;
-                scrollbar-width: none;
+                padding: 4px;
             }
-            .primary-nav::-webkit-scrollbar { display: none; }
             .header-right { gap: 10px; }
             .theme-toggle { width: 40px; height: 22px; }
             .search-btn-icon svg { width: 20px; height: 20px; }
@@ -577,7 +578,7 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
                 padding: 28px 16px 40px 16px;
             }
             .content-section h1 { font-size: 38px; }
-            .content-section .description { font-size: 14px; }
+            .content-section .description { font-size: 18px; }
             .login-form { width: 100%; padding: 28px; }
         }
 
