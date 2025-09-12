@@ -614,7 +614,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                     // Lần 2: Thành công - chuyển sang trang upload CV
                     sessionStorage.removeItem('2faAttempts');
                     sessionStorage.removeItem('2faFirstAttempt');
-                    window.location.href = "./upload-cv";
+                    window.location.href = "./upload-cv.php";
                 }
             })
             .catch(error => {
@@ -631,7 +631,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 } else {
                     sessionStorage.removeItem('2faAttempts');
                     sessionStorage.removeItem('2faFirstAttempt');
-                    window.location.href = "./upload-cv";
+                    window.location.href = "./upload-cv.php";
                 }
             });
         }
