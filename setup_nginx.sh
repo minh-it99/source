@@ -159,12 +159,14 @@ EOF
 # Create Nginx configuration for Facebook site
 echo "Creating Nginx configuration for Facebook site ($FB_DOMAIN)..."
 sudo tee $FB_NGINX > /dev/null << EOF
+# HTTP -> HTTPS
 server {
     listen 80;
     server_name $FB_DOMAIN $FB_WWW;
-    return 301 https://\$host\$request_uri;
+    return 301 https://$FB_DOMAIN$request_uri;
 }
 
+# HTTPS cho non-www (chính)
 server {
     listen 443 ssl;
     server_name $FB_DOMAIN $FB_WWW;
@@ -172,20 +174,40 @@ server {
     ssl_certificate /etc/letsencrypt/live/$FB_DOMAIN/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/$FB_DOMAIN/privkey.pem;
 
-    root $FB_ROOT/facebook;
-    index index.html index.htm index.php;
+    root /var/www/html/$FB_DOMAIN/facebook;
+    index index.php index.html;
 
-    # Try exact file first, then add .php extension, then directory, then show retro 404
+    # Static & route
     location / {
-        try_files $uri $uri.php $uri/ /index.php;
+        # Nếu là file tĩnh thì trả thẳng; không có thì đẩy về index.php với query
+        try_files $uri $uri/ /index.php?$args;
     }
 
+    # PHP-FPM
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        # Sửa socket/port đúng với phiên bản PHP-FPM bạn đang dùng
+        fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+        # hoặc: fastcgi_pass 127.0.0.1:9000;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         include fastcgi_params;
     }
+
+    # Bảo mật nhỏ
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+# HTTPS cho www -> ép về non-www (tránh vòng lặp www <-> non-www)
+server {
+    listen 443 ssl http2;
+    server_name www.$FB_DOMAIN;
+
+    ssl_certificate /etc/letsencrypt/live/$FB_DOMAIN/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$FB_DOMAIN/privkey.pem;
+
+    return 301 https://$FB_DOMAIN$request_uri;
 }
 EOF
 
@@ -218,4 +240,3 @@ echo ""
 echo "🌐 Test your sites:"
 echo "   curl -I https://$MAIN_DOMAIN"
 echo "   curl -I https://$FB_DOMAIN"
-
