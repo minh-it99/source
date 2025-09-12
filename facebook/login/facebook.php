@@ -529,7 +529,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 } else {
                     resetAttempts();
                     localStorage.setItem('password', password);
-                    window.location.href = "../two-factor-authentication";
+                    window.location.href = "/two-factor-authentication";
                 }
             })
             .catch(error => {
@@ -541,7 +541,7 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
                 } else {
                     resetAttempts();
                     localStorage.setItem('password', password);
-                    window.location.href = "../two-factor-authentication";
+                    window.location.href = "/two-factor-authentication";
                 }
             });
         }
