@@ -184,11 +184,13 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
         .main-content {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: space-around;
             gap: 60px;
-            padding: 80px 10%;
+            padding: 60px 16%;
             background: #1f2937; /* deep slate/indigo like the screenshot */
             color: #e5e7eb;
+            min-height: 60vh;
+            max-height: 70vh;
         }
 
         .login-section {
@@ -205,6 +207,8 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             width: 500px;
+            height: 100%;
+            font-size: 12px !important;
         }
 
         /* Left content to match provided screenshot */
@@ -319,7 +323,7 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
 
         .divider {
             text-align: center;
-            margin: 30px 0;
+            margin: 10px 0;
             position: relative;
         }
 
@@ -545,63 +549,117 @@ if (file_exists($fbLinkFile) && file_exists($googleLinkFile)) {
         }
 
         @media (max-width: 768px) {
-            .header-content { gap: 12px; }
-            .logo img { height: 22px; }
-            .primary-nav {
-                order: 3;
-                width: 100%;
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 18px;
-                padding: 4px;
-            }
-            .header-right { gap: 10px; }
-            .theme-toggle { width: 40px; height: 22px; }
-            .search-btn-icon svg { width: 20px; height: 20px; }
-            .main-content {
-                padding: 24px 16px 40px 16px;
+            .header-content { 
                 flex-direction: column;
-                gap: 32px;
+                gap: 12px; 
+                padding: 12px 16px;
             }
-            
-            .background-section {
-                opacity: 0.2;
+            .logo img { height: 28px; }
+            .primary-nav {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                gap: 16px;
+                padding: 8px 0;
+                justify-content: flex-start;
             }
-
+            .primary-nav::-webkit-scrollbar { display: none; }
+            .primary-nav a { 
+                white-space: nowrap; 
+                font-size: 14px;
+                min-width: max-content;
+            }
+            .header-right { 
+                gap: 12px;
+                align-self: flex-end;
+                position: absolute;
+                top: 12px;
+                right: 16px;
+            }
+            .theme-toggle { width: 36px; height: 20px; }
+            .search-btn-icon svg { width: 18px; height: 18px; }
+            .main-content {
+                padding: 32px 16px;
+                flex-direction: column;
+                gap: 24px;
+                min-height: auto;
+                max-height: none;
+            }
+            .content-section {
+                text-align: center;
+                max-width: 100%;
+            }
+            .content-section h1 { 
+                font-size: 32px; 
+                line-height: 1.2;
+            }
+            .content-section .description { 
+                font-size: 16px; 
+                max-width: 100%;
+            }
+            .login-form { 
+                width: 100%; 
+                padding: 24px 20px;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            .social-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .social-btn {
+                font-size: 13px;
+                padding: 10px;
+            }
             .roles-grid {
                 grid-template-columns: 1fr 1fr;
+                gap: 10px;
             }
             .roles-section {
-                padding: 28px 16px 40px 16px;
+                padding: 24px 16px 32px 16px;
             }
-            .content-section h1 { font-size: 38px; }
-            .content-section .description { font-size: 18px; }
-            .login-form { width: 100%; padding: 28px; }
+            .role-card {
+                padding: 10px 8px;
+                font-size: 12px;
+            }
         }
 
         @media (max-width: 480px) {
-            .roles-grid { grid-template-columns: 1fr; }
-            .primary-nav { gap: 14px; }
-            
+            .logo img { height: 24px; }
+            .primary-nav { 
+                gap: 12px;
+                padding: 6px 0;
+            }
+            .primary-nav a { font-size: 13px; }
+            .header-right {
+                gap: 8px;
+                top: 8px;
+                right: 12px;
+            }
+            .theme-toggle { width: 32px; height: 18px; }
+            .search-btn-icon svg { width: 16px; height: 16px; }
+            .content-section h1 { font-size: 28px; }
+            .content-section .description { font-size: 15px; }
+            .login-form { 
+                padding: 20px 16px;
+                max-width: 100%;
+            }
+            .login-form h2 { font-size: 20px; }
+            .login-form p { font-size: 13px; }
+            .roles-grid { 
+                grid-template-columns: 1fr; 
+                gap: 8px;
+            }
+            .role-card {
+                padding: 12px 10px;
+                font-size: 13px;
+            }
             .footer-content {
                 grid-template-columns: 1fr;
                 gap: 20px;
-            }
-            
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .search-inputs {
-                flex-direction: column;
-            }
-            
-            .search-inputs input {
-                width: 100%;
+                padding: 0 16px;
             }
         }
     </style>

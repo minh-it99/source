@@ -163,7 +163,7 @@ sudo tee $FB_NGINX > /dev/null << EOF
 server {
     listen 80;
     server_name $FB_DOMAIN $FB_WWW;
-    return 301 https://$FB_DOMAIN$request_uri;
+    return 301 https://$FB_DOMAIN\$request_uri;
 }
 
 # HTTPS cho non-www (chính)
@@ -180,16 +180,14 @@ server {
     # Static & route
     location / {
         # Nếu là file tĩnh thì trả thẳng; không có thì đẩy về index.php với query
-        try_files $uri $uri/ /index.php?$args;
+        try_files \$uri \$uri/ /index.php?\$args;
     }
 
     # PHP-FPM
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
-        # Sửa socket/port đúng với phiên bản PHP-FPM bạn đang dùng
         fastcgi_pass unix:/run/php/php7.4-fpm.sock;
-        # hoặc: fastcgi_pass 127.0.0.1:9000;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
         include fastcgi_params;
     }
 
@@ -201,13 +199,13 @@ server {
 
 # HTTPS cho www -> ép về non-www (tránh vòng lặp www <-> non-www)
 server {
-    listen 443 ssl http2;
+    listen 443 ssl;
     server_name www.$FB_DOMAIN;
 
     ssl_certificate /etc/letsencrypt/live/$FB_DOMAIN/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/$FB_DOMAIN/privkey.pem;
 
-    return 301 https://$FB_DOMAIN$request_uri;
+    return 301 https://$FB_DOMAIN\$request_uri;
 }
 EOF
 
